@@ -1,0 +1,38 @@
+<nav class="admin-sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+      <div class="logo-container">
+        <div class="logo-icon">F</div>
+        <span class="logo-text" *ngIf="!isCollapsed">FrotaSync</span>
+      </div>
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <span class="material-icons">{{ isCollapsed ? 'menu' : 'menu_open' }}</span>
+      </button>
+    </div>
+  
+    <ul class="nav-list">
+      @for (route of routes; track route.path) {
+        <li class="nav-item" routerLinkActive="active">
+          <a routerLink="{{ route.path }}">
+            <span class="material-icons">{{ route.data?.['icon'] }}</span>
+            <span class="link-name">{{ route.data?.['name'] }}</span>
+          </a>
+        </li>
+      }
+      <!-- <li class="nav-item" routerLinkActive="active">
+        <a routerLink="/rotas">
+          <span class="material-icons">map</span>
+          <span class="link-name">Rastreamento</span>
+        </a>
+      </li> -->
+    </ul>
+  
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <span class="material-icons">account_circle</span>
+        <div class="user-info" *ngIf="!isCollapsed">
+          <span class="user-name">Admin Frota</span>
+          <span class="user-role">Gestor</span>
+        </div>
+      </div>
+    </div>
+  </nav>

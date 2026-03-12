@@ -1,0 +1,71 @@
+<div class="crud-container">
+    <header class="page-header">
+      <div class="title-group">
+        <mat-icon class="header-icon">person_outline</mat-icon>
+        <div>
+          <h1>Gestão de Motoristas</h1>
+          <p>Cadastre e gerencie os condutores da sua frota</p>
+        </div>
+      </div>
+      <button mat-flat-button color="primary" (click)="abrirFormulario()">
+        <mat-icon>add</mat-icon>
+        Novo Motorista
+      </button>
+    </header>
+  
+    <mat-card class="filter-card">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Pesquisar motorista</mat-label>
+        <input matInput (keyup)="filtrar($event)" placeholder="Ex. João Silva">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </mat-card>
+  
+    <mat-card class="table-card">
+      <table mat-table [dataSource]="dataSource" matSort>
+  
+        <ng-container matColumnDef="nome">
+          <th mat-header-cell *mat-header-cell-ts="let element"> Motorista </th>
+          <td mat-cell *mat-cell-ts="let element"> 
+            <div class="driver-info">
+              <span class="driver-name">{{element.nome}}</span>
+              <span class="driver-cnh">CNH: {{element.cnh}}</span>
+            </div>
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *mat-header-cell-ts="let element"> Status </th>
+          <td mat-cell *mat-cell-ts="let element">
+            <span class="status-badge" [class.active]="element.status === 'Ativo'">
+              {{element.status}}
+            </span>
+          </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *mat-header-cell-ts="let element" class="text-right"> Ações </th>
+          <td mat-cell *mat-cell-ts="let element" class="text-right">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="editar(element)">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+              </button>
+              <button mat-menu-item class="delete-action" (click)="deletar(element)">
+                <mat-icon>delete</mat-icon>
+                <span>Remover</span>
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+  
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" aria-label="Selecionar página"></mat-paginator>
+    </mat-card>
+  </div>

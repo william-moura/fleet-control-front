@@ -1,0 +1,149 @@
+$primary-color: #1a237e; // Azul Escuro Industrial
+$accent-color: #ff6f00;  // Laranja Alerta/Engrenagem
+$bg-color: #f4f7f6;
+$text-light: #ffffff;
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 80px;
+$transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+.admin-sidebar {
+  height: 100vh;
+  width: $sidebar-width;
+  background-color: $primary-color;
+  color: $text-light;
+  display: flex;
+  flex-direction: column;
+  transition: $transition;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+
+    .logo-text, .link-name, .user-info {
+      display: none;
+    }
+    
+    .nav-item a {
+      justify-content: center;
+      padding: 15px 0;
+    }
+  }
+
+  .sidebar-header {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .logo-icon {
+        background: $accent-color;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .logo-text {
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+    }
+
+    .toggle-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+  }
+
+  .nav-list {
+    list-style: none;
+    padding: 20px 0;
+    flex-grow: 1;
+
+    .nav-item {
+      margin: 8px 12px;
+      border-radius: 8px;
+      transition: $transition;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      &.active {
+        background: $accent-color;
+        box-shadow: 0 4px 12px rgba(255, 111, 0, 0.3);
+      }
+
+      a {
+        text-decoration: none;
+        color: white;
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        gap: 15px;
+
+        .material-icons {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+
+  .sidebar-footer {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        
+        .user-name { font-size: 0.9rem; font-weight: 500; }
+        .user-role { font-size: 0.75rem; opacity: 0.7; }
+      }
+    }
+  }
+}
+
+// Responsividade para Mobile
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 100%;
+    height: 60px;
+    flex-direction: row;
+    bottom: 0;
+    top: auto;
+    
+    .sidebar-header, .sidebar-footer, .link-name {
+      display: none;
+    }
+
+    .nav-list {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
+      padding: 0;
+
+      .nav-item {
+        margin: 0;
+      }
+    }
+  }
+}
