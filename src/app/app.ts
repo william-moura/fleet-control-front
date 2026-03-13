@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterOutlet, Router } from '@angular/router';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { LayoutService } from './services/layout-service';
 import { AsyncPipe } from '@angular/common';
@@ -11,5 +11,6 @@ import { AsyncPipe } from '@angular/common';
 })
 export class App {
   protected readonly title = signal('fleet-control-front');
+  public router = inject(Router);
   constructor(public layoutService: LayoutService) {}
 }
