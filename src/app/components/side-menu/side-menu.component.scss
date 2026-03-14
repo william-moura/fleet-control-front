@@ -147,3 +147,14 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 }
+.logout-item {
+  margin-top: auto; // Empurra o botão para o final da lista se o flex-direction for column
+  
+  a {
+    color: #ffab91 !important; // Um tom de laranja/vermelho suave para alerta
+    
+    &:hover {
+      background: rgba(239, 68, 68, 0.1) !important; // Fundo vermelho suave no hover
+    }
+  }
+}
