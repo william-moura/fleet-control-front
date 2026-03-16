@@ -17,5 +17,5 @@ export const routes: Routes = [
     { path: 'maintenance', component: MaintenanceComponent, data: { icon: 'build', name: 'Manutenção' }, canActivate: [authGuard] },
     { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' }, canActivate: [authGuard] },
     { path: 'reports', component: ReportsComponent, data: { icon: 'report', name: 'Relatórios' }, canActivate: [authGuard] },
-    { path: 'login', component: LoginComponent },
+    { path: 'login', component: LoginComponent },    
 ];

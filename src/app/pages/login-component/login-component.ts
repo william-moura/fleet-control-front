@@ -39,6 +39,7 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe({
         next: () => {
           this.isLoading.set(false);
+          console.log('ta vindo aqui??');
           this.router.navigate(['/dashboard']); 
         },
         error: (err: Error) => {
