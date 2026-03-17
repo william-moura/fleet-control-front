@@ -10,7 +10,7 @@ import { FuelType } from '../models/fuel-type';
 })
 export class VehicleService {
   private http = inject(HttpClient);
-  private readonly API_URL = 'http://localhost:8080/api/vehicles';
+  private readonly API_URL = 'sysmanager.tech/api/vehicles';
   getAllVehicles(): Observable<Vehicle[]> {
     return this.http.get<Vehicle[]>(this.API_URL);
   }
