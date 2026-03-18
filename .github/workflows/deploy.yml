@@ -1,0 +1,38 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install and Build
+        run: |
+          npm install
+          npm run build --configuration=production
+      - name: Copy files to VPS via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "dist/fleet-control-front/browser/*" # Ajuste o caminho do seu build
+          target: "/var/www/fleet-control/fleet-control-front/dist"
+          strip_components: 3 # Remove 'dist/seu-app/browser' do caminho no destino
+
+      - name: Refresh Nginx
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: docker restart nginx_proxy
