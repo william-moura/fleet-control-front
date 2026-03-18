@@ -40,7 +40,7 @@ export class LoginComponent {
         next: () => {
           this.isLoading.set(false);
           console.log('ta vindo aqui??');
-          this.router.navigate(['/dashboard']); 
+          this.router.navigate(['dashboard']); 
         },
         error: (err: Error) => {
           this.isLoading.set(false);
