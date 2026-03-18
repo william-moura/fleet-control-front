@@ -1,4 +1,4 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, NgZone } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -24,7 +24,9 @@ export class LoginComponent {
   errorMessage = signal('');
   loginForm: FormGroup;
   hidePassword = true;
-  constructor(private fb: FormBuilder, private router: Router) {
+  private ngZone = inject(NgZone);
+  private router = inject(Router);
+  constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -40,7 +42,10 @@ export class LoginComponent {
         next: () => {
           this.isLoading.set(false);
           console.log('ta vindo aqui??');
-          this.router.navigate(['dashboard']); 
+          this.ngZone.run(() => {
+            console.log('ta vindo aqui, neste aqui??');
+            this.router.navigate(['dashboard']); 
+          });
         },
         error: (err: Error) => {
           this.isLoading.set(false);
