@@ -25,9 +25,10 @@ export class AuthService {
         
         // 2. Salva os dados do usuário no Signal para uso no menu/sidebar
         this.currentUser.set(res.user);
+        this.isAuthenticatedSignal.set(true);
         
         // 3. Redireciona
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['dashboard']);
       }),
       catchError((error) => {
         // Tratamento genérico de erro de rede ou servidor

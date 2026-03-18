@@ -13,7 +13,7 @@ import { AuthService } from './services/auth-service';
 export class App {
   protected readonly title = signal('fleet-control-front');
   public router = inject(Router);
-  constructor(public layoutService: LayoutService, private authService: AuthService) {
+  constructor(public layoutService: LayoutService, protected authService: AuthService) {
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
     } else {
