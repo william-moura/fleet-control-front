@@ -1,0 +1,82 @@
+<h2 mat-dialog-title>Cadastrar Novo Veículo</h2>
+
+<mat-dialog-content [formGroup]="form" class="form-container">
+  <div class="row">
+    <mat-form-field appearance="outline">
+      <mat-label>Placa</mat-label>
+      <input matInput formControlName="vehiclePlate" placeholder="ABC1D23">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="vehicleStatus">
+        <mat-option value="1">Ativo</mat-option>
+        <mat-option value="0">Inativo</mat-option>
+        <!-- <mat-option value="Manutenção">Manutenção</mat-option> -->
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <!-- <mat-form-field appearance="outline">
+      <mat-label>Marca</mat-label>
+      <input matInput formControlName="marca" placeholder="Ex: Volvo">
+    </mat-form-field> -->
+    <mat-form-field appearance="outline">
+        <mat-label>Marca</mat-label>
+        <mat-select formControlName="brandId">
+            @for (brand of brands(); track brand.id) {
+              <mat-option [value]="brand.id">{{brand.name}}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Modelo</mat-label>
+      <input matInput formControlName="vehicleModel" placeholder="Ex: FH 540">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="outline">
+        <mat-label>Ano</mat-label>
+        <input matInput formControlName="vehicleYear" placeholder="Ex: 2026">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Quilometragem Atual</mat-label>
+        <input matInput formControlName="vehicleCurrentMileage" placeholder="Ex: 100000">
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <mat-form-field appearance="outline">
+        <mat-label>Tipo de Combustível</mat-label>
+        <mat-select formControlName="fuelTypeId">
+            @for (fuelType of fuelTypes(); track fuelType.id) {
+              <mat-option [value]="fuelType.id">{{fuelType.name}}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Capacidade de Combustível</mat-label>
+        <input matInput formControlName="vehicleTankCapacity" placeholder="Ex: 100">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Data de Compra</mat-label>
+        <!-- <input matInput formControlName="vehiclePurchaseDate" placeholder="Ex: 01/01/2026"> -->
+        <input matInput [matDatepicker]="picker" formControlName="vehiclePurchaseDate">
+        <mat-hint>/DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Notas</mat-label>
+        <input matInput formControlName="vehicleNotes" placeholder="Ex: Notas">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    Salvar Veículo
+  </button>
+</mat-dialog-actions>
