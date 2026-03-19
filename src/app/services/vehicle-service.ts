@@ -4,13 +4,14 @@ import { Vehicle } from '../models/vehicle';
 import { Observable } from 'rxjs';
 import { Brand } from '../models/brand';
 import { FuelType } from '../models/fuel-type';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VehicleService {
   private http = inject(HttpClient);
-  private readonly API_URL = 'https://sysmanager.tech/api/vehicles';
+  private readonly API_URL = environment.apiUrl + '/vehicles';
   getAllVehicles(): Observable<Vehicle[]> {
     return this.http.get<Vehicle[]>(this.API_URL);
   }

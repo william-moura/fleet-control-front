@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Confirmar Exclusão</h2>
+<mat-dialog-content>
+    Você tem certeza que deseja excluir o veículo <strong>{{ data.placa }}</strong>?
+    <p style="color: #ef4444; font-size: 0.8rem; margin-top: 10px;">* Esta ação não pode ser desfeita.</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-flat-button color="warn" [mat-dialog-close]="true">Excluir</button>
+</mat-dialog-actions>
