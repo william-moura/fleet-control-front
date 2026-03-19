@@ -12,6 +12,8 @@ import { VehicleService } from '../../services/vehicle-service';
 import { FormAddVehicle } from '../form-add-vehicle/form-add-vehicle';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { firstValueFrom } from 'rxjs';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-vehicles',
@@ -80,5 +82,28 @@ export class Vehicles {
         });
       }
     });
+  }
+  async deleteVehicle(vehicle: Vehicle) {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      data: {
+        title: 'Excluir Veículo',
+        message: 'Tem certeza que deseja excluir este veículo?',
+      },
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      try {
+        this.isLoading.set(true);
+        await firstValueFrom(this.vehicleService.deleteVehicle(vehicle.id));
+        this.snackBar.open('Veículo excluído com sucesso', 'Fechar', { duration: 3000 });
+        this.getVehicles();
+        this.isLoading.set(false);
+      } catch (error) {
+        console.error('Erro ao excluir veículo:', error);
+        this.snackBar.open('Erro ao excluir veículo', 'Fechar', { duration: 3000 });
+        this.isLoading.set(false);
+      }
+    }
   }
 }
