@@ -1,0 +1,9 @@
+version: '3.8'
+services:
+  fleet-control-front:
+    image: nginx:alpine
+    ports:
+      - 8081:80
+    volumes:
+      - ./dist/fleet-control-front/browser:/usr/share/nginx/html
+    # command: nginx -g 'daemon off;'

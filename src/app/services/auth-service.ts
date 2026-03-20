@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { tap, catchError, throwError, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthResponse, LoginCredentials } from '../models/auth.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private readonly API_URL = 'https://sysmanager.tech/api'; // URL do seu Backend
+  private readonly API_URL = environment.apiUrl; // URL do seu Backend
   private isAuthenticatedSignal = signal<boolean>(!!localStorage.getItem('token'));
   isAuthenticated() {
     return this.isAuthenticatedSignal();
