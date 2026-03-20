@@ -68,7 +68,6 @@ export class Vehicles {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // console.log(result.vehiclePurchaseDate.toISOString().split('T')[0], 'result');
         result.vehiclePurchaseDate = result.vehiclePurchaseDate.toISOString().split('T')[0];
         this.vehicleService.createVehicle(result).subscribe({
           next: (vehicle) => {

@@ -61,7 +61,6 @@ export class FormAddVehicle {
         dataForm.vehiclePurchaseDate = new Date(dataForm.vehiclePurchaseDate.toString().split('/').reverse().join('-') + 'T00:00:00');        
       }
       dataForm.vehicleStatus = dataForm.vehicleStatus === 'Ativo' || dataForm.vehicleStatus === 'ativo'  ? '1' : '0';
-      console.log(dataForm, 'dataForm');
       this.form.patchValue(dataForm);
       this.form.get('vehicleId')?.disable();
     }
