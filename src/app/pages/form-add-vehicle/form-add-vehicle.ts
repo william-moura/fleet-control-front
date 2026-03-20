@@ -1,7 +1,7 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -30,6 +30,7 @@ export class FormAddVehicle {
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<FormAddVehicle>);
   private vehicleService = inject(VehicleService);
+  public data = inject(MAT_DIALOG_DATA);
   form: FormGroup;
   brands = signal<Brand[]>([]);
   fuelTypes = signal<FuelType[]>([]);
@@ -43,7 +44,7 @@ export class FormAddVehicle {
       vehicleTankCapacity: ['', [Validators.required, Validators.min(1), Validators.max(1000)]],
       vehicleCurrentMileage: ['', [Validators.required, Validators.min(0)]],
       vehiclePurchaseDate: ['', Validators.required],
-      vehicleNotes: ['', Validators.required],
+      vehicleNotes: [''],
       vehicleStatus: ['', Validators.required],
     });
     this.vehicleService.getBrands().subscribe((brands) => {
@@ -53,12 +54,23 @@ export class FormAddVehicle {
       this.fuelTypes.set(fuelTypes);
     });
   }
+  ngOnInit() {
+    if (this.data) {
+      const dataForm = { ...this.data };
+      if (dataForm.vehiclePurchaseDate) {
+        dataForm.vehiclePurchaseDate = new Date(dataForm.vehiclePurchaseDate.toString().split('/').reverse().join('-') + 'T00:00:00');        
+      }
+      dataForm.vehicleStatus = dataForm.vehicleStatus === 'Ativo' || dataForm.vehicleStatus === 'ativo'  ? '1' : '0';
+      this.form.patchValue(dataForm);
+      this.form.get('vehicleId')?.disable();
+    }
+  }
   onSubmit() {
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }
   }
   onCancel() {
-    this.dialogRef.close(this.form.value);
+    this.dialogRef.close();
   }
 }

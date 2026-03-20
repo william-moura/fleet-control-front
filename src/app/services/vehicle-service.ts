@@ -21,8 +21,8 @@ export class VehicleService {
   createVehicle(vehicle: Vehicle): Observable<Vehicle> {
     return this.http.post<Vehicle>(this.API_URL, vehicle);
   }
-  updateVehicle(vehicle: Vehicle): Observable<Vehicle> {
-    return this.http.put<Vehicle>(this.API_URL, vehicle);
+  updateVehicle(id: number, vehicle: Vehicle): Observable<Vehicle> {
+    return this.http.put<Vehicle>(`${this.API_URL}/${id}`, vehicle);
   }
   deleteVehicle(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);

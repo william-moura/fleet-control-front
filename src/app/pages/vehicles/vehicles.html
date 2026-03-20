@@ -63,7 +63,7 @@
         <ng-container matColumnDef="acoes">
           <th mat-header-cell *matHeaderCellDef> Ações </th>
           <td mat-cell *matCellDef="let row">
-            <button mat-icon-button color="accent" title="Editar">
+            <button mat-icon-button color="accent" title="Editar" (click)="updateVehicle(row)">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" title="Excluir" (click)="deleteVehicle(row)">
