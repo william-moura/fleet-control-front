@@ -14,6 +14,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom } from 'rxjs';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-vehicles',
@@ -29,6 +30,7 @@ export class Vehicles {
   // constructor(private paginator: MatPaginator) {
   //   this.paginator = paginator;
   // }
+  constructor(private title: Title) {}
   isLoading = signal(true);
   displayedColumns: string[] = ['vehicle_plate', 'vehicle_brand', 'vehicle_model', 'vehicle_year', 'vehicle_fuel_type', 'vehicle_fuel_capacity', 'vehicle_current_mileage', 'vehicle_purchase_date', 'vehicle_notes', 'vehicle_status', 'acoes'];
   dataSource = new MatTableDataSource<Vehicle>([]);
@@ -60,6 +62,7 @@ export class Vehicles {
   }
   ngOnInit() {
     this.getVehicles();
+    this.title.setTitle('Gestão de Veículos');
   }
   openAddVehicleDialog() {
     const dialogRef = this.dialog.open(FormAddVehicle, {
