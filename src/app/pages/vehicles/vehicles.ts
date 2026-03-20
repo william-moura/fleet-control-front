@@ -106,4 +106,26 @@ export class Vehicles {
       }
     }
   }
+  async updateVehicle(vehicle: Vehicle) {
+    const dialogRef = this.dialog.open(FormAddVehicle, {
+      width: '600px',
+      disableClose: true,
+      data: vehicle,
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      try {
+        this.isLoading.set(true);
+        await firstValueFrom(this.vehicleService.updateVehicle(vehicle.id, result));
+        this.snackBar.open('Veículo atualizado com sucesso', 'Fechar', { duration: 3000 });
+        this.getVehicles();
+      } catch (error) {
+        console.error('Erro ao atualizar veículo:', error);
+        this.snackBar.open('Erro ao atualizar veículo', 'Fechar', { duration: 3000 });
+      }
+      finally {
+        this.isLoading.set(false);
+      }
+    }
+  }
 }

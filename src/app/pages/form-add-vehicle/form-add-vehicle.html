@@ -1,4 +1,6 @@
-<h2 mat-dialog-title>Cadastrar Novo Veículo</h2>
+<h2 mat-dialog-title>
+  {{ data ? 'Editar Veículo: ' + data.vehiclePlate : 'Cadastrar Novo Veículo' }}
+</h2>
 
 <mat-dialog-content [formGroup]="form" class="form-container">
   <div class="row">
@@ -60,7 +62,7 @@
         <input matInput formControlName="vehicleTankCapacity" placeholder="Ex: 100">
     </mat-form-field>
     <mat-form-field appearance="outline">
-        <mat-label>Data de Compra</mat-label>
+        <mat-label>Data de Compra</mat-label>        
         <!-- <input matInput formControlName="vehiclePurchaseDate" placeholder="Ex: 01/01/2026"> -->
         <input matInput [matDatepicker]="picker" formControlName="vehiclePurchaseDate">
         <mat-hint>/DD/MM/YYYY</mat-hint>

@@ -9,5 +9,5 @@ export interface Vehicle {
   vehicleCurrentMileage: number;
   vehiclePurchaseDate: Date;
   vehicleNotes: string;
-  vehicleStatus: 'Ativo' | 'Inativo';
+  vehicleStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
 }
