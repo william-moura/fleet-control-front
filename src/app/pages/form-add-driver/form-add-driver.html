@@ -1,0 +1,76 @@
+<h2 mat-dialog-title>Cadastro de Motorista</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>CNH</mat-label>
+      <input matInput formControlName="licenseNumber" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Categoria</mat-label>
+      <input matInput formControlName="licenseCategory" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="1">Ativo</mat-option>
+        <mat-option value="0">Inativo</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Data de Nascimento</mat-label>
+        <input matInput formControlName="birthDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Telefone</mat-label>
+        <input matInput formControlName="phone" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Endereço</mat-label>
+        <input matInput formControlName="address" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Cidade</mat-label>
+        <input matInput formControlName="city" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Estado</mat-label>
+        <input matInput formControlName="state" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>CEP</mat-label>
+        <input matInput formControlName="zipCode" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Tipo Sanguíneo</mat-label>
+        <input matInput formControlName="bloodType" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>RG</mat-label>
+        <input matInput formControlName="rg" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>CPF</mat-label>
+        <input matInput formControlName="cpf" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Data de Expiração da CNH</mat-label>
+        <input matInput formControlName="licenseExpirationDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Número de Registro</mat-label>
+        <input matInput formControlName="registeredNumber" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-button (click)="onSubmit()">Salvar</button>
+</mat-dialog-actions>
