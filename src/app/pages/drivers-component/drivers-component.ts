@@ -40,7 +40,7 @@ export class DriversComponent implements AfterViewInit {
   private driverService = inject(DriverService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
-  displayedColumns: string[] = ['nome', 'cnh', 'categoria', 'status', 'acoes'];
+  displayedColumns: string[] = ['nome', 'driverRegisteredNumber', 'cnh', 'categoria', 'status', 'acoes'];
   
   // Fonte de dados usando Signals para reatividade básica
   dataSource = new MatTableDataSource<Driver>([]);
