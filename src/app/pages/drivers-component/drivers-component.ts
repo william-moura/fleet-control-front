@@ -1,4 +1,4 @@
-import { Component, signal, viewChild, AfterViewInit } from '@angular/core';
+import { Component, signal, viewChild, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -8,6 +8,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { DriverService } from '../../services/driver-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { Driver } from '../../models/driver';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { firstValueFrom } from 'rxjs';
+import { FormAddDriver } from '../form-add-driver/form-add-driver';
 
 export interface Motorista {
   id: number;
@@ -30,10 +37,13 @@ export interface Motorista {
   styleUrl: './drivers-component.scss',
 })
 export class DriversComponent implements AfterViewInit {
-  displayedColumns: string[] = ['nome', 'cnh', 'categoria', 'status', 'acoes'];
+  private driverService = inject(DriverService);
+  private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+  displayedColumns: string[] = ['nome', 'driverRegisteredNumber', 'cnh', 'categoria', 'status', 'acoes'];
   
   // Fonte de dados usando Signals para reatividade básica
-  dataSource = new MatTableDataSource<Motorista>(DADOS_MOCK);
+  dataSource = new MatTableDataSource<Driver>([]);
 
   // Queries para os componentes de paginação e ordenação
   paginator = viewChild.required(MatPaginator);
@@ -47,6 +57,59 @@ export class DriversComponent implements AfterViewInit {
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  getDrivers() {
+    this.driverService.getAllDrivers().subscribe((drivers) => {
+      this.dataSource.data = drivers;
+    });
+  }
+  async deleteDriver(driver: Driver) {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      data: {
+        title: 'Excluir Motorista',
+        message: 'Tem certeza que deseja excluir este motorista?',
+      },
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      try {        
+        await firstValueFrom(this.driverService.deleteDriver(driver.id));
+        this.snackBar.open('Motorista excluído com sucesso', 'Fechar', { duration: 3000 });
+      } catch (error) {
+        console.error('Erro ao excluir motorista:', error);
+        this.snackBar.open('Erro ao excluir motorista', 'Fechar', { duration: 3000 });
+      }
+      finally {        
+        this.getDrivers();
+      }
+    }
+  }
+  ngOnInit() {
+    this.getDrivers();
+  }
+  openAddDriverDialog() {
+    const dialogRef = this.dialog.open(FormAddDriver, {
+      width: '600px',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        //result.vehiclePurchaseDate = result.vehiclePurchaseDate.toISOString().split('T')[0];
+        result.driverLicenseExpirationDate = result.driverLicenseExpirationDate.toISOString().split('T')[0];
+        result.driverBirthDate = result.driverBirthDate.toISOString().split('T')[0];        
+        this.driverService.createDriver(result).subscribe({
+          next: (driver) => {
+            this.snackBar.open('Motorista cadastrado com sucesso', 'Fechar', { duration: 3000 });
+            this.getDrivers();
+          },
+          error: (error) => {
+            console.error('Erro ao cadastrar motorista:', error);
+            this.snackBar.open('Erro ao cadastrar motorista', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
+    });
   }
 }
 
