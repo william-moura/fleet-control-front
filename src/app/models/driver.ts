@@ -1,18 +1,18 @@
 export interface Driver {
   id: number;
-  registeredNumber: string;
-  name: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  bloodType: string;
-  rg: string;
-  cpf: string;
-  licenseNumber: string;
-  licenseExpirationDate: Date;
-  licenseCategory: string;
-  birthDate: Date;
-  phone: string;
-  status: string;
+  driverRegisteredNumber: string;
+  driverName: string;
+  driverAddress: string;
+  driverCity: string;
+  driverState: string;
+  driverZipCode: string;
+  driverBloodType: string;
+  driverRg: string;
+  driverCpf: string;
+  driverLicenseNumber: string;
+  driverLicenseExpirationDate: Date;
+  driverLicenseCategory: string;
+  driverBirthDate: Date;
+  driverPhone: string;
+  driverStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
 }

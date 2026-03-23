@@ -3,70 +3,70 @@
   <form [formGroup]="form">
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="name" />
+      <input matInput formControlName="driverName" />
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>CNH</mat-label>
-      <input matInput formControlName="licenseNumber" />
+      <input matInput formControlName="driverLicenseNumber" />
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Categoria</mat-label>
-      <input matInput formControlName="licenseCategory" />
+      <input matInput formControlName="driverLicenseCategory" />
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
-      <mat-select formControlName="status">
+      <mat-select formControlName="driverStatus">
         <mat-option value="1">Ativo</mat-option>
         <mat-option value="0">Inativo</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data de Nascimento</mat-label>
-        <input matInput formControlName="birthDate" />
-        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+        <input matInput [matDatepicker]="picker1" formControlName="driverBirthDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker1" ></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Telefone</mat-label>
-        <input matInput formControlName="phone" />
+        <input matInput formControlName="driverPhone" />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Endereço</mat-label>
-        <input matInput formControlName="address" />
+        <input matInput formControlName="driverAddress" />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Cidade</mat-label>
-        <input matInput formControlName="city" />
+        <input matInput formControlName="driverCity" />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Estado</mat-label>
-        <input matInput formControlName="state" />
+        <input matInput formControlName="driverState" />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>CEP</mat-label>
-        <input matInput formControlName="zipCode" />
+        <input matInput formControlName="driverZipCode" />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Tipo Sanguíneo</mat-label>
-        <input matInput formControlName="bloodType" />
+        <input matInput formControlName="driverBloodType" />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>RG</mat-label>
-        <input matInput formControlName="rg" />
+        <input matInput formControlName="driverRg" />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>CPF</mat-label>
-        <input matInput formControlName="cpf" />
+        <input matInput formControlName="driverCpf" />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data de Expiração da CNH</mat-label>
-        <input matInput formControlName="licenseExpirationDate" />
-        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
+        <input matInput [matDatepicker]="picker2" formControlName="driverLicenseExpirationDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker2" ></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Número de Registro</mat-label>
-        <input matInput formControlName="registeredNumber" />
+        <input matInput formControlName="driverRegisteredNumber" />
     </mat-form-field>
   </form>
 </mat-dialog-content>

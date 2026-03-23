@@ -96,6 +96,8 @@ export class DriversComponent implements AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         //result.vehiclePurchaseDate = result.vehiclePurchaseDate.toISOString().split('T')[0];
+        result.driverLicenseExpirationDate = result.driverLicenseExpirationDate.toISOString().split('T')[0];
+        result.driverBirthDate = result.driverBirthDate.toISOString().split('T')[0];        
         this.driverService.createDriver(result).subscribe({
           next: (driver) => {
             this.snackBar.open('Motorista cadastrado com sucesso', 'Fechar', { duration: 3000 });

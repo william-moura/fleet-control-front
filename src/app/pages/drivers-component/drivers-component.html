@@ -17,19 +17,19 @@
 
       <ng-container matColumnDef="nome">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
-        <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.driverName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="cnh">
         <th mat-header-cell *matHeaderCellDef> CNH </th>
-        <td mat-cell *matCellDef="let row"> {{row.licenseNumber}} </td>
+        <td mat-cell *matCellDef="let row"> {{row.driverLicenseNumber}} </td>
       </ng-container>
 
       <ng-container matColumnDef="categoria">
         <th mat-header-cell *matHeaderCellDef> Cat. </th>
         <td mat-cell *matCellDef="let row"> 
           <mat-chip-set>
-            <mat-chip>{{row.licenseCategory}}</mat-chip>
+            <mat-chip>{{row.driverLicenseCategory}}</mat-chip>
           </mat-chip-set>
         </td>
       </ng-container>
@@ -37,8 +37,8 @@
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef> Status </th>
         <td mat-cell *matCellDef="let row">
-          <span class="badge" [class.ativo]="row.status === '1'" [class.inativo]="row.driver_status === '0'">
-            @if (row.status === '1') {
+          <span class="badge" [class.ativo]="row.driverStatus === '1'" [class.inativo]="row.driverStatus === '0'">
+            @if (row.driverStatus === '1') {
               Ativo
             } @else {
               Inativo
@@ -53,7 +53,7 @@
           <button mat-icon-button color="accent" title="Editar">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" title="Excluir" (click)="deleteDriver(row)">
+          <button mat-icon-button color="warn" title="Excluir" (click)="deleteDriver(row.id)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

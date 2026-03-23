@@ -31,21 +31,21 @@ export class FormAddDriver {
   form: FormGroup;
   constructor() {
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      registeredNumber: ['', Validators.required],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      state: ['', Validators.required],
-      zipCode: ['', Validators.required],
-      bloodType: ['', Validators.required],
-      rg: ['', Validators.required],
-      cpf: ['', Validators.required],
-      licenseNumber: ['', Validators.required],
-      licenseExpirationDate: ['', Validators.required],
-      licenseCategory: ['', Validators.required],
-      birthDate: ['', Validators.required],
-      phone: ['', Validators.required],
-      status: ['', Validators.required],
+      driverName: ['', Validators.required],
+      driverRegisteredNumber: ['', Validators.required],
+      driverAddress: ['', Validators.required],
+      driverCity: ['', Validators.required],
+      driverState: ['', Validators.required],
+      driverZipCode: ['', Validators.required],
+      driverBloodType: ['', Validators.required],
+      driverRg: ['', Validators.required],
+      driverCpf: ['', Validators.required],
+      driverLicenseNumber: ['', Validators.required],
+      driverLicenseExpirationDate: ['', Validators.required],
+      driverLicenseCategory: ['', Validators.required],
+      driverBirthDate: ['', Validators.required],
+      driverPhone: ['', Validators.required],
+      driverStatus: ['', Validators.required],
     });
   }
   ngOnInit() {
