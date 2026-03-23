@@ -5,6 +5,7 @@ import { authInterceptor } from './auth-interceptor'; // O interceptor que criam
 
 import { routes } from './app.routes';
 import { MatDateFormats, provideNativeDateAdapter } from '@angular/material/core';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +15,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([authInterceptor]) // Envia o token automaticamente para a API
     ),
-    provideNativeDateAdapter()
+    provideNativeDateAdapter(),
+    provideEnvironmentNgxMask()
   ]
 };
 
