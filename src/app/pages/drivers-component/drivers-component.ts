@@ -111,6 +111,24 @@ export class DriversComponent implements AfterViewInit {
       }
     });
   }
+  async updateDriver(driver: Driver) {
+    const dialogRef = this.dialog.open(FormAddDriver, {
+      width: '600px',
+      disableClose: true,
+      data: driver,
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      try {
+        await firstValueFrom(this.driverService.updateDriver(driver.id, result));
+        this.snackBar.open('Motorista atualizado com sucesso', 'Fechar', { duration: 3000 });
+        this.getDrivers();
+      } catch (error) {
+        console.error('Erro ao atualizar motorista:', error);
+        this.snackBar.open('Erro ao atualizar motorista', 'Fechar', { duration: 3000 });
+      }
+    }
+  }
 }
 
 // Dados de exemplo
