@@ -33,3 +33,35 @@
       &.inativo { background-color: #ffebee; color: #c62828; }
     }
   }
+
+  
+.table-responsive {
+  width: 100%;
+  overflow-x: auto; // Ativa o scroll horizontal quando necessário
+  
+  // Estilização opcional da barra de rolagem para ficar mais "moderna"
+  &::-webkit-scrollbar {
+    height: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+  }
+}
+table {
+  width: 100%;
+  min-width: 800px; // VALOR CHAVE: Força a tabela a não "esmagar" as colunas em telas pequenas
+  
+  // Estilos das células
+  th.mat-mdc-header-cell {
+    background-color: #f8fafc;
+    color: #1a237e;
+    font-weight: bold;
+    white-space: nowrap; // Impede que o título da coluna quebre linha
+  }
+
+  td.mat-mdc-cell {
+    white-space: nowrap; // Garante que o texto da célula fique em uma linha só
+    padding: 12px 16px;
+  }
+}
