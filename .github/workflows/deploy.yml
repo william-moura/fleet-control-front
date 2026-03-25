@@ -17,7 +17,7 @@ jobs:
 
       - name: Install and Build
         run: |
-          npm install
+          npm install --force
           npm run build --configuration=production
       - name: Copy files to VPS via SCP
         uses: appleboy/scp-action@v0.1.7
