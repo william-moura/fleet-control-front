@@ -1,3 +1,5 @@
+import { Driver } from "./driver";
+
 export interface Vehicle {
   id: number;
   vehiclePlate: string;
@@ -10,4 +12,5 @@ export interface Vehicle {
   vehiclePurchaseDate: Date;
   vehicleNotes: string;
   vehicleStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
+  drivers: Driver[];
 }
