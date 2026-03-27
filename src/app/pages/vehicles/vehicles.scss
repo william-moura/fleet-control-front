@@ -65,3 +65,18 @@ table {
     padding: 12px 16px;
   }
 }
+
+.mat-column-acoes {
+  width: 150px;       // Largura fixa desejada
+  min-width: 150px;   // Garante que não vai diminuir
+  text-align: center; // Centraliza os ícones
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+
+  // Garante que os botões fiquem lado a lado sem quebrar
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 4px; // Espaçamento entre os botões
+  }
+}

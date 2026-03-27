@@ -33,4 +33,7 @@ export class VehicleService {
   getFuelTypes(): Observable<FuelType[]> {
     return this.http.get<FuelType[]>(`${this.API_URL}/fuel-types`);
   }
+  syncDrivers(vehicleId: number, driversIds: number[]): Observable<void> {
+    return this.http.post<void>(`${this.API_URL}/${vehicleId}/sync-driver`, driversIds);
+  }
 }
