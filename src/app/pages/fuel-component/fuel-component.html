@@ -15,50 +15,34 @@
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" matSort>
   
-        <ng-container matColumnDef="veiculo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Veículo </th>
-          <td mat-cell *matCellDef="let row"> {{row.veiculo}} </td>
+        <ng-container matColumnDef="vehiclePlate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Placa </th>
+          <td mat-cell *matCellDef="let row"> {{row.vehiclePlate}} </td>
         </ng-container>
   
-        <ng-container matColumnDef="vehicle_brand">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Marca </th>
-          <td mat-cell *matCellDef="let row"> {{row.brand}} </td>
-        </ng-container>
-  
-        <ng-container matColumnDef="vehicle_model">
+        <ng-container matColumnDef="vehicleModel">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
           <td mat-cell *matCellDef="let row"> {{row.vehicleModel}} </td>
         </ng-container>
   
-        <ng-container matColumnDef="vehicle_year">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ano </th>
-          <td mat-cell *matCellDef="let row"> {{row.vehicleYear}} </td>
+        <ng-container matColumnDef="fuelSupplyDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Data </th>
+          <td mat-cell *matCellDef="let row"> {{row.fuelSupplyDate}} </td>
         </ng-container>
   
-        <ng-container matColumnDef="vehicle_fuel_type">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Combustível </th>
-          <td mat-cell *matCellDef="let row"> {{row.fuelType}} </td>
+        <ng-container matColumnDef="fuelSupplyQuantity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantidade </th>
+          <td mat-cell *matCellDef="let row"> {{row.fuelSupplyQuantity}} </td>
         </ng-container>
   
-        <ng-container matColumnDef="vehicle_fuel_capacity">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Capacidade de Combustível </th>
-          <td mat-cell *matCellDef="let row"> {{row.vehicleTankCapacity}} Lts</td>
+        <ng-container matColumnDef="fuelSupplyTotalValue">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor Total </th>
+          <td mat-cell *matCellDef="let row"> {{row.fuelSupplyTotalValue}} </td>
         </ng-container>
-        <ng-container matColumnDef="vehicle_current_mileage">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Quilometragem Atual </th>
-            <td mat-cell *matCellDef="let row"> {{row.vehicleCurrentMileage}} </td>
-        </ng-container>
-        <ng-container matColumnDef="vehicle_purchase_date">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Data de Compra </th>
-            <td mat-cell *matCellDef="let row"> {{row.vehiclePurchaseDate}} </td>
-        </ng-container>
-        <ng-container matColumnDef="vehicle_notes">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Notas </th>
-            <td mat-cell *matCellDef="let row"> {{row.vehicleNotes}} </td>
-        </ng-container>
-        <ng-container matColumnDef="vehicle_status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-            <td mat-cell *matCellDef="let row"> {{row.vehicleStatus}} </td>
+  
+        <ng-container matColumnDef="supplierFantasyName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Fornecedor </th>
+          <td mat-cell *matCellDef="let row"> {{row.supplierFantasyName}} </td>
         </ng-container>
         <ng-container matColumnDef="acoes" stickyEnd>
           <th mat-header-cell *matHeaderCellDef> Ações </th>
@@ -68,8 +52,7 @@
             </button>
             <button mat-icon-button color="warn" title="Excluir" (click)="excluir(row)">
               <mat-icon>delete</mat-icon>
-            </button>            
-            
+            </button>
           </td>
         </ng-container>
   

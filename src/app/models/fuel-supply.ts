@@ -7,15 +7,17 @@ export interface FuelSupply {
     vehicleId: number;
     fuelTypeId: number;
     driverId: number;
-    fuelStationId: number;
-    fuelDate: Date;
+    fuelSupplierPrice: number;
+    fuelSupplierDate: Date;
     fuelPrice: number;
-    fuelQuantity: number;
-    fuelTotal: number;
-    fuelProofPayment: string;
-    fuelNotes: string;
+    fuelSupplierQuantity: number;
+    fuelSupplierTotal: number;
+    fuelSupplierInvoiceNumber: string;
+    fuelSupplierNotes: string;
     fuelType: FuelType;
     vehicle: Vehicle;
     driver: Driver;
+    fuelSupplierStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
+    fuelSupplierKilometer: number;
     
 }

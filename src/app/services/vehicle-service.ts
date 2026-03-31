@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Brand } from '../models/brand';
 import { FuelType } from '../models/fuel-type';
 import { environment } from '../../environments/environment';
+import { Driver } from '../models/driver';
 
 @Injectable({
   providedIn: 'root',
@@ -35,5 +36,8 @@ export class VehicleService {
   }
   syncDrivers(vehicleId: number, driversIds: number[]): Observable<void> {
     return this.http.post<void>(`${this.API_URL}/${vehicleId}/sync-driver`, driversIds);
+  }
+  getDriversByVehicleId(vehicleId: number): Observable<Driver[]> {
+    return this.http.get<Driver[]>(`${this.API_URL}/${vehicleId}/drivers`);
   }
 }

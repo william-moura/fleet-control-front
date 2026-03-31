@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>Cadastro de Abastecimento</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Fornecedor</mat-label>
+      <mat-select formControlName="supplierId">
+        <mat-option *ngFor="let supplier of suppliers()" [value]="supplier.id">{{supplier.supplierFantasyName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Veículo</mat-label>
+      <mat-select formControlName="vehicleId" (selectionChange)="getDrivers()">
+        <mat-option *ngFor="let vehicle of vehicles()" [value]="vehicle.id">{{vehicle.vehiclePlate}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Motorista</mat-label>
+      <mat-select formControlName="driverId">
+        @for (driver of drivers(); track driver.id) {
+          <mat-option [value]="driver.id">{{driver.driverName}}</mat-option>
+        }
+    </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Data de Abastecimento</mat-label>        
+        <!-- <input matInput formControlName="vehiclePurchaseDate" placeholder="Ex: 01/01/2026"> -->
+        <input matInput [matDatepicker]="picker" formControlName="fuelSupplierDate">
+        <mat-hint>/DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de Combustível</mat-label>
+      <mat-select formControlName="fuelTypeId">
+        <mat-option *ngFor="let fuelType of fuelTypes()" [value]="fuelType.id">{{fuelType.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Kilometragem</mat-label>
+      <input matInput formControlName="fuelSupplierKilometer" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Quantidade</mat-label>
+      <input matInput formControlName="fuelSupplierQuantity" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Valor Total</mat-label>
+      <input matInput formControlName="fuelSupplierTotalValue" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Valor por Litro</mat-label>
+      <input matInput formControlName="fuelSupplierPricePerLiter" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Número do Comprovante</mat-label>
+      <input matInput formControlName="fuelSupplierInvoice" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Observações</mat-label>
+      <input matInput formControlName="fuelSupplierNotes" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    Salvar Abastecimento
+  </button>
+</mat-dialog-actions>

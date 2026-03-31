@@ -19,6 +19,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FormAddFuelSupplier } from '../form-add-fuel-supplier/form-add-fuel-supplier';
 
 
 @Component({
@@ -35,11 +36,10 @@ export class FuelComponent implements OnInit{
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   isLoading = signal(false);
-  displayedColumns: string[] = ['veiculo', 'data', 'litros', 'valor_total', 'media', 'acoes'];
+  displayedColumns: string[] = ['vehiclePlate', 'vehicleModel','fuelSupplyDate', 'fuelSupplyQuantity', 'fuelSupplyTotalValue', 'supplierFantasyName', 'acoes'];
   dataSource = new MatTableDataSource<FuelSupply>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  // private dialogRef = inject(MatDialogRef<AbastecimentoFormComponent>);
+  @ViewChild(MatSort) sort!: MatSort;  
   fuelSupplies = signal<FuelSupply[]>([]);
   ngOnInit() {
     // Cálculo Automático: Valor Total = Litros * Valor Unitário
@@ -50,6 +50,7 @@ export class FuelComponent implements OnInit{
       
     //   this.form.get('valorTotal')?.setValue(total.toFixed(2), { emitEvent: false });
     // });
+    this.getFuelSupplies();
   }
 
   salvar() {
@@ -59,6 +60,24 @@ export class FuelComponent implements OnInit{
     // }
   }
   abrirModalCadastro() {
+    const dialogRef = this.dialog.open(FormAddFuelSupplier, {
+      width: '500px',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.fuelSupplyService.createFuelSupply(result).subscribe({
+          next: (fuelSupply) => {
+            this.snackBar.open('Abastecimento cadastrado com sucesso', 'Fechar', { duration: 3000 });
+            this.getFuelSupplies();
+          },
+          error: (error) => {
+            console.error('Erro ao cadastrar abastecimento:', error);
+            this.snackBar.open('Erro ao cadastrar abastecimento', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
+    });
     // this.dialog.open(FuelSupplyFormComponent, {
     //   width: '500px',
     // });
@@ -80,5 +99,18 @@ export class FuelComponent implements OnInit{
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  getFuelSupplies() {
+    this.isLoading.set(true);
+    this.fuelSupplyService.getAllFuelSupplies().subscribe({
+      next: (fuelSupplies) => {
+        this.dataSource.data = fuelSupplies;
+        this.isLoading.set(false);
+      },
+      error: (error) => {
+        console.error('Erro ao buscar abastecimentos:', error);
+        this.isLoading.set(false);
+      }
+    });
   }
 }

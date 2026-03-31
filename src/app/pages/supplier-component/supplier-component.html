@@ -1,0 +1,76 @@
+<div class="container-pagina">
+    <div class="header-acoes">
+      <h2>Gestão de Fornecedores</h2>
+      <button mat-raised-button color="primary" (click)="openAddSupplierDialog()">
+        <mat-icon>add</mat-icon> Novo Fornecedor
+      </button>
+    </div>
+  
+    <mat-form-field appearance="outline" class="filtro-full-width">
+      <mat-label>Filtrar fornecedores</mat-label>
+      <input matInput (keyup)="aplicarFiltro($event)" placeholder="Ex. Nome ou CNH" #input>
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" matSort>
+  
+        <ng-container matColumnDef="supplierFantasyName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome Fantasia </th>
+          <td mat-cell *matCellDef="let row"> {{row.supplierFantasyName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="supplierCorporateName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Razão Social </th>
+          <td mat-cell *matCellDef="let row"> {{row.supplierCorporateName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="supplierCnpj">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> CNPJ </th>
+          <td mat-cell *matCellDef="let row"> {{row.supplierCnpj}} </td>
+        </ng-container>
+        <ng-container matColumnDef="supplierAddress">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Endereço </th>
+          <td mat-cell *matCellDef="let row"> {{row.supplierAddress}} </td>
+        </ng-container>
+        <ng-container matColumnDef="supplierCity">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cidade </th>
+          <td mat-cell *matCellDef="let row"> {{row.supplierCity}} </td>
+        </ng-container>
+        <ng-container matColumnDef="supplierState">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+          <td mat-cell *matCellDef="let row"> {{row.supplierState}} </td>
+        </ng-container>
+        <ng-container matColumnDef="supplierStatus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <td mat-cell *matCellDef="let row">
+            <span class="badge" [class.ativo]="row.supplierStatus === '1' || row.supplierStatus === 1" [class.inativo]="row.supplierStatus === '0' || row.supplierStatus === 0">
+              @if (row.supplierStatus === '1' || row.supplierStatus === 1) {
+                Ativo
+              } @else if (row.supplierStatus === '0' || row.supplierStatus === 0) {
+                Inativo
+              }
+            </span>
+        </ng-container>
+  
+        <ng-container matColumnDef="acoes" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button color="accent" title="Editar" (click)="updateSupplier(row)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" title="Excluir" (click)="deleteSupplier(row)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="5">Nenhum fornecedor encontrado para o filtro: "{{input.value}}"</td>
+        </tr>
+      </table>
+  
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" aria-label="Selecionar página"></mat-paginator>
+    </div>
+  </div>
