@@ -8,16 +8,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
-import { FuelSupplyService } from '../../services/fuel-supply-service';
 import { SupplierService } from '../../services/supplier-service';
 import { Supplier } from '../../models/supplier';
 import { VehicleService } from '../../services/vehicle-service';
 import { Vehicle } from '../../models/vehicle';
-import { DriverService } from '../../services/driver-service';
 import { Driver } from '../../models/driver';
 import { FuelType } from '../../models/fuel-type';
 import { MY_DATE_FORMATS } from '../../app.config';
-import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-form-add-fuel-supplier',
@@ -26,19 +24,16 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
   templateUrl: './form-add-fuel-supplier.html',
   styleUrl: './form-add-fuel-supplier.scss',
   providers:[
-    provideNativeDateAdapter(MY_DATE_FORMATS), 
-    // { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }, 
+    provideNativeDateAdapter(MY_DATE_FORMATS),     
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
 })
 export class FormAddFuelSupplier {
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<FormAddFuelSupplier>);
-  private fuelSupplyService = inject(FuelSupplyService);
   public data = inject(MAT_DIALOG_DATA);
   private supplierService = inject(SupplierService);
   private vehicleService = inject(VehicleService);
-  private driverService = inject(DriverService);
   
   drivers = signal<Driver[]>([]);
   vehicles = signal<Vehicle[]>([]);
