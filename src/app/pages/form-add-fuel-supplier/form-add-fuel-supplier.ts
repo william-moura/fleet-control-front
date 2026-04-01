@@ -17,9 +17,12 @@ import { DriverService } from '../../services/driver-service';
 import { Driver } from '../../models/driver';
 import { FuelType } from '../../models/fuel-type';
 import { MY_DATE_FORMATS } from '../../app.config';
+import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+
 @Component({
   selector: 'app-form-add-fuel-supplier',
-  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
+  imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, 
+    MatDatepickerModule, MatNativeDateModule, NgxMaskDirective],
   templateUrl: './form-add-fuel-supplier.html',
   styleUrl: './form-add-fuel-supplier.scss',
   providers:[
@@ -45,17 +48,16 @@ export class FormAddFuelSupplier {
   constructor() {
     this.form = this.fb.group({
       fuelSupplierDate: ['', Validators.required],
-      fuelSupplierQuantity: ['', Validators.required],
-      fuelSupplierTotalValue: ['', Validators.required],
+      fuelSupplierQuantity: ['', [Validators.required, Validators.min(0)]],
+      fuelSupplierTotal: ['', [Validators.required, Validators.min(0)]],
       supplierId: ['', Validators.required],
       vehicleId: ['', Validators.required],
       fuelTypeId: ['', Validators.required],
       driverId: ['', Validators.required],
-      fuelSupplierKilometer: ['', Validators.required],
-      fuelSupplierPrice: ['', Validators.required],
-      fuelSupplierInvoice: ['', Validators.required],
-      fuelSupplierNotes: ['', Validators.required],
-      fuelSupplierPricePerLiter: ['', Validators.required],
+      fuelSupplierKilometers: ['', [Validators.required, Validators.min(0)]],
+      fuelSupplierPrice: ['', [Validators.required, Validators.min(0)]],
+      fuelSupplierInvoiceNumber: ['', Validators.required],
+      fuelSupplierNotes: [''],
     });
   }
   ngOnInit() {
@@ -66,7 +68,10 @@ export class FormAddFuelSupplier {
     this.getSuppliers();
     this.getVehicles();
     this.getFuelTypes();
-    // this.getDrivers();
+    this.getDrivers();
+    this.form.valueChanges.subscribe(() => {
+      this.calculateTotal();
+    });
   }
   onSubmit() {
     if (this.form.valid) {
@@ -87,13 +92,21 @@ export class FormAddFuelSupplier {
     });
   }
   getDrivers() {
-    this.vehicleService.getDriversByVehicleId(this.form.value.vehicleId).subscribe((drivers) => {
-      this.drivers.set(drivers);
-    });
+    if (this.form.value.vehicleId) {
+      this.vehicleService.getDriversByVehicleId(this.form.value.vehicleId).subscribe((drivers) => {
+        this.drivers.set(drivers);
+      });
+    }
   }
   getFuelTypes() {
     this.vehicleService.getFuelTypes().subscribe((fuelTypes) => {
       this.fuelTypes.set(fuelTypes);
     });
+  }
+  calculateTotal() {
+    const quantity = Number(this.form.value.fuelSupplierQuantity);
+    const price = Number(this.form.value.fuelSupplierPrice);
+    const total = quantity * price;
+    this.form.get('fuelSupplierTotal')?.setValue(total.toFixed(2), { emitEvent: false });    
   }
 }

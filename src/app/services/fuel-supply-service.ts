@@ -9,7 +9,7 @@ import { FuelSupply } from '../models/fuel-supply';
 })
 export class FuelSupplyService {
   private http = inject(HttpClient);
-  private readonly API_URL = environment.apiUrl + '/fuel-supplies';
+  private readonly API_URL = environment.apiUrl + '/fuel-suppliers';
   getAllFuelSupplies(): Observable<FuelSupply[]> {
     return this.http.get<FuelSupply[]>(this.API_URL);
   }
@@ -18,5 +18,11 @@ export class FuelSupplyService {
   }
   createFuelSupply(fuelSupply: FuelSupply): Observable<FuelSupply> {
     return this.http.post<FuelSupply>(this.API_URL, fuelSupply);
+  }
+  updateFuelSupply(id: number, fuelSupply: FuelSupply): Observable<FuelSupply> {
+    return this.http.put<FuelSupply>(`${this.API_URL}/${id}`, fuelSupply);
+  }
+  deleteFuelSupply(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${id}`);
   }
 }

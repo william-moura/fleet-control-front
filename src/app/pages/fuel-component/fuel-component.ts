@@ -20,6 +20,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormAddFuelSupplier } from '../form-add-fuel-supplier/form-add-fuel-supplier';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 
 
 @Component({
@@ -36,28 +37,14 @@ export class FuelComponent implements OnInit{
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   isLoading = signal(false);
-  displayedColumns: string[] = ['vehiclePlate', 'vehicleModel','fuelSupplyDate', 'fuelSupplyQuantity', 'fuelSupplyTotalValue', 'supplierFantasyName', 'acoes'];
+  displayedColumns: string[] = ['vehiclePlate', 'vehicleModel', 'driverName', 'supplierFantasyName','fuelSupplyDate', 
+    'fuelSupplyQuantity', 'fuelSupplyTotalValue', 'acoes'];
   dataSource = new MatTableDataSource<FuelSupply>([]);
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;  
   fuelSupplies = signal<FuelSupply[]>([]);
   ngOnInit() {
-    // Cálculo Automático: Valor Total = Litros * Valor Unitário
-    // this.form.valueChanges.subscribe(() => {
-    //   const litros = this.form.get('litros')?.value || 0;
-    //   const valorUnit = this.form.get('valorLitro')?.value || 0;
-    //   const total = litros * valorUnit;
-      
-    //   this.form.get('valorTotal')?.setValue(total.toFixed(2), { emitEvent: false });
-    // });
     this.getFuelSupplies();
-  }
-
-  salvar() {
-    // if (this.form.valid) {
-    //   // Enviamos o RawValue para incluir o campo 'valorTotal' que está disabled
-    //   this.dialogRef.close(this.form.getRawValue());
-    // }
   }
   abrirModalCadastro() {
     const dialogRef = this.dialog.open(FormAddFuelSupplier, {
@@ -82,19 +69,48 @@ export class FuelComponent implements OnInit{
     //   width: '500px',
     // });
   }
-  excluir(id: number) {
-    // this.fuelSupplyService.deleteFuelSupply(id).subscribe({
-    //   next: () => {
-    //     this.snackBar.open('Abastecimento excluído com sucesso', 'Fechar', { duration: 3000 });
-    //     this.getFuelSupplies();
-    //   },
-    // });
+  deleteFuelSupply(id: number) {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '400px',
+      data: {
+        title: 'Excluir Abastecimento',
+        message: 'Tem certeza que deseja excluir este abastecimento?',
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.fuelSupplyService.deleteFuelSupply(id).subscribe({
+          next: () => {
+            this.snackBar.open('Abastecimento excluído com sucesso', 'Fechar', { duration: 3000 });
+            this.getFuelSupplies();
+          },
+          error: (error) => {
+            console.error('Erro ao excluir abastecimento:', error);
+            this.snackBar.open('Erro ao excluir abastecimento', 'Fechar', { duration: 3000 });
+          }        
+        });
+      }
+    });
   }
   updateFuelSupply(fuelSupply: FuelSupply) {
-    // this.dialog.open(VehicleFormComponent, {
-    //   width: '500px',
-    //   data: vehicle,
-    // });
+    const dialogRef = this.dialog.open(FormAddFuelSupplier, {
+      width: '500px',
+      data: fuelSupply,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.fuelSupplyService.updateFuelSupply(fuelSupply.id, result).subscribe({
+          next: (fuelSupply) => {
+            this.snackBar.open('Abastecimento atualizado com sucesso', 'Fechar', { duration: 3000 });
+            this.getFuelSupplies();
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar abastecimento:', error);
+            this.snackBar.open('Erro ao atualizar abastecimento', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
+    });
   }
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
