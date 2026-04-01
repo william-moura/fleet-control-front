@@ -2,7 +2,6 @@ import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { firstValueFrom } from 'rxjs';
 import { FuelSupplyService } from '../../services//fuel-supply-service';
 import { FuelSupply } from '../../models/fuel-supply';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -65,9 +64,6 @@ export class FuelComponent implements OnInit{
         });
       }
     });
-    // this.dialog.open(FuelSupplyFormComponent, {
-    //   width: '500px',
-    // });
   }
   deleteFuelSupply(id: number) {
     const dialogRef = this.dialog.open(ConfirmDialog, {
