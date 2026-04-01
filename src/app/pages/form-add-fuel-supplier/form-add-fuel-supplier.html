@@ -1,0 +1,104 @@
+<h2 mat-dialog-title>Cadastro de Abastecimento</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Fornecedor</mat-label>
+      <mat-select formControlName="supplierId">
+        <mat-option [value]="null">Selecione um fornecedor</mat-option>
+        @for (supplier of suppliers(); track supplier.id) {
+          <mat-option [value]="supplier.id">{{supplier.supplierFantasyName}}</mat-option>
+        }        
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Veículo</mat-label>
+      <mat-select formControlName="vehicleId" (selectionChange)="getDrivers()">
+        <mat-option [value]="null">Selecione um veículo</mat-option>
+        @for (vehicle of vehicles(); track vehicle.id) {
+          <mat-option [value]="vehicle.id">{{vehicle.vehiclePlate}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Motorista</mat-label>
+      <mat-select formControlName="driverId">
+        <mat-option [value]="null">Selecione um motorista</mat-option>
+        @for (driver of drivers(); track driver.id) {
+          <mat-option [value]="driver.id">{{driver.driverName}}</mat-option>
+        }
+    </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Data de Abastecimento</mat-label>        
+        <!-- <input matInput formControlName="vehiclePurchaseDate" placeholder="Ex: 01/01/2026"> -->
+        <input matInput [matDatepicker]="picker" formControlName="fuelSupplierDate">
+        <mat-hint>/DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de Combustível</mat-label>
+      <mat-select formControlName="fuelTypeId">
+        <mat-option [value]="null">Selecione um tipo de combustível</mat-option>
+        @for (fuelType of fuelTypes(); track fuelType.id) {
+          <mat-option [value]="fuelType.id">{{fuelType.name}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Kilometragem</mat-label>
+      <input matInput formControlName="fuelSupplierKilometers"
+        mask="separator.2" 
+        placeholder="1.000,00"             
+        thousandSeparator="." 
+        decimalMarker=","
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Quantidade</mat-label>
+      <input matInput formControlName="fuelSupplierQuantity"
+        mask="separator.2" 
+        placeholder="10,00"        
+        decimalMarker=","
+        (change)="calculateTotal()"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Valor por Litro</mat-label>
+      <input matInput formControlName="fuelSupplierPrice" 
+        mask="separator.2" 
+        placeholder="Ex: 10,00" 
+        prefix="R$" 
+        thousandSeparator="." 
+        decimalMarker=","
+        decimalSeparator=","        
+        (change)="calculateTotal()"
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Valor Total</mat-label>
+      <input matInput formControlName="fuelSupplierTotal"
+        mask="separator.2" 
+        placeholder="Ex: 10,00" 
+        prefix="R$" 
+        thousandSeparator="." 
+        decimalMarker=","
+      
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Número do Comprovante</mat-label>
+      <input matInput formControlName="fuelSupplierInvoiceNumber" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Observações</mat-label>
+      <input matInput formControlName="fuelSupplierNotes" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    Salvar Abastecimento
+  </button>
+</mat-dialog-actions>

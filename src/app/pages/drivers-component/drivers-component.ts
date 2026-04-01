@@ -1,4 +1,4 @@
-import { Component, signal, viewChild, AfterViewInit, inject } from '@angular/core';
+import { Component, viewChild, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';

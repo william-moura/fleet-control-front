@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>Cadastro de Fornecedor</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome Fantasia</mat-label>
+      <input matInput formControlName="supplierFantasyName" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Razão Social</mat-label>
+      <input matInput formControlName="supplierCorporateName" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>CNPJ</mat-label>
+      <input matInput formControlName="supplierCnpj" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Endereço</mat-label>
+      <input matInput formControlName="supplierAddress" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Cidade</mat-label>
+        <input matInput formControlName="supplierCity" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Estado</mat-label>
+        <input matInput formControlName="supplierState" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>CEP</mat-label>
+        <input matInput formControlName="supplierZipCode" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Telefone</mat-label>
+        <input matInput formControlName="supplierPhone" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="supplierEmail" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="supplierStatus">
+          <mat-option value="1">Ativo</mat-option>
+          <mat-option value="0">Inativo</mat-option>
+        </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-button (click)="onSubmit()">Salvar</button>
+</mat-dialog-actions>

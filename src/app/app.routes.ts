@@ -8,6 +8,7 @@ import { FuelComponent } from './pages/fuel-component/fuel-component';
 import { ReportsComponent } from './pages/reports-component/reports-component';
 import { LoginComponent } from './pages/login-component/login-component';
 import { authGuard } from './auth-guard';
+import { SupplierComponent } from './pages/supplier-component/supplier-component';
 
 export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard' }, canActivate: [authGuard] },
@@ -17,5 +18,6 @@ export const routes: Routes = [
     { path: 'maintenance', component: MaintenanceComponent, data: { icon: 'build', name: 'Manutenção' }, canActivate: [authGuard] },
     { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' }, canActivate: [authGuard] },
     { path: 'reports', component: ReportsComponent, data: { icon: 'report', name: 'Relatórios' }, canActivate: [authGuard] },
+    { path: 'supplier', component: SupplierComponent, data: { icon: 'local_shipping', name: 'Fornecedores' }, canActivate: [authGuard] },
     { path: 'login', component: LoginComponent },    
 ];
