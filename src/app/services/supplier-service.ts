@@ -3,6 +3,7 @@ import { Supplier } from '../models/supplier';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
+import { SupplierType } from '../models/supplier-type';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,8 @@ import { Observable } from 'rxjs';
 export class SupplierService {
   private http = inject(HttpClient);
   private readonly API_URL = environment.apiUrl + '/suppliers';
-  getAllSuppliers(): Observable<Supplier[]> {
-    return this.http.get<Supplier[]>(this.API_URL);
+  getAllSuppliers(supplierType: SupplierType = SupplierType.GAS_STATION): Observable<Supplier[]> {
+    return this.http.get<Supplier[]>(`${this.API_URL}?supplierType=${supplierType}`);
   }
   getSupplierById(id: number): Observable<Supplier> {
     return this.http.get<Supplier>(`${this.API_URL}/${id}`);

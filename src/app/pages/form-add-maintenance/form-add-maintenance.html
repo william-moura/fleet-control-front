@@ -1,0 +1,83 @@
+<h2 mat-dialog-title>Cadastro de Manutenção</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Fornecedor</mat-label>
+      <mat-select formControlName="supplierId">
+        <mat-option [value]="null">Selecione um fornecedor</mat-option>
+        @for (supplier of suppliers(); track supplier.id) {
+          <mat-option [value]="supplier.id">{{supplier.supplierFantasyName}}</mat-option>
+        }        
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Veículo</mat-label>
+      <mat-select formControlName="vehicleId" >
+        <mat-option [value]="null">Selecione um veículo</mat-option>
+        @for (vehicle of vehicles(); track vehicle.id) {
+          <mat-option [value]="vehicle.id">{{vehicle.vehicleModel}} - {{vehicle.vehiclePlate}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Serviços Realizados</mat-label>
+      
+      <mat-select formControlName="services" multiple>
+        
+        <mat-select-trigger>
+          {{ form.get('services')?.value?.[0]?.maintenance_control_service_name || '' }}
+          @if ((form.get('services')?.value?.length || 0) > 1) {
+            <span class="exemplo-obs">
+              (+{{ (form.get('services')?.value?.length || 0) - 1 }} {{ form.get('services')?.value?.length === 2 ? 'outro' : 'outros' }})
+            </span>
+          }
+        </mat-select-trigger>
+    
+        @for (service of services(); track service.id) {
+          <mat-option [value]="service.id">{{ service.maintenance_control_service_name }}</mat-option>
+        }
+    
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Data da Manutenção</mat-label>        
+        <!-- <input matInput formControlName="vehiclePurchaseDate" placeholder="Ex: 01/01/2026"> -->
+        <input matInput [matDatepicker]="picker" formControlName="maintenanceDate">
+        <mat-hint>/DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Valor Total</mat-label>
+      <input matInput formControlName="maintenanceCost" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Data da Próxima Manutenção</mat-label>
+      <input matInput [matDatepicker]="picker2" formControlName="nextMaintenanceDate" />
+      <mat-hint>/DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker2" ></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Kilometragem</mat-label>
+      <input matInput formControlName="maintenanceKilometers" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Previsão de Termino</mat-label>
+      <input matInput [matDatepicker]="picker3" formControlName="previsionDateFinish" />
+      <mat-hint>/DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker3" ></mat-datepicker-toggle>
+      <mat-datepicker #picker3></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Observações</mat-label>
+      <input matInput formControlName="maintenanceNotes" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    Salvar Manutenção
+  </button>
+</mat-dialog-actions>
