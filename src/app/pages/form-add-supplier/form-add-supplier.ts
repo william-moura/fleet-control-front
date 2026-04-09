@@ -11,6 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { provideNativeDateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MY_DATE_FORMATS } from '../../app.config';
 import { SupplierService } from '../../services/supplier-service';
+import { SupplierType } from '../../models/supplier-type';
 @Component({
   selector: 'app-form-add-supplier',
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, 
@@ -41,6 +42,13 @@ export class FormAddSupplier {
       supplierPhone: ['', Validators.required],
       supplierEmail: ['', Validators.required],
       supplierStatus: ['', Validators.required],
+      supplierType: ['', Validators.required],
+    }, {
+      validator: [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(2),
+      ]
     });
   }
   ngOnInit() {
@@ -51,6 +59,8 @@ export class FormAddSupplier {
   }
   onSubmit() {
     if (this.form.valid) {
+      console.log(this.form.value,'supplierType');
+      this.form.value.supplierType = Number(this.form.value.supplierType);
       this.dialogRef.close(this.form.value);
     }
   }

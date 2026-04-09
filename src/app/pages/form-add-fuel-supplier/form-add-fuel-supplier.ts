@@ -16,6 +16,7 @@ import { Driver } from '../../models/driver';
 import { FuelType } from '../../models/fuel-type';
 import { MY_DATE_FORMATS } from '../../app.config';
 import { NgxMaskDirective } from 'ngx-mask';
+import { SupplierType } from '../../models/supplier-type';
 
 @Component({
   selector: 'app-form-add-fuel-supplier',
@@ -77,7 +78,7 @@ export class FormAddFuelSupplier {
     this.dialogRef.close();
   }
   getSuppliers() {
-    this.supplierService.getAllSuppliers().subscribe((suppliers) => {
+    this.supplierService.getAllSuppliers(SupplierType.GAS_STATION).subscribe((suppliers) => {
       this.suppliers.set(suppliers);
     });
   }
