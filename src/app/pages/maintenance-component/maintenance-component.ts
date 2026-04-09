@@ -18,6 +18,7 @@ import { SupplierService } from '../../services/supplier-service';
 import { FormAddSupplier } from '../form-add-supplier/form-add-supplier';
 import { Maintenance } from '../../models/maintenance';
 import { FormAddMaintenance } from '../form-add-maintenance/form-add-maintenance';
+import { FormAddMaintenanceService } from '../form-add-maintenance-service/form-add-maintenance-service';
 
 @Component({
   selector: 'app-maintenance-component',
@@ -109,5 +110,19 @@ export class MaintenanceComponent {
         this.getAllMaintenances();
       });
     }
+  }
+  async openAddMaintenanceServiceDialog() {
+    const dialogRef = this.dialog.open(FormAddMaintenanceService, {
+      width: '600px',
+      disableClose: true,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.maintenanceService.createMaintenanceService(result).subscribe(() => {
+          this.snackBar.open('Serviço de manutenção cadastrado com sucesso', 'Fechar', { duration: 3000 });
+          this.getAllMaintenances();
+        });
+      }
+    });
   }
 }

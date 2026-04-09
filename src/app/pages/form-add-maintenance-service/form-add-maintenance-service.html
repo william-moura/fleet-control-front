@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Cadastro de Serviço de Manutenção</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome do Serviço</mat-label>
+      <input matInput formControlName="maintenanceServiceName" placeholder="Ex: Troca de Óleo"/>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    Salvar Serviço de Manutenção
+  </button>
+</mat-dialog-actions>
