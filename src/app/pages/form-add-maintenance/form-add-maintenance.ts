@@ -18,11 +18,12 @@ import { Vehicle } from '../../models/vehicle';
 import { SupplierType } from '../../models/supplier-type';
 import { MaintenanceTypeService } from '../../services/maintenance-type-service';
 import { MaintenanceServiceModel } from '../../models/maintenance-service-model';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-form-add-maintenance',
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, 
-    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, NgxMaskDirective],
   templateUrl: './form-add-maintenance.html',
   styleUrl: './form-add-maintenance.scss',
 })
@@ -43,9 +44,9 @@ export class FormAddMaintenance {
       maintenanceDate: ['', Validators.required],
       services: ['', Validators.required],
       maintenanceCost: ['', Validators.required],
-      nextMaintenanceDate: ['', Validators.required],
+      maintenanceNextDate: ['', Validators.required],
       maintenanceKilometers: ['', Validators.required],
-      previsionDateFinish: ['', Validators.required],
+      maintenancePreviousDateFinished: ['', Validators.required],
       maintenanceNotes: [''],
       vehicleId: ['', Validators.required],
       supplierId: ['', Validators.required],
@@ -54,15 +55,17 @@ export class FormAddMaintenance {
 
   ngOnInit() {
     if (this.data) {
+      this.data.services = this.data.services.map((service: MaintenanceServiceModel) => service.id);
       const dataForm = { ...this.data };
+      console.log(dataForm,'dataForm');
       this.form.patchValue(dataForm);
     }
     this.getSuppliers();
     this.getVehicles();
-    this.getMaintenanceTypes();
+    this.getMaintenanceTypes();    
   }
   onSubmit() {
-    if (this.form.valid) {
+    if (this.form.valid) {      
       this.dialogRef.close(this.form.value);
     }
   }

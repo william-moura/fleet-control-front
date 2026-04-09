@@ -38,6 +38,7 @@
         }
     
       </mat-select>
+      <!-- <mat-hint>Você pode selecionar vários serviços para esta manutenção</mat-hint> -->
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data da Manutenção</mat-label>        
@@ -49,22 +50,33 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Valor Total</mat-label>
-      <input matInput formControlName="maintenanceCost" />
+      <input matInput formControlName="maintenanceCost" 
+      mask="separator.2" 
+      placeholder="Ex: 10,00" 
+      prefix="R$" 
+      thousandSeparator="." 
+      decimalMarker="," 
+      decimalSeparator="," />
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Data da Próxima Manutenção</mat-label>
-      <input matInput [matDatepicker]="picker2" formControlName="nextMaintenanceDate" />
+      <input matInput [matDatepicker]="picker2" formControlName="maintenanceNextDate" />
       <mat-hint>/DD/MM/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="picker2" ></mat-datepicker-toggle>
       <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Kilometragem</mat-label>
-      <input matInput formControlName="maintenanceKilometers" />
+      <input matInput formControlName="maintenanceKilometers"
+       mask="separator.2" 
+       placeholder="Ex: 10,00" 
+       thousandSeparator="." 
+       decimalMarker="," 
+       decimalSeparator="," />
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Previsão de Termino</mat-label>
-      <input matInput [matDatepicker]="picker3" formControlName="previsionDateFinish" />
+      <input matInput [matDatepicker]="picker3" formControlName="maintenancePreviousDateFinished" />
       <mat-hint>/DD/MM/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="picker3" ></mat-datepicker-toggle>
       <mat-datepicker #picker3></mat-datepicker>
