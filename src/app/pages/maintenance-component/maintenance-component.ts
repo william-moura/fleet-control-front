@@ -98,6 +98,7 @@ export class MaintenanceComponent {
     });
   }
   async updateMaintenance(maintenance: Maintenance) {
+    console.log(maintenance,'maintenance');
     const result = await firstValueFrom(this.dialog.open(FormAddMaintenance, {
       width: '600px',
       data: maintenance,
