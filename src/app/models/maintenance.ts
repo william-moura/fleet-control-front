@@ -10,4 +10,8 @@ export interface Maintenance {
   maintenanceStatus: string;
   services: MaintenanceServiceModel[];
   vehicle: Vehicle;
+  servicesFormatted?: string;
+  maintenanceNextDate?: Date;
+  maintenanceKilometers?: number;
+  previsionDateFinish?: Date;
 }

@@ -11,8 +11,8 @@ import { SupplierType } from '../models/supplier-type';
 export class SupplierService {
   private http = inject(HttpClient);
   private readonly API_URL = environment.apiUrl + '/suppliers';
-  getAllSuppliers(supplierType: SupplierType = SupplierType.GAS_STATION): Observable<Supplier[]> {
-    return this.http.get<Supplier[]>(`${this.API_URL}?supplierType=${supplierType}`);
+  getAllSuppliers(supplierType?: SupplierType): Observable<Supplier[]> {
+    return this.http.get<Supplier[]>(`${this.API_URL}${supplierType ? `?supplierType=${supplierType}` : ''}`);
   }
   getSupplierById(id: number): Observable<Supplier> {
     return this.http.get<Supplier>(`${this.API_URL}/${id}`);

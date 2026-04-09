@@ -62,6 +62,10 @@ export class MaintenanceComponent {
   }
   getAllMaintenances() {
     this.maintenanceService.getAllMaintenances().subscribe((maintenances) => {
+      maintenances.forEach(maintenance => {
+        maintenance.servicesFormatted = maintenance.services?.
+        map(service => service.maintenance_control_service_name).join(', ');
+      });
       this.dataSource.data = maintenances;
     });
   }
