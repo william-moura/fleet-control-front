@@ -1,3 +1,6 @@
+import { Permission } from "./permission";
+import { Role } from "./role";
+
 export interface AuthResponse {
     token: string;
     user: {
@@ -5,6 +8,8 @@ export interface AuthResponse {
         nome: string;
         email: string;        
     };
+    roles: Role[];
+    permissions: Permission[];
 }
 
 export interface LoginCredentials {

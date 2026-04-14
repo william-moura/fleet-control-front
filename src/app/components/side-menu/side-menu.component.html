@@ -10,7 +10,7 @@
     </div>
   
     <ul class="nav-list">
-      @for (route of routes; track route.path) {
+      @for (route of filteredRoutes; track route.path) {
         <li class="nav-item" routerLinkActive="active">
           <a routerLink="{{ route.path }}">
             <span class="material-icons">{{ route.data?.['icon'] }}</span>

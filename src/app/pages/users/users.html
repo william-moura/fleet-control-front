@@ -15,30 +15,18 @@
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" matSort>
   
-        <ng-container matColumnDef="userName">
+        <ng-container matColumnDef="name">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
-          <td mat-cell *matCellDef="let row"> {{row.userName}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.name}} </td>
         </ng-container>
-        <ng-container matColumnDef="userEmail">
+        <ng-container matColumnDef="email">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-          <td mat-cell *matCellDef="let row"> {{row.userEmail}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.email}} </td>
         </ng-container>
-        <ng-container matColumnDef="userRole">
+        <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cargo </th>
-          <td mat-cell *matCellDef="let row"> {{row.userRole}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.role.name}} </td>
         </ng-container>
-        <ng-container matColumnDef="userStatus">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-          <td mat-cell *matCellDef="let row">
-            <span class="badge" [class.ativo]="row.userStatus === '1' || row.userStatus === 1" [class.inativo]="row.userStatus === '0' || row.userStatus === 0">
-              @if (row.userStatus === '1' || row.userStatus === 1) {
-                Ativo
-              } @else if (row.userStatus === '0' || row.userStatus === 0) {
-                Inativo
-              }
-            </span>
-        </ng-container>
-  
         <ng-container matColumnDef="acoes" stickyEnd>
           <th mat-header-cell *matHeaderCellDef> Ações </th>
           <td mat-cell *matCellDef="let row">

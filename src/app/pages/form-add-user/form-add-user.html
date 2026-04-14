@@ -1,1 +1,35 @@
-<p>form-add-user works!</p>
+<h2 mat-dialog-title>Cadastro de Usuário</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Nome do Usuário</mat-label>
+      <input matInput formControlName="name" placeholder="Ex: João da Silva"/>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" placeholder="Ex: joao@gmail.com"/>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Senha</mat-label>
+      <input matInput formControlName="password" type="password" placeholder="********"/>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Confirmar Senha</mat-label>
+      <input matInput formControlName="confirmPassword" type="password" placeholder="********"/>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Cargo</mat-label>
+      <mat-select formControlName="role_id">
+        @for (role of roles(); track role.id) {
+          <mat-option [value]="role.id">{{role.name}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    Salvar Usuário
+  </button>
+</mat-dialog-actions>

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { routes } from '../../app.routes';
-import { RouterModule } from '@angular/router';
+import { Route, RouterModule } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 
@@ -17,6 +17,7 @@ export class SideMenuComponent {
   isCollapsed = false;
   protected readonly routes = routes;
   protected readonly routerLink = RouterLink;
+  protected filteredRoutes: Route[] = [];
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
@@ -24,5 +25,15 @@ export class SideMenuComponent {
     if (confirm('Deseja realmente sair do sistema?')) {
       this.authService.logout();
     }
+  }
+  ngOnInit(): void {
+    this.filteredRoutes = this.routes.filter(item => {
+      console.log(item.data?.['permission'], 'hihi');
+      if (item.data?.['permission']) {
+        console.log('entrou no if');
+        return this.authService.hasPermission(item.data?.['permission']);
+      }
+      return true;
+    });
   }
 }

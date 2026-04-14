@@ -29,13 +29,14 @@ import { UserService } from '../../services/user-service';
   styleUrl: './users.scss',
 })
 export class Users {
-  displayedColumns: string[] = ['userName', 'userEmail', 'userRole', 'userStatus', 'acoes'];
+  displayedColumns: string[] = ['name', 'email', 'role', 'acoes'];
   dataSource = new MatTableDataSource<User>([]);
   paginator = viewChild.required(MatPaginator);
   sort = viewChild.required(MatSort);
   isLoading = signal(true);
   private dialog = inject(MatDialog);
   private userService = inject(UserService);
+  private snackBar = inject(MatSnackBar);
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator();
     this.dataSource.sort = this.sort();
@@ -50,15 +51,66 @@ export class Users {
     this.getUsers();
   }
   openAddUserDialog() {
-    this.dialog.open(FormAddUser, {
-      width: '400px',
+    const dialogRef = this.dialog.open(FormAddUser, {
+      width: '500px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.createUser(result).subscribe({
+          next: (user) => {
+            this.snackBar.open('Usuário cadastrado com sucesso', 'Fechar', { duration: 3000 });
+            this.getUsers();
+          },
+          error: (error) => {
+            console.error('Erro ao cadastrar usuário:', error);
+            this.snackBar.open('Erro ao cadastrar usuário', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
     });
   }
   updateUser(user: User) {
-    console.log(user);
+    const dialogRef = this.dialog.open(FormAddUser, {
+      width: '500px',
+      data: user,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.updateUser(user.id, result).subscribe({
+          next: () => {
+            this.snackBar.open('Usuário atualizado com sucesso', 'Fechar', { duration: 3000 });
+            this.getUsers();
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar usuário:', error);
+            this.snackBar.open('Erro ao atualizar usuário', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
+    });
   }
   deleteUser(user: User) {
-    console.log(user);
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '500px',
+      data: {
+        title: 'Excluir Usuário',
+        message: 'Tem certeza que deseja excluir o usuário?',
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.deleteUser(user.id).subscribe({
+          next: () => {
+            this.snackBar.open('Usuário excluído com sucesso', 'Fechar', { duration: 3000 });
+            this.getUsers();
+          },
+          error: (error) => {
+          console.error('Erro ao excluir usuário:', error);
+          this.snackBar.open('Erro ao excluir usuário', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
+    });
   }
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
