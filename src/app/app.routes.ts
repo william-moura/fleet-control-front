@@ -9,6 +9,7 @@ import { ReportsComponent } from './pages/reports-component/reports-component';
 import { LoginComponent } from './pages/login-component/login-component';
 import { authGuard } from './auth-guard';
 import { SupplierComponent } from './pages/supplier-component/supplier-component';
+import { Users } from './pages/users/users';
 
 export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard' }, canActivate: [authGuard] },
@@ -19,5 +20,6 @@ export const routes: Routes = [
     { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' }, canActivate: [authGuard] },
     { path: 'reports', component: ReportsComponent, data: { icon: 'report', name: 'Relatórios' }, canActivate: [authGuard] },
     { path: 'supplier', component: SupplierComponent, data: { icon: 'local_shipping', name: 'Fornecedores' }, canActivate: [authGuard] },
+    { path: 'users', component: Users, data: { icon: 'groups', name: 'Usuários' }, canActivate: [authGuard] },
     { path: 'login', component: LoginComponent },    
 ];
