@@ -13,8 +13,8 @@ export class AuthService {
   private router = inject(Router);
   private readonly API_URL = environment.apiUrl + '/auth'; // URL do seu Backend
   private isAuthenticatedSignal = signal<boolean>(!!localStorage.getItem('token'));
-  private userPermissions: Permission[] = [];
-  private userRoles: Role[] = [];
+  private userPermissions = signal<string[]>([]);
+  private userRoles = signal<string[]>([]);
   isAuthenticated() {
     return this.isAuthenticatedSignal();
   }
@@ -31,8 +31,9 @@ export class AuthService {
         // 2. Salva os dados do usuário no Signal para uso no menu/sidebar
         this.currentUser.set(res.user);
         this.isAuthenticatedSignal.set(true);
-        this.setUserData(res.roles, res.permissions);
-        
+        if (res.roles && res.permissions) {
+          this.setUserData(res.roles, res.permissions);
+        }
         // 3. Redireciona
         this.router.navigate(['dashboard']);
       }),
@@ -53,19 +54,16 @@ export class AuthService {
     return this.http.get<Role[]>(`${this.API_URL}/roles`);
   }
   setUserData(roles: Role[], permissions: Permission[]) {
-    this.userRoles = roles
-    this.userPermissions = permissions
+    this.userRoles.set(roles.map(role => role.name));
+    this.userPermissions.set(permissions.map(permission => permission.name));
+    localStorage.setItem('permissions', JSON.stringify(this.userPermissions()));
+    localStorage.setItem('roles', JSON.stringify(this.userRoles()));
   }
   hasPermission(permission: string): boolean {
-    this.userPermissions.forEach(p => {
-      console.log(p.name, 'p.name');
-    });
-    console.log(this.userPermissions, 'pwer');
-    return this.userPermissions.some(p => p.name === permission);
-    // return this.userPermissions.includes(permission);
+    return this.userPermissions().includes(permission);
   }
 
   hasRole(role: Role): boolean {
-    return this.userRoles.includes(role);
+    return this.userRoles().includes(role.name);
   }
 }
