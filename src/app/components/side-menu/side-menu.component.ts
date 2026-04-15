@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { routes } from '../../app.routes';
 import { Route, RouterModule } from '@angular/router';
@@ -18,6 +18,16 @@ export class SideMenuComponent {
   protected readonly routes = routes;
   protected readonly routerLink = RouterLink;
   protected filteredRoutes: Route[] = [];
+  menuItems = computed<Route[]>(() => {
+    const userPermissions = this.authService.permissions();
+
+    return this.routes.filter(item => {
+      if (!item.data || !item.data['permission']) {
+        return true;
+      }
+      return userPermissions.includes(item.data['permission']);
+    });
+  });
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }

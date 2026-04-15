@@ -48,8 +48,6 @@ export class AuthService {
         // 2. Salva os dados do usuário no Signal para uso no menu/sidebar
         this.currentUser.set(res.user);
         this.isAuthenticatedSignal.set(true);
-        console.log(res.permissions, 'res.permissions');
-        console.log(res.role, 'res.role');
         if (res.role && res.permissions) {
           this.setUserData(res.role, res.permissions);
         }
@@ -83,7 +81,6 @@ export class AuthService {
   setUserData(roles: Role[], permissions: Permission[]) {
     this.userRoles.set(roles.map(role => role.name));
     this.userPermissions.set(permissions.map(permission => permission.name));
-    console.log(this.userPermissions(), 'userPermissions array setData');
     localStorage.setItem('permissions', JSON.stringify(this.userPermissions()));
     localStorage.setItem('roles', JSON.stringify(this.userRoles()));
   }
