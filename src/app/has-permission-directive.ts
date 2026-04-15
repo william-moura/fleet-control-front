@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, effect, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AuthService } from './services/auth-service';
 import { Permission } from './models/permission';
 
@@ -6,7 +6,12 @@ import { Permission } from './models/permission';
   selector: '[appHasPermissionDirective]'
 })
 export class HasPermissionDirective implements OnInit{
-  @Input() appHasPermission!: Permission;
+  @Input('appHasPermission') set permission(val: string) {
+    effect(() => {
+      const permissions = this.authService.permissions();
+      this.updateView(val, permissions);
+    });
+  }
 
   constructor(
     private templateRef: TemplateRef<any>,
@@ -15,10 +20,17 @@ export class HasPermissionDirective implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    if (this.authService.hasPermission(this.appHasPermission.name)) {
+    // if (this.authService.hasPermission(this.appHasPermission.name)) {
+    //   this.viewContainer.createEmbeddedView(this.templateRef);
+    // } else {
+    //   this.viewContainer.clear();
+    // }
+  }
+
+  private updateView(requiredPermission: string, currentPermissions: string[]) {
+    this.viewContainer.clear();
+    if (currentPermissions.includes(requiredPermission)) {
       this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
     }
   }
 }

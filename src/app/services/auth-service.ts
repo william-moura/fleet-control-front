@@ -15,6 +15,23 @@ export class AuthService {
   private isAuthenticatedSignal = signal<boolean>(!!localStorage.getItem('token'));
   private userPermissions = signal<string[]>([]);
   private userRoles = signal<string[]>([]);
+  permissions = signal<string[]>(this.getPermissionsFromStorage());
+
+  private getPermissionsFromStorage(): string[] {
+    const p = localStorage.getItem('permissions');
+    return p ? JSON.parse(p) : [];
+  }
+
+  setSession(authRes: any) {
+    localStorage.setItem('token', authRes.token);
+    localStorage.setItem('permissions', JSON.stringify(authRes.permissions.map((permission: Permission) => permission.name)));
+    
+    // 🔥 PASSO CRÍTICO: Atualiza o Signal. 
+    // Isso notificará instantaneamente todas as diretivas *hasPermission no HTML.
+    // permissions.map(permission => permission.name
+    // this.permissions.set(authRes.user.permissions);
+    this.permissions.set(authRes.permissions.map((permission: Permission) => permission.name));
+  }
   isAuthenticated() {
     return this.isAuthenticatedSignal();
   }
@@ -31,8 +48,13 @@ export class AuthService {
         // 2. Salva os dados do usuário no Signal para uso no menu/sidebar
         this.currentUser.set(res.user);
         this.isAuthenticatedSignal.set(true);
-        if (res.roles && res.permissions) {
-          this.setUserData(res.roles, res.permissions);
+        console.log(res.permissions, 'res.permissions');
+        console.log(res.role, 'res.role');
+        if (res.role && res.permissions) {
+          this.setUserData(res.role, res.permissions);
+        }
+        if (res.permissions) {
+          this.setSession(res);
         }
         // 3. Redireciona
         this.router.navigate(['dashboard']);
@@ -47,7 +69,12 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('permissions');
+    localStorage.removeItem('roles');
     this.currentUser.set(null);
+    localStorage.clear();
+    // 🔥 PASSO CRÍTICO: Limpa o Signal no Logout
+    this.permissions.set([]); 
     this.router.navigate(['/login']);
   }
   getRoles(): Observable<Role[]> {
@@ -56,11 +83,12 @@ export class AuthService {
   setUserData(roles: Role[], permissions: Permission[]) {
     this.userRoles.set(roles.map(role => role.name));
     this.userPermissions.set(permissions.map(permission => permission.name));
+    console.log(this.userPermissions(), 'userPermissions array setData');
     localStorage.setItem('permissions', JSON.stringify(this.userPermissions()));
     localStorage.setItem('roles', JSON.stringify(this.userRoles()));
   }
   hasPermission(permission: string): boolean {
-    return this.userPermissions().includes(permission);
+    return this.permissions().includes(permission);
   }
 
   hasRole(role: Role): boolean {
