@@ -17,7 +17,7 @@ export class App {
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
     } else {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/welcome']);
     }
   }
 }

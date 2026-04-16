@@ -6,6 +6,7 @@ import { AuthResponse, LoginCredentials } from '../models/auth.model';
 import { environment } from '../../environments/environment';
 import { Role } from '../models/role';
 import { Permission } from '../models/permission';
+import { User } from '../models/user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
   private userPermissions = signal<string[]>([]);
   private userRoles = signal<string[]>([]);
   permissions = signal<string[]>(this.getPermissionsFromStorage());
+  user = signal<User | null>(null);
 
   private getPermissionsFromStorage(): string[] {
     const p = localStorage.getItem('permissions');
@@ -31,6 +33,7 @@ export class AuthService {
     // permissions.map(permission => permission.name
     // this.permissions.set(authRes.user.permissions);
     this.permissions.set(authRes.permissions.map((permission: Permission) => permission.name));
+    this.user.set(authRes.user);
   }
   isAuthenticated() {
     return this.isAuthenticatedSignal();
@@ -55,7 +58,9 @@ export class AuthService {
           this.setSession(res);
         }
         // 3. Redireciona
-        this.router.navigate(['dashboard']);
+        console.log('ta vindo pro redirect');
+        this.router.navigate(['kilometers']);
+        console.log('ta vindo pro redirect 2');
       }),
       catchError((error) => {
         // Tratamento genérico de erro de rede ou servidor
