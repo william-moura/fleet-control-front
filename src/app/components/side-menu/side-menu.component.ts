@@ -22,6 +22,9 @@ export class SideMenuComponent {
     const userPermissions = this.authService.permissions();
 
     return this.routes.filter(item => {
+      if (item.data?.['display'] === false) {
+        return false;
+      }
       if (!item.data || !item.data['permission']) {
         return true;
       }
@@ -36,14 +39,14 @@ export class SideMenuComponent {
       this.authService.logout();
     }
   }
-  ngOnInit(): void {
-    this.filteredRoutes = this.routes.filter(item => {
-      console.log(item.data?.['permission'], 'hihi');
-      if (item.data?.['permission']) {
-        console.log('entrou no if');
-        return this.authService.hasPermission(item.data?.['permission']);
-      }
-      return true;
-    });
-  }
+  // ngOnInit(): void {
+  //   this.filteredRoutes = this.routes.filter(item => {
+  //     console.log(item.data?.['permission'], 'hihi');
+  //     if (item.data?.['permission']) {
+  //       console.log('entrou no if');
+  //       return this.authService.hasPermission(item.data?.['permission']);
+  //     }
+  //     return true;
+  //   });
+  // }
 }

@@ -40,11 +40,9 @@ export class LoginComponent {
 
       this.authService.login(this.loginForm.value).subscribe({
         next: () => {
-          this.isLoading.set(false);
-          console.log('ta vindo aqui??');
-          this.ngZone.run(() => {
-            console.log('ta vindo aqui, neste aqui??');
-            this.router.navigate(['dashboard']); 
+          this.isLoading.set(false);          
+          this.ngZone.run(() => {            
+            this.router.navigate(['welcome']); 
           });
         },
         error: (err: Error) => {
