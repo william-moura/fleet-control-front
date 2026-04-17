@@ -62,6 +62,7 @@ export class SupplierComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        result.supplierCnpj = result.supplierCnpj.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
         this.supplierService.createSupplier(result).subscribe({
           next: (supplier) => {
             this.snackBar.open('Fornecedor cadastrado com sucesso', 'Fechar', { duration: 3000 });

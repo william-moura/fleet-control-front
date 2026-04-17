@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,11 +11,14 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { provideNativeDateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MY_DATE_FORMATS } from '../../app.config';
 import { SupplierService } from '../../services/supplier-service';
-import { SupplierType } from '../../models/supplier-type';
+import { NgxMaskDirective } from 'ngx-mask';
+import { UppercaseDirective } from '../../uppercase';
+
 @Component({
   selector: 'app-form-add-supplier',
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, 
-    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule,
+    NgxMaskDirective, UppercaseDirective],
   providers:[
     provideNativeDateAdapter(MY_DATE_FORMATS), 
     // { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }, 
@@ -34,21 +37,15 @@ export class FormAddSupplier {
     this.form = this.fb.group({
       supplierFantasyName: ['', Validators.required],
       supplierCorporateName: ['', Validators.required],
-      supplierCnpj: ['', Validators.required],
+      supplierCnpj: ['', [Validators.required, this.validateCnpj]],
       supplierAddress: ['', Validators.required],
       supplierCity: ['', Validators.required],
-      supplierState: ['', Validators.required],
+      supplierState: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
       supplierZipCode: ['', Validators.required],
       supplierPhone: ['', Validators.required],
-      supplierEmail: ['', Validators.required],
+      supplierEmail: ['', [Validators.required, Validators.email]],
       supplierStatus: ['', Validators.required],
-      supplierType: ['', Validators.required],
-    }, {
-      validator: [
-        Validators.required,
-        Validators.min(0),
-        Validators.max(2),
-      ]
+      supplierType: ['', Validators.required],    
     });
   }
   ngOnInit() {
@@ -59,12 +56,22 @@ export class FormAddSupplier {
   }
   onSubmit() {
     if (this.form.valid) {
-      console.log(this.form.value,'supplierType');
       this.form.value.supplierType = Number(this.form.value.supplierType);
       this.dialogRef.close(this.form.value);
     }
   }
   onCancel() {
     this.dialogRef.close();
+  }
+  private validateCnpj(control: AbstractControl) {
+    const cnpj = control.value;
+    console.log(cnpj.length,'cnpj length');
+    if (cnpj.length !== 14) {
+      return { invalidCnpj: true };
+    }
+    return null;
+  }
+  private toUpperCase(control: AbstractControl) {
+    return control.value.toUpperCase();
   }
 }

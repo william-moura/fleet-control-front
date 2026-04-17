@@ -1,6 +1,6 @@
 import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,11 +10,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MY_DATE_FORMATS } from '../../app.config';
 import { DriverService } from '../../services/driver-service';
+import { NgxMaskDirective } from 'ngx-mask';
+import { UppercaseDirective } from '../../uppercase';
 
 @Component({
   selector: 'app-form-add-driver',
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, 
-    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule],
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule,
+   UppercaseDirective, NgxMaskDirective],
   providers:[
     provideNativeDateAdapter(MY_DATE_FORMATS), 
     // { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }, 
@@ -39,7 +42,7 @@ export class FormAddDriver {
       driverZipCode: ['', Validators.required],
       driverBloodType: ['', Validators.required],
       driverRg: ['', Validators.required],
-      driverCpf: ['', Validators.required],
+      driverCpf: ['', [Validators.required, this.validateCpf]],
       driverLicenseNumber: ['', Validators.required],
       driverLicenseExpirationDate: ['', Validators.required],
       driverLicenseCategory: ['', Validators.required],
@@ -61,5 +64,12 @@ export class FormAddDriver {
   }
   onCancel() {
     this.dialogRef.close();
+  }
+  private validateCpf(control: AbstractControl) {
+    const cpf = control.value;
+    if (cpf.length !== 11) {
+      return { invalidCpf: true };
+    }
+    return null;
   }
 }
