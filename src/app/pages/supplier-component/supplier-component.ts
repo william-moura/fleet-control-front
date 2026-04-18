@@ -42,7 +42,7 @@ export class SupplierComponent {
   }
   getSuppliers() {
     this.isLoading.set(true);
-    this.supplierService.getAllSuppliers().subscribe({
+    this.supplierService.getAllSuppliers(undefined, this.indicePagina, this.pageSize).subscribe({
       next: (suppliers) => {
         this.dataSource.data = suppliers.data;
         this.totalRegistros = suppliers.total;

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { FuelSupplyService } from '../../services//fuel-supply-service';
 import { FuelSupply } from '../../models/fuel-supply';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -42,6 +42,9 @@ export class FuelComponent implements OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;  
   fuelSupplies = signal<FuelSupply[]>([]);
+  totalRegistros = 0;
+  pageSize = 5;
+  indicePagina = 0;
   ngOnInit() {
     this.getFuelSupplies();
   }
@@ -114,9 +117,11 @@ export class FuelComponent implements OnInit{
   }
   getFuelSupplies() {
     this.isLoading.set(true);
-    this.fuelSupplyService.getAllFuelSupplies().subscribe({
-      next: (fuelSupplies) => {
-        this.dataSource.data = fuelSupplies;
+    this.fuelSupplyService.getAllFuelSupplies(this.indicePagina, this.pageSize).subscribe({
+      next: (pagination) => {
+        this.totalRegistros = pagination.total;
+        this.indicePagina = pagination.current_page - 1;
+        this.dataSource.data = pagination.data;
         this.isLoading.set(false);
       },
       error: (error) => {
@@ -124,5 +129,10 @@ export class FuelComponent implements OnInit{
         this.isLoading.set(false);
       }
     });
+  }
+  onPageChange(event: PageEvent) {
+    this.indicePagina = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getFuelSupplies();
   }
 }

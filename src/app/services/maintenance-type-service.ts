@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MaintenanceServiceModel } from '../models/maintenance-service-model';
+import { Pagination } from '../models/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,11 @@ import { MaintenanceServiceModel } from '../models/maintenance-service-model';
 export class MaintenanceTypeService {
   private readonly API_URL = environment.apiUrl + '/maintenance-services';
   private http = inject(HttpClient);
-  getAllMaintenanceTypes(): Observable<MaintenanceServiceModel[]> {
-    return this.http.get<MaintenanceServiceModel[]>(this.API_URL);
+    getAllMaintenanceTypes(page: number = 1, perPage: number = 10): Observable<Pagination<MaintenanceServiceModel>> {
+    const params = new HttpParams()
+    .set('page', (page + 1).toString()) // MatPaginator começa em 0, Laravel em 1
+    .set('per_page', perPage.toString());
+    return this.http.get<Pagination<MaintenanceServiceModel>>(this.API_URL, { params });
   }
   getMaintenanceTypeById(id: number): Observable<MaintenanceServiceModel> {
     return this.http.get<MaintenanceServiceModel>(`${this.API_URL}/${id}`);

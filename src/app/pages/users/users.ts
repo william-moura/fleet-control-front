@@ -1,7 +1,7 @@
 import { Component, viewChild, AfterViewInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,13 +37,16 @@ export class Users {
   private dialog = inject(MatDialog);
   private userService = inject(UserService);
   private snackBar = inject(MatSnackBar);
+  totalRegistros = 0;
+  pageSize = 5;
+  indicePagina = 0;
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator();
     this.dataSource.sort = this.sort();
   }
   getUsers() {
-    this.userService.getUsers().subscribe((users) => {
-      this.dataSource.data = users;
+    this.userService.getUsers(0, 10000).subscribe((pagination) => {
+      this.dataSource.data = pagination.data;
+      this.totalRegistros = pagination.total;
       this.isLoading.set(false);
     });
   }
@@ -115,5 +118,10 @@ export class Users {
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  onPageChange(event: PageEvent) {
+    this.indicePagina = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getUsers();
   }
 }
