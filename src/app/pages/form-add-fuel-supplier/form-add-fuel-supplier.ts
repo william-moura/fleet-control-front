@@ -78,13 +78,13 @@ export class FormAddFuelSupplier {
     this.dialogRef.close();
   }
   getSuppliers() {
-    this.supplierService.getAllSuppliers(SupplierType.GAS_STATION).subscribe((suppliers) => {
-      this.suppliers.set(suppliers);
+    this.supplierService.getAllSuppliers(SupplierType.GAS_STATION, 1, 10000).subscribe((suppliers) => {
+      this.suppliers.set(suppliers.data);
     });
   }
   getVehicles() {
-    this.vehicleService.getAllVehicles().subscribe((vehicles) => {
-      this.vehicles.set(vehicles);
+    this.vehicleService.getAllVehicles(1, 10000).subscribe((vehicles) => {
+      this.vehicles.set(vehicles.data);
     });
   }
   getDrivers() {

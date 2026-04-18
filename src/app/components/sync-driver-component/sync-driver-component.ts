@@ -27,6 +27,9 @@ export class SyncDriverComponent implements OnInit{
   drivers = signal<Driver[]>([]);
   selectedDriverIds: number[] = [];
   isLoading = signal<boolean>(false);
+  totalRegistros = 0;
+  pageSize = 5;
+  indicePagina = 0;
 
   ngOnInit() {
     this.getDrivers();
@@ -36,8 +39,9 @@ export class SyncDriverComponent implements OnInit{
   }
 
   getDrivers() {
-    this.driverService.getAllDrivers().subscribe((drivers) => {
-      this.drivers.set(drivers);
+    this.driverService.getAllDrivers(this.indicePagina, this.pageSize).subscribe((drivers) => {
+      this.totalRegistros = drivers.total;
+      this.drivers.set(drivers.data);
     });
   }
   confirmSyncDriver() {
