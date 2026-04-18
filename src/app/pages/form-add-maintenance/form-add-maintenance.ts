@@ -57,7 +57,6 @@ export class FormAddMaintenance {
     if (this.data) {
       this.data.services = this.data.services.map((service: MaintenanceServiceModel) => service.id);
       const dataForm = { ...this.data };
-      console.log(dataForm,'dataForm');
       this.form.patchValue(dataForm);
     }
     this.getSuppliers();
@@ -73,18 +72,18 @@ export class FormAddMaintenance {
     this.dialogRef.close();
   }
   getSuppliers() {
-    this.supplierService.getAllSuppliers(SupplierType.MECHANIC, 1, 10000).subscribe((suppliers) => {
+    this.supplierService.getAllSuppliers(SupplierType.MECHANIC, 0, 10000).subscribe((suppliers) => {
       this.suppliers.set(suppliers.data);
     });
   }
   getVehicles() {
-    this.vehicleService.getAllVehicles(1, 10000).subscribe((vehicles) => {
+    this.vehicleService.getAllVehicles(0, 10000).subscribe((vehicles) => {
       this.vehicles.set(vehicles.data);
     });
   }
   getMaintenanceTypes() {
-    this.maintenanceTypeService.getAllMaintenanceTypes().subscribe((maintenanceTypes) => {
-      this.services.set(maintenanceTypes);
+    this.maintenanceTypeService.getAllMaintenanceTypes(0, 10000).subscribe((maintenanceTypes) => {
+      this.services.set(maintenanceTypes.data);      
     });
   }
 }

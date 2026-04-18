@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../models/user';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Pagination } from '../models/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,11 @@ import { environment } from '../../environments/environment';
 export class UserService {
   private http = inject(HttpClient);
   private readonly API_URL = environment.apiUrl + '/users';
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.API_URL);
+  getUsers(page: number = 1, perPage: number = 10): Observable<Pagination<User>> {
+    const params = new HttpParams()
+    .set('page', (page + 1).toString()) // MatPaginator começa em 0, Laravel em 1
+    .set('per_page', perPage.toString());
+    return this.http.get<Pagination<User>>(this.API_URL, { params });
   }
   getUserById(id: number): Observable<User> {
     return this.http.get<User>(`${this.API_URL}/${id}`);
