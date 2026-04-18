@@ -1,7 +1,7 @@
-import { Component, viewChild, AfterViewInit, inject, signal } from '@angular/core';
+import { Component, viewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,20 +11,18 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MaintenanceService } from '../../services/maintenance-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { Supplier } from '../../models/supplier';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
-import { SupplierService } from '../../services/supplier-service';
-import { FormAddSupplier } from '../form-add-supplier/form-add-supplier';
 import { Maintenance } from '../../models/maintenance';
 import { FormAddMaintenance } from '../form-add-maintenance/form-add-maintenance';
 import { FormAddMaintenanceService } from '../form-add-maintenance-service/form-add-maintenance-service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-maintenance-component',
   imports: [CommonModule, MatTableModule, MatPaginatorModule, 
     MatSortModule, MatInputModule, MatFormFieldModule, 
-    MatButtonModule, MatIconModule, MatChipsModule],
+    MatButtonModule, MatIconModule, MatChipsModule, MatProgressSpinnerModule],
   templateUrl: './maintenance-component.html',
   styleUrl: './maintenance-component.scss',
 })
@@ -37,11 +35,13 @@ export class MaintenanceComponent {
   private snackBar = inject(MatSnackBar);
   private maintenanceService = inject(MaintenanceService);
   dataSource = new MatTableDataSource<Maintenance>([]);
-  paginator = viewChild.required(MatPaginator);
+  //paginator = viewChild.required(MatPaginator);
   sort = viewChild.required(MatSort);
   isLoading = signal(true);
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator();
+  totalRegistros = 0;
+  pageSize = 5;
+  indicePagina = 0;
+  ngAfterViewInit() {    
     this.dataSource.sort = this.sort();
   }
 
@@ -62,12 +62,9 @@ export class MaintenanceComponent {
     }
   }
   getAllMaintenances() {
-    this.maintenanceService.getAllMaintenances().subscribe((maintenances) => {
-      maintenances.forEach(maintenance => {
-        maintenance.servicesFormatted = maintenance.services?.
-        map(service => service.maintenance_control_service_name).join(', ');
-      });
-      this.dataSource.data = maintenances;
+    this.maintenanceService.getAllMaintenances(this.indicePagina, this.pageSize).subscribe((pagination) => {
+      this.totalRegistros = pagination.total;
+      this.dataSource.data = pagination.data;
     });
   }
   applyFilter(event: Event) {
@@ -124,5 +121,10 @@ export class MaintenanceComponent {
         });
       }
     });
+  }
+  onPageChange(event: PageEvent) {
+    this.indicePagina = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getAllMaintenances();
   }
 }
