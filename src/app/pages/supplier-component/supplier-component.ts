@@ -1,7 +1,7 @@
 import { Component, viewChild, AfterViewInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -34,15 +34,19 @@ export class SupplierComponent {
   paginator = viewChild.required(MatPaginator);
   sort = viewChild.required(MatSort);
   isLoading = signal(true);
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator();
+  totalRegistros = 0;
+  pageSize = 5;
+  indicePagina = 0;
+  ngAfterViewInit() {    
     this.dataSource.sort = this.sort();
   }
   getSuppliers() {
     this.isLoading.set(true);
     this.supplierService.getAllSuppliers().subscribe({
       next: (suppliers) => {
-        this.dataSource.data = suppliers;
+        this.dataSource.data = suppliers.data;
+        this.totalRegistros = suppliers.total;
+        this.indicePagina = suppliers.current_page - 1;
         // this.dataSource.paginator = this.paginator;
         this.isLoading.set(false);
       },
@@ -105,5 +109,10 @@ export class SupplierComponent {
         this.getSuppliers();
       });
     }
+  }
+  onPageChange(event: PageEvent) {
+    this.indicePagina = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getSuppliers();
   }
 }

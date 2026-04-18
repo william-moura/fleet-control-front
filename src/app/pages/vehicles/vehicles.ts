@@ -1,6 +1,6 @@
 import { Component, inject, signal, viewChild, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,6 +28,9 @@ export class Vehicles {
   private vehicleService = inject(VehicleService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+  totalRegistros = 0;
+  pageSize = 5;
+  indicePagina = 0;
   // constructor(private paginator: MatPaginator) {
   //   this.paginator = paginator;
   // }
@@ -49,10 +52,12 @@ export class Vehicles {
   }
   getVehicles() {
     this.isLoading.set(true);
-    this.vehicleService.getAllVehicles().subscribe({
+    this.vehicleService.getAllVehicles(this.indicePagina, this.pageSize).subscribe({
       next: (vehicles) => {
-        this.dataSource.data = vehicles;
-        this.dataSource.paginator = this.paginator;
+        this.dataSource.data = vehicles.data;
+        this.totalRegistros = vehicles.total;
+        this.indicePagina = vehicles.current_page - 1;
+        this.pageSize = vehicles.per_page;
         this.isLoading.set(false);
       },
       error: (error) => {
@@ -151,5 +156,10 @@ export class Vehicles {
         this.isLoading.set(false);
       }
     }
+  }
+  onPageChange(event: PageEvent) {
+    this.indicePagina = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getVehicles();
   }
 }

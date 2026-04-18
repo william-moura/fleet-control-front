@@ -1,11 +1,12 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Vehicle } from '../models/vehicle';
 import { Observable } from 'rxjs';
 import { Brand } from '../models/brand';
 import { FuelType } from '../models/fuel-type';
 import { environment } from '../../environments/environment';
 import { Driver } from '../models/driver';
+import { Pagination } from '../models/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +14,11 @@ import { Driver } from '../models/driver';
 export class VehicleService {
   private http = inject(HttpClient);
   private readonly API_URL = environment.apiUrl + '/vehicles';
-  getAllVehicles(): Observable<Vehicle[]> {
-    return this.http.get<Vehicle[]>(this.API_URL);
+  getAllVehicles(page: number = 1, perPage: number = 10): Observable<Pagination<Vehicle>> {
+    const params = new HttpParams()
+    .set('page', (page + 1).toString()) // MatPaginator começa em 0, Laravel em 1
+    .set('per_page', perPage.toString());
+    return this.http.get<Pagination<Vehicle>>(this.API_URL, { params });
   }
   getVehicleById(id: number): Observable<Vehicle> {
     return this.http.get<Vehicle>(`${this.API_URL}/${id}`);
