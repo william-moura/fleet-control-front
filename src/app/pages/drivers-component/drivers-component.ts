@@ -1,7 +1,7 @@
 import { Component, viewChild, AfterViewInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -46,11 +46,14 @@ export class DriversComponent implements AfterViewInit {
   dataSource = new MatTableDataSource<Driver>([]);
 
   // Queries para os componentes de paginação e ordenação
-  paginator = viewChild.required(MatPaginator);
+  //paginator = viewChild.required(MatPaginator);
   sort = viewChild.required(MatSort);
+  totalRegistros = 0;
+  pageSize = 5;
+  indicePagina = 0;
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator();
+    //this.dataSource.paginator = this.paginator();
     this.dataSource.sort = this.sort();
   }
 
@@ -59,8 +62,11 @@ export class DriversComponent implements AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   getDrivers() {
-    this.driverService.getAllDrivers().subscribe((drivers) => {
-      this.dataSource.data = drivers;
+    this.driverService.getAllDrivers(this.indicePagina, this.pageSize).subscribe((drivers) => {
+      this.dataSource.data = drivers.data;
+      this.totalRegistros = drivers.total;
+      this.indicePagina = drivers.current_page - 1;
+      this.pageSize = drivers.per_page;
     });
   }
   async deleteDriver(driver: Driver) {
@@ -128,6 +134,11 @@ export class DriversComponent implements AfterViewInit {
         this.snackBar.open('Erro ao atualizar motorista', 'Fechar', { duration: 3000 });
       }
     }
+  }
+  onPageChange(event: PageEvent) {
+    this.indicePagina = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getDrivers();
   }
 }
 
