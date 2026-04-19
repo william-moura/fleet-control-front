@@ -1,1 +1,77 @@
-<p>dashboard-component works!</p>
+<div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1>Dashboard Operacional</h1>
+      <p>{{ hoje | date:'fullDate' }}</p>
+    </header>
+  
+    <div class="kpi-grid">
+      <mat-card class="kpi-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar color="primary">directions_bus</mat-icon>
+          <mat-card-title>{{ totalVeiculosAtivos() }}</mat-card-title>
+          <mat-card-subtitle>Veículos Ativos</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+  
+      <mat-card class="kpi-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar color="accent">local_gas_station</mat-icon>
+          <mat-card-title>{{ consumoMedio() }} km/l</mat-card-title>
+          <mat-card-subtitle>Consumo Médio Frota</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+  
+      <mat-card class="kpi-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar class="icon-success">payments</mat-icon>
+          <mat-card-title>{{ gastosMensais() | currency:'BRL' }}</mat-card-title>
+          <mat-card-subtitle>Gastos (Mês Atual)</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+    </div>
+  
+    <div class="main-grid">
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Evolução de Gastos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-placeholder">Gráfico de Linhas: Jan - Dez</div>
+        </mat-card-content>
+      </mat-card>
+  
+      <mat-card class="list-card">
+        <mat-card-header>
+          <mat-card-title>Abastecimentos Recentes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            @for (item of abastecimentosRecentes(); track item.id) {
+              <mat-list-item>
+                <mat-icon matListItemIcon>receipt</mat-icon>
+                <div matListItemTitle>{{ item.veiculo }}</div>
+                <div matListItemLine>{{ item.data | date:'shortDate' }} - {{ item.valor | currency:'BRL' }}</div>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+  
+      <mat-card class="list-card warning-border">
+        <mat-card-header>
+          <mat-card-title>Próximas Manutenções</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            @for (m of manutencoes(); track m.id) {
+              <mat-list-item>
+                <mat-icon matListItemIcon color="warn">build</mat-icon>
+                <div matListItemTitle>{{ m.veiculo }} ({{ m.tipo }})</div>
+                <div matListItemLine>Previsão: {{ m.dataPrevisao | date:'dd/MM' }} ou {{ m.kmPrevisao }} km</div>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
