@@ -1,5 +1,6 @@
 import { FuelSupply } from "./fuel-supply";
 import { Maintenance } from "./maintenance";
+import { EvolutionExpenses } from "./evolution-expenses";
 
 export interface Dashboard {
     vehicleCount: number;
@@ -7,4 +8,5 @@ export interface Dashboard {
     totalCost: number;
     recentFuelSupplies: FuelSupply[] | null;
     recentMaintenances: Maintenance[] | null;
+    evolutionExpenses: EvolutionExpenses;
 }
