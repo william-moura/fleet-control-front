@@ -31,6 +31,11 @@
         <input matInput formControlName="driverPhone"  mask="(00) 0000-0000||(00) 00000-0000" />
     </mat-form-field>
     <mat-form-field appearance="outline">
+      <mat-label>CEP</mat-label>
+      <input matInput formControlName="driverZipCode"  mask="99999-999"  (change)="getCep(form.value.driverZipCode)"/>
+      <mat-hint>Digite o CEP para preencher o endereço</mat-hint>
+  </mat-form-field>
+    <mat-form-field appearance="outline">
         <mat-label>Endereço</mat-label>
         <input matInput formControlName="driverAddress" />
     </mat-form-field>
@@ -41,11 +46,7 @@
     <mat-form-field appearance="outline">
         <mat-label>Estado</mat-label>
         <input matInput formControlName="driverState"  mask="AA" appUppercase />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>CEP</mat-label>
-        <input matInput formControlName="driverZipCode"  mask="99999-999" />
-    </mat-form-field>
+    </mat-form-field>    
     <mat-form-field appearance="outline">
         <mat-label>Tipo Sanguíneo</mat-label>
         <input matInput formControlName="driverBloodType" />

@@ -12,6 +12,7 @@ import { MY_DATE_FORMATS } from '../../app.config';
 import { DriverService } from '../../services/driver-service';
 import { NgxMaskDirective } from 'ngx-mask';
 import { UppercaseDirective } from '../../uppercase';
+import { CepService } from '../../services/cep-service';
 
 @Component({
   selector: 'app-form-add-driver',
@@ -30,6 +31,7 @@ export class FormAddDriver {
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<FormAddDriver>);
   private driverService = inject(DriverService);
+  private cepService = inject(CepService);
   public data = inject(MAT_DIALOG_DATA);
   form: FormGroup;
   constructor() {
@@ -71,5 +73,15 @@ export class FormAddDriver {
       return { invalidCpf: true };
     }
     return null;
+  }
+  getCep(cep: string) {
+    this.cepService.getCep(cep).subscribe((cep) => {
+      this.form.patchValue({
+        driverAddress: cep.street,
+        driverCity: cep.city,
+        driverState: cep.state,        
+        driverNeighborhood: cep.neighborhood,
+      });
+    });
   }
 }

@@ -13,6 +13,7 @@ import { MY_DATE_FORMATS } from '../../app.config';
 import { SupplierService } from '../../services/supplier-service';
 import { NgxMaskDirective } from 'ngx-mask';
 import { UppercaseDirective } from '../../uppercase';
+import { CepService } from '../../services/cep-service';
 
 @Component({
   selector: 'app-form-add-supplier',
@@ -32,6 +33,8 @@ export class FormAddSupplier {
   private dialogRef = inject(MatDialogRef<FormAddSupplier>);
   private supplierService = inject(SupplierService);
   public data = inject(MAT_DIALOG_DATA);
+  private cepService = inject(CepService);
+
   form: FormGroup;
   constructor() {
     this.form = this.fb.group({
@@ -73,5 +76,15 @@ export class FormAddSupplier {
   }
   private toUpperCase(control: AbstractControl) {
     return control.value.toUpperCase();
+  }
+  getCep(cep: string) {
+    this.cepService.getCep(cep).subscribe((cep) => {
+      this.form.patchValue({
+        supplierAddress: cep.street,
+        supplierCity: cep.city,
+        supplierState: cep.state,        
+        supplierNeighborhood: cep.neighborhood,
+      });
+    });
   }
 }
