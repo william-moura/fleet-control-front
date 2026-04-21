@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DashboardService } from '../../services/dashboard-service'; // Criaremos este serviço
 import { Dashboard } from '../../models/dashboard';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -19,6 +19,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatListModule } from '@angular/material/list';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard-component',
@@ -30,6 +33,8 @@ import { MatListModule } from '@angular/material/list';
   styleUrl: './dashboard-component.scss',
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild('meuGrafico') meuGrafico!: ElementRef;
+  chart: any;
   private dashboardService = inject(DashboardService);
   dashboard = signal<Dashboard | null>(null);
   hoje = new Date();
@@ -44,5 +49,32 @@ export class DashboardComponent implements OnInit {
     this.dashboardService.getDashboard().subscribe((dashboard) => {
       this.dashboard.set(dashboard);
     });
+  }
+  ngAfterViewInit() {
+    this.renderizarGrafico();
+  }
+  renderizarGrafico() {
+    if (this.meuGrafico.nativeElement) {
+      this.chart = new Chart(this.meuGrafico.nativeElement, {
+        type: 'line',
+        data: {
+          labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+          datasets: [{
+            label: 'Gastos Mensais',
+            data: [1000, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200],
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true
+            }
+          }
+        }
+      });
+    }
   }
 }

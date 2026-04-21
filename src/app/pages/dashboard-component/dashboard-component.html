@@ -36,7 +36,9 @@
           <mat-card-title>Evolução de Gastos</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="chart-placeholder">Gráfico de Linhas: Jan - Dez</div>
+          <div style="height: 300px;">
+            <canvas #meuGrafico></canvas>
+          </div>
         </mat-card-content>
       </mat-card>
   
@@ -49,7 +51,7 @@
             @for (item of dashboard()?.recentFuelSupplies; track item.id) {
               <mat-list-item>
                 <mat-icon matListItemIcon>receipt</mat-icon>
-                <div matListItemTitle>{{ item.vehicle.vehiclePlate }}</div>
+                <div matListItemTitle>{{ item.vehicle.vehiclePlate }} - {{ item.vehicle.vehicleModel }}</div>
                 <div matListItemLine>{{ item.fuelSupplierDate | date:'shortDate' }} - {{ item.fuelSupplierTotal | currency:'BRL' }}</div>
               </mat-list-item>
             }
