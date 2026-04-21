@@ -48,6 +48,9 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.dashboardService.getDashboard().subscribe((dashboard) => {
       this.dashboard.set(dashboard);
+      this.chart.data.labels = this.dashboard()?.evolutionExpenses.labels;
+      this.chart.data.datasets[0].data = this.dashboard()?.evolutionExpenses.values;
+      this.chart.update();
     });
   }
   ngAfterViewInit() {
