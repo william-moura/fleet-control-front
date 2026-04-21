@@ -14,6 +14,11 @@
       <input matInput formControlName="supplierCnpj"  mask="AA.AAA.AAA/AAAA-00" />
     </mat-form-field>
     <mat-form-field appearance="outline">
+      <mat-label>CEP</mat-label>
+      <input matInput formControlName="supplierZipCode"  mask="99999-999"  (change)="getCep(form.value.supplierZipCode)"/>
+      <mat-hint>Digite o CEP para preencher o endereço</mat-hint>
+  </mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Endereço</mat-label>
       <input matInput formControlName="supplierAddress" />
     </mat-form-field>
@@ -24,11 +29,7 @@
     <mat-form-field appearance="outline">
         <mat-label>Estado</mat-label>
         <input matInput formControlName="supplierState"  mask="AA" appUppercase />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-        <mat-label>CEP</mat-label>
-        <input matInput formControlName="supplierZipCode"  mask="99999-999" />
-    </mat-form-field>
+    </mat-form-field>    
     <mat-form-field appearance="outline">
         <mat-label>Telefone</mat-label>
         <input matInput formControlName="supplierPhone"  mask="(00) 0000-0000||(00) 00000-0000" />
