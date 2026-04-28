@@ -35,11 +35,11 @@ export class FormAddKmComponent {
   form: FormGroup;
   constructor() {
     this.form = this.fb.group({
-      km: ['', Validators.required],
+      kilometer: ['', Validators.required],
+      kilometerDate: ['', Validators.required],
+      kilometerNotes: [''],
+      driverId: ['', Validators.required],      
       vehicleId: ['', Validators.required],
-      kmDate: ['', Validators.required],
-      kmNotes: [''],
-      driverId: ['', Validators.required],
     });
   }
   ngOnInit() {

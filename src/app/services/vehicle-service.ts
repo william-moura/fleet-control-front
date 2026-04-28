@@ -7,6 +7,7 @@ import { FuelType } from '../models/fuel-type';
 import { environment } from '../../environments/environment';
 import { Driver } from '../models/driver';
 import { Pagination } from '../models/pagination';
+import { Kilometer } from '../models/kilometer';
 
 @Injectable({
   providedIn: 'root',
@@ -43,5 +44,8 @@ export class VehicleService {
   }
   getDriversByVehicleId(vehicleId: number): Observable<Driver[]> {
     return this.http.get<Driver[]>(`${this.API_URL}/${vehicleId}/drivers`);
+  }
+  createKilometer(vehicleId: number, kilometer: Kilometer): Observable<Kilometer> {
+    return this.http.post<Kilometer>(`${this.API_URL}/${vehicleId}/kilometers`, kilometer);
   }
 }

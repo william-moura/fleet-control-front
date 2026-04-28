@@ -50,6 +50,7 @@ export class FormAddMaintenance {
       maintenanceNotes: [''],
       vehicleId: ['', Validators.required],
       supplierId: ['', Validators.required],
+      maintenanceNextKilometers: ['', [Validators.required, Validators.min(0)]],
     });
   }
 

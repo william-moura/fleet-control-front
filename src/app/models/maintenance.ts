@@ -14,4 +14,5 @@ export interface Maintenance {
   maintenanceNextDate?: Date;
   maintenanceKilometers?: number;
   previsionDateFinish?: Date;
+  maintenanceNextKilometers?: number;
 }

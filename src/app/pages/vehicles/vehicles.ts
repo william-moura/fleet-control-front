@@ -174,7 +174,7 @@ export class Vehicles {
     if (result) {
       try {
         this.isLoading.set(true);
-        await firstValueFrom(this.kilometerService.createKilometer(vehicle.id, result));
+        await firstValueFrom(this.vehicleService.createKilometer(vehicle.id, result));
         this.snackBar.open('Quilometragem adicionada com sucesso', 'Fechar', { duration: 3000 });        
       } catch (error) {
         console.error('Erro ao adicionar quilometragem:', error);

@@ -66,10 +66,19 @@
       <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="outline">
+      <mat-label>Próxima Kilometragem</mat-label>
+      <input matInput formControlName="maintenanceNextKilometers"
+       mask="separator.2" 
+       placeholder="Ex: 1.000,00" 
+       thousandSeparator="." 
+       decimalMarker="," 
+       decimalSeparator="," />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Kilometragem</mat-label>
       <input matInput formControlName="maintenanceKilometers"
        mask="separator.2" 
-       placeholder="Ex: 10,00" 
+       placeholder="Ex: 1.000,00" 
        thousandSeparator="." 
        decimalMarker="," 
        decimalSeparator="," />
