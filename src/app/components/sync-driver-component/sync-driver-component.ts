@@ -28,7 +28,7 @@ export class SyncDriverComponent implements OnInit{
   selectedDriverIds: number[] = [];
   isLoading = signal<boolean>(false);
   totalRegistros = 0;
-  pageSize = 5;
+  pageSize = 1000;
   indicePagina = 0;
 
   ngOnInit() {

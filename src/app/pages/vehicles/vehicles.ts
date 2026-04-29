@@ -16,6 +16,8 @@ import { firstValueFrom } from 'rxjs';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { Title } from '@angular/platform-browser';
 import { SyncDriverComponent } from '../../components/sync-driver-component/sync-driver-component';
+import { FormAddKmComponent } from '../../forms/form-add-km-component/form-add-km-component';
+import { KilometerService } from '../../services/kilometer-service';
 
 @Component({
   selector: 'app-vehicles',
@@ -26,6 +28,7 @@ import { SyncDriverComponent } from '../../components/sync-driver-component/sync
 })
 export class Vehicles {
   private vehicleService = inject(VehicleService);
+  private kilometerService = inject(KilometerService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   totalRegistros = 0;
@@ -161,5 +164,24 @@ export class Vehicles {
     this.indicePagina = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getVehicles();
+  }
+  async addKilometers(vehicle: Vehicle) {
+    const dialogRef = this.dialog.open(FormAddKmComponent, {
+      width: '600px',
+      data: vehicle,
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      try {
+        this.isLoading.set(true);
+        await firstValueFrom(this.vehicleService.createKilometer(vehicle.id, result));
+        this.snackBar.open('Quilometragem adicionada com sucesso', 'Fechar', { duration: 3000 });        
+      } catch (error) {
+        console.error('Erro ao adicionar quilometragem:', error);
+        this.snackBar.open('Erro ao adicionar quilometragem', 'Fechar', { duration: 3000 });
+      } finally {
+        this.isLoading.set(false);
+      }
+    }
   }
 }
