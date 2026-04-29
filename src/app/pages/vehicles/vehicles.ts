@@ -43,7 +43,7 @@ export class Vehicles {
   dataSource = new MatTableDataSource<Vehicle>([]);
   // paginator = viewChild.required(MatPaginator);
   sort = viewChild.required(MatSort);
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngAfterViewInit() {
     // this.dataSource.paginator = this.paginator();
