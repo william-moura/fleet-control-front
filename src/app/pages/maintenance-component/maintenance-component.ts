@@ -14,8 +14,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
 import { Maintenance } from '../../models/maintenance';
-import { FormAddMaintenance } from '../form-add-maintenance/form-add-maintenance';
-import { FormAddMaintenanceService } from '../form-add-maintenance-service/form-add-maintenance-service';
+import { FormAddMaintenance } from '../../forms/form-add-maintenance/form-add-maintenance';
+import { FormAddMaintenanceService } from '../../forms/form-add-maintenance-service/form-add-maintenance-service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({

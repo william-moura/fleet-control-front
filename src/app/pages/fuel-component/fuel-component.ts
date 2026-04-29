@@ -18,7 +18,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FormAddFuelSupplier } from '../form-add-fuel-supplier/form-add-fuel-supplier';
+import { FormAddFuelSupplier } from '../../forms/form-add-fuel-supplier/form-add-fuel-supplier';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 
 

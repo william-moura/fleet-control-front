@@ -15,9 +15,9 @@ import { Supplier } from '../../models/supplier';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
 import { SupplierService } from '../../services/supplier-service';
-import { FormAddSupplier } from '../form-add-supplier/form-add-supplier';
+import { FormAddSupplier } from '../../forms/form-add-supplier/form-add-supplier';
 import { User } from '../../models/user';
-import { FormAddUser } from '../form-add-user/form-add-user';
+import { FormAddUser } from '../../forms/form-add-user/form-add-user';
 import { UserService } from '../../services/user-service';
 
 @Component({

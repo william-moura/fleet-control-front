@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { Vehicle } from '../../models/vehicle';
 import { VehicleService } from '../../services/vehicle-service';
-import { FormAddVehicle } from '../form-add-vehicle/form-add-vehicle';
+import { FormAddVehicle } from '../../forms/form-add-vehicle/form-add-vehicle';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom } from 'rxjs';
