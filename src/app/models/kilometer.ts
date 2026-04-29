@@ -1,8 +1,8 @@
 export interface Kilometer {
   id: number;
-  km: number;
-  kmDate: string;
-  kmNotes: string;
+  kilometersValue: number;
+  kilometersDate: string;
+  kilometersNotes: string;
   driverId: number;
   vehicleId: number;
 }

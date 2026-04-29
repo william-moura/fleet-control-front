@@ -5,11 +5,10 @@
     <mat-form-field appearance="outline">
       <mat-label>Veículo</mat-label>
       <input matInput formControlName="vehicle" [disabled]="true" value="{{data.vehiclePlate}} | {{data.vehicleBrand}} | {{data.vehicleModel}}" />
-      <input matInput formControlName="vehicleId" [hidden]="true" value="{{data.id}}" />
-    </mat-form-field>
+    </mat-form-field>    
     <mat-form-field appearance="outline">
       <mat-label>Quilometragem</mat-label>
-      <input matInput formControlName="kilometer" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+      <input matInput formControlName="kilometersValue" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Motorista</mat-label>
@@ -21,16 +20,16 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Data de Abastecimento</mat-label>        
+      <mat-label>Data</mat-label>        
         <!-- <input matInput formControlName="vehiclePurchaseDate" placeholder="Ex: 01/01/2026"> -->
-        <input matInput [matDatepicker]="picker" formControlName="kilometerDate">
+        <input matInput [matDatepicker]="picker" formControlName="kilometersDate">
         <mat-hint>/DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Notas</mat-label>
-      <input matInput formControlName="kilometerNotes" />
+      <input matInput formControlName="kilometersNotes" />
     </mat-form-field>
   </form>
 </mat-dialog-content>
