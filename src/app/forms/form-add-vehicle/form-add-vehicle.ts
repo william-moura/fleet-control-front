@@ -12,11 +12,12 @@ import { FuelType } from '../../models/fuel-type';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MY_DATE_FORMATS } from '../../app.config';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-form-add-vehicle',
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, 
-    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, MatIconModule
   ],
   providers:[
     provideNativeDateAdapter(MY_DATE_FORMATS), 
@@ -34,6 +35,8 @@ export class FormAddVehicle {
   form: FormGroup;
   brands = signal<Brand[]>([]);
   fuelTypes = signal<FuelType[]>([]);
+  previews:string[] = [];
+  selectedFiles:File[] = [];
   constructor() {
     this.form = this.fb.group({
       vehiclePlate: ['', [Validators.required, Validators.pattern(/^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/)]], // Padrão Mercosul
@@ -72,5 +75,41 @@ export class FormAddVehicle {
   }
   onCancel() {
     this.dialogRef.close();
+  }
+
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        
+        reader.onload = (e: any) => {
+          this.previews.push(e.target.result); // URL para o [src] da img
+          this.selectedFiles.push(files[i]);   // Arquivo real para o backend
+        };
+  
+        reader.readAsDataURL(files[i]);
+        const formData = new FormData();
+        formData.append('file', files[i]);
+        this.vehicleService.uploadPhotos(formData).subscribe((photo) => {
+          // this.previews.push(photo.path);
+          console.log(photo);
+        });
+      }
+    }
+  }
+  
+  // Ao clicar em Salvar no formulário
+  async salvar() {
+    const formData = new FormData();
+    formData.append('veiculo_dados', JSON.stringify(this.form.value));
+    
+    // if (this.selectedFile) {
+    //   formData.append('foto', this.selectedFile() as File);
+    // }
+  
+    // Enviar via HttpClient usando FormData (necessário para arquivos)
+    // this.service.salvarComFoto(formData).subscribe(...);
+    console.log(formData);
   }
 }
