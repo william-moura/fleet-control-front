@@ -1,4 +1,5 @@
 import { Driver } from "./driver";
+import { Photo } from "./photo";
 
 export interface Vehicle {
   id: number;
@@ -13,4 +14,5 @@ export interface Vehicle {
   vehicleNotes: string;
   vehicleStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
   drivers: Driver[];
+  photos: Photo[];
 }

@@ -37,6 +37,7 @@ export class FormAddVehicle {
   fuelTypes = signal<FuelType[]>([]);
   previews:string[] = [];
   selectedFiles:File[] = [];
+  photosIds:number[] = [];
   constructor() {
     this.form = this.fb.group({
       vehiclePlate: ['', [Validators.required, Validators.pattern(/^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/)]], // Padrão Mercosul
@@ -49,6 +50,7 @@ export class FormAddVehicle {
       vehiclePurchaseDate: ['', Validators.required],
       vehicleNotes: [''],
       vehicleStatus: ['', Validators.required],
+
     });
     this.vehicleService.getBrands().subscribe((brands) => {
       this.brands.set(brands);
@@ -70,6 +72,8 @@ export class FormAddVehicle {
   }
   onSubmit() {
     if (this.form.valid) {
+      this.form.value.photosIds = this.photosIds;
+      this.form.value.vehicleCurrentMileage = Number(this.form.value.vehicleCurrentMileage);
       this.dialogRef.close(this.form.value);
     }
   }
@@ -92,7 +96,7 @@ export class FormAddVehicle {
         const formData = new FormData();
         formData.append('file', files[i]);
         this.vehicleService.uploadPhotos(formData).subscribe((photo) => {
-          // this.previews.push(photo.path);
+          this.photosIds.push(photo.id);
           console.log(photo);
         });
       }
