@@ -14,11 +14,13 @@ import { provideNativeDateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeD
 import { MY_DATE_FORMATS } from '../../app.config';
 import { MatIconModule } from '@angular/material/icon';
 import { Photo } from '../../models/photo';
+import { UppercaseDirective } from '../../uppercase';
 
 @Component({
   selector: 'app-form-add-vehicle',
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, 
-    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, MatIconModule
+    MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, 
+    MatDatepickerModule, MatNativeDateModule, MatIconModule, UppercaseDirective
   ],
   providers:[
     provideNativeDateAdapter(MY_DATE_FORMATS), 

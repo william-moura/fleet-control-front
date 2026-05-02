@@ -18,11 +18,12 @@ import { Title } from '@angular/platform-browser';
 import { SyncDriverComponent } from '../../components/sync-driver-component/sync-driver-component';
 import { FormAddKmComponent } from '../../forms/form-add-km-component/form-add-km-component';
 import { KilometerService } from '../../services/kilometer-service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-vehicles',
   imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule, MatFormFieldModule, MatButtonModule, 
-    MatIconModule, MatChipsModule, MatPaginatorModule],
+    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule],
   templateUrl: './vehicles.html',
   styleUrl: './vehicles.scss',
 })
