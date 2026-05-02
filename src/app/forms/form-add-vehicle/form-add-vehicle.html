@@ -53,8 +53,8 @@
       <div class="preview-grid">
         @for (foto of previews; track foto; let i = $index) {
           <div class="preview-item">
-            <img [src]="foto" alt="Preview do veículo">
-            <button type="button" class="remove-btn" >
+            <img [src]="foto.path" alt="Preview do veículo">
+            <button type="button" class="remove-btn" (click)="removePhoto(foto)">
               <mat-icon>close</mat-icon>
             </button>
           </div>

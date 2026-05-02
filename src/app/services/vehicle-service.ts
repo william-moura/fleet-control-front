@@ -53,4 +53,7 @@ export class VehicleService {
   uploadPhotos(photos: FormData): Observable<Photo> {
     return this.http.post<Photo>(`${this.API_URL_UPLOADS}`, photos);
   }
+  deletePhoto(photoId: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL_UPLOADS}/${photoId}`);
+  }
 }

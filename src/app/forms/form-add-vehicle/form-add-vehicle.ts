@@ -13,6 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { provideNativeDateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MY_DATE_FORMATS } from '../../app.config';
 import { MatIconModule } from '@angular/material/icon';
+import { Photo } from '../../models/photo';
 
 @Component({
   selector: 'app-form-add-vehicle',
@@ -35,7 +36,7 @@ export class FormAddVehicle {
   form: FormGroup;
   brands = signal<Brand[]>([]);
   fuelTypes = signal<FuelType[]>([]);
-  previews:string[] = [];
+  previews:Photo[] = [];
   selectedFiles:File[] = [];
   photosIds:number[] = [];
   constructor() {
@@ -66,6 +67,9 @@ export class FormAddVehicle {
         dataForm.vehiclePurchaseDate = new Date(dataForm.vehiclePurchaseDate.toString().split('/').reverse().join('-') + 'T00:00:00');        
       }
       dataForm.vehicleStatus = dataForm.vehicleStatus === 'Ativo' || dataForm.vehicleStatus === 'ativo'  ? '1' : '0';
+      this.previews = dataForm.photos.map((photo: Photo) => photo);
+      this.photosIds = dataForm.photos.map((photo: Photo) => photo.id);
+      console.log(this.previews);
       this.form.patchValue(dataForm);
       this.form.get('vehicleId')?.disable();
     }
@@ -88,7 +92,7 @@ export class FormAddVehicle {
         const reader = new FileReader();
         
         reader.onload = (e: any) => {
-          this.previews.push(e.target.result); // URL para o [src] da img
+          //this.previews.push(e.target.result); // URL para o [src] da img
           this.selectedFiles.push(files[i]);   // Arquivo real para o backend
         };
   
@@ -97,7 +101,8 @@ export class FormAddVehicle {
         formData.append('file', files[i]);
         this.vehicleService.uploadPhotos(formData).subscribe((photo) => {
           this.photosIds.push(photo.id);
-          console.log(photo);
+          this.previews.push(photo);
+          console.log(this.previews);
         });
       }
     }
@@ -115,5 +120,13 @@ export class FormAddVehicle {
     // Enviar via HttpClient usando FormData (necessário para arquivos)
     // this.service.salvarComFoto(formData).subscribe(...);
     console.log(formData);
+  }
+  removePhoto(photo: Photo) {
+    this.previews = this.previews.filter((p) => p.id !== photo.id);
+    this.photosIds = this.photosIds.filter((id) => id !== photo.id);
+    this.vehicleService.deletePhoto(photo.id).subscribe((response) => {
+      console.log(response);
+    });
+    console.log(this.previews);
   }
 }
