@@ -19,6 +19,7 @@ import { SyncDriverComponent } from '../../components/sync-driver-component/sync
 import { FormAddKmComponent } from '../../forms/form-add-km-component/form-add-km-component';
 import { KilometerService } from '../../services/kilometer-service';
 import { CommonModule } from '@angular/common';
+import { VehicleHistoryComponent } from '../../components/vehicle-history-component/vehicle-history-component';
 
 @Component({
   selector: 'app-vehicles',
@@ -183,6 +184,16 @@ export class Vehicles {
       } finally {
         this.isLoading.set(false);
       }
+    }
+  }
+  async viewHistory(vehicle: Vehicle) {
+    const dialogRef = this.dialog.open(VehicleHistoryComponent, {
+      width: '600px',
+      data: vehicle,
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      console.log(result);
     }
   }
 }

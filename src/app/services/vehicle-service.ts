@@ -9,6 +9,7 @@ import { Driver } from '../models/driver';
 import { Pagination } from '../models/pagination';
 import { Kilometer } from '../models/kilometer';
 import { Photo } from '../models/photo';
+import { VehicleHistory } from '../models/vehicle-history';
 
 @Injectable({
   providedIn: 'root',
@@ -55,5 +56,8 @@ export class VehicleService {
   }
   deletePhoto(photoId: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL_UPLOADS}/${photoId}`);
+  }
+  getVehicleHistory(vehicleId: number): Observable<VehicleHistory[]> {
+    return this.http.get<VehicleHistory[]>(`${this.API_URL}/${vehicleId}/history`);
   }
 }
