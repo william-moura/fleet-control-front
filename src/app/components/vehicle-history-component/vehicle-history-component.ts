@@ -12,11 +12,12 @@ import { CurrencyPipe } from '@angular/common';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { VehicleHistory } from '../../models/vehicle-history';
 import { VehicleService } from '../../services/vehicle-service';
-
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 @Component({
   selector: 'app-vehicle-history-component',
   imports: [CommonModule, MatListModule, MatIconModule, MatDividerModule, 
-    MatCardModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatDatepickerModule, CurrencyPipe],
+    MatCardModule, MatButtonModule, MatInputModule, MatFormFieldModule, MatDatepickerModule, 
+    CurrencyPipe, MatProgressBarModule],
   templateUrl: './vehicle-history-component.html',
   styleUrl: './vehicle-history-component.scss',
 })
@@ -24,6 +25,8 @@ export class VehicleHistoryComponent {
   historico = signal<VehicleHistory[]>([]);
   data = inject(MAT_DIALOG_DATA);
   private vehicleService = inject(VehicleService);
+  isLoading = signal(true);
+  
   ngOnInit() {
     console.log(this.data, 'data');
     //this.historico.set([
@@ -31,8 +34,15 @@ export class VehicleHistoryComponent {
     //  { id: 2, tipo: 'Manutenção', data: new Date(), descricao: 'Manutenção preventiva', valor: 200 },
     //  { id: 3, tipo: 'Reparo', data: new Date(), descricao: 'Reparo de 1000 reais', valor: 1000 },
     //]);
-    this.vehicleService.getVehicleHistory(this.data.id).subscribe((history: VehicleHistory[]) => {
-      this.historico.set(history);
+    this.vehicleService.getVehicleHistory(this.data.id).subscribe({
+      next: (history: VehicleHistory[]) => {
+        this.historico.set(history);
+        this.isLoading.set(false);
+      },
+      error: (error) => {
+        console.error('Erro ao buscar histórico do veículo:', error);
+        this.isLoading.set(false);
+      }
     });
   }
 }

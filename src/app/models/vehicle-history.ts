@@ -3,6 +3,6 @@ export interface VehicleHistory {
     vehicleId: number;
     description: string;
     date: Date;
-    value: number;
+    totalCost: number;
     type: string;    
 }

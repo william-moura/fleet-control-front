@@ -1,28 +1,32 @@
 <div class="timeline-container">
     <h2>Histórico do Veículo</h2>
-  
-    <mat-list>
-      @for (item of historico(); track item.id + item.type) {
-        <mat-list-item class="timeline-item">
-          <mat-icon matListItemIcon [color]="item.type === 'Abastecimento' ? 'primary' : 'warn'">
-            {{ item.type === 'Abastecimento' ? 'local_gas_station' : 'build' }}
-          </mat-icon>
-  
-          <div matListItemTitle>
-            <strong>{{ item.type }}</strong> - {{ item.date | date:'dd/MM/yyyy' }}
-          </div>
-          
-          <div matListItemLine class="description">
-            {{ item.description }}
-          </div>
-  
-          <div matListItemMeta class="value">
-            {{ item.value | currency:'BRL' }}
-          </div>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      } @empty {
-        <p>Nenhuma atividade registrada para este veículo.</p>
-      }
-    </mat-list>
+    @if (isLoading()) {
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    } @else {
+
+      <mat-list>
+        @for (item of historico(); track item.id + item.type) {
+          <mat-list-item class="timeline-item">
+            <mat-icon matListItemIcon [color]="item.type === 'Abastecimento' ? 'primary' : 'warn'">
+              {{ item.type === 'Abastecimento' ? 'local_gas_station' : 'build' }}
+            </mat-icon>
+    
+            <div matListItemTitle>
+              <strong>{{ item.type }}</strong> - {{ item.date | date:'dd/MM/yyyy' }}
+            </div>
+            
+            <div matListItemLine class="description">
+              {{ item.description }}
+            </div>
+    
+            <div matListItemMeta class="value">
+              {{ item.totalCost | currency:'BRL' }}
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        } @empty {
+          <p>Nenhuma atividade registrada para este veículo.</p>
+        }
+      </mat-list>
+    }
   </div>
