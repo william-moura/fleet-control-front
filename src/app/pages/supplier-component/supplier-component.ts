@@ -15,7 +15,7 @@ import { Supplier } from '../../models/supplier';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
 import { SupplierService } from '../../services/supplier-service';
-import { FormAddSupplier } from '../form-add-supplier/form-add-supplier';
+import { FormAddSupplier } from '../../forms/form-add-supplier/form-add-supplier';
 
 @Component({
   selector: 'app-supplier-component',

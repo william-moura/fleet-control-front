@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
 import { Vehicle } from '../../models/vehicle';
 import { VehicleService } from '../../services/vehicle-service';
-import { FormAddVehicle } from '../form-add-vehicle/form-add-vehicle';
+import { FormAddVehicle } from '../../forms/form-add-vehicle/form-add-vehicle';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom } from 'rxjs';
@@ -18,11 +18,13 @@ import { Title } from '@angular/platform-browser';
 import { SyncDriverComponent } from '../../components/sync-driver-component/sync-driver-component';
 import { FormAddKmComponent } from '../../forms/form-add-km-component/form-add-km-component';
 import { KilometerService } from '../../services/kilometer-service';
+import { CommonModule } from '@angular/common';
+import { VehicleHistoryComponent } from '../../components/vehicle-history-component/vehicle-history-component';
 
 @Component({
   selector: 'app-vehicles',
   imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule, MatFormFieldModule, MatButtonModule, 
-    MatIconModule, MatChipsModule, MatPaginatorModule],
+    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule],
   templateUrl: './vehicles.html',
   styleUrl: './vehicles.scss',
 })
@@ -182,6 +184,16 @@ export class Vehicles {
       } finally {
         this.isLoading.set(false);
       }
+    }
+  }
+  async viewHistory(vehicle: Vehicle) {
+    const dialogRef = this.dialog.open(VehicleHistoryComponent, {
+      width: '600px',
+      data: vehicle,
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      console.log(result);
     }
   }
 }

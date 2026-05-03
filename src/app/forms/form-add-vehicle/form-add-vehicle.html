@@ -6,7 +6,7 @@
   <div class="row">
     <mat-form-field appearance="outline">
       <mat-label>Placa</mat-label>
-      <input matInput formControlName="vehiclePlate" placeholder="ABC1D23">
+      <input matInput formControlName="vehiclePlate" placeholder="ABC1D23" appUppercase />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
@@ -37,6 +37,32 @@
       <mat-label>Modelo</mat-label>
       <input matInput formControlName="vehicleModel" placeholder="Ex: FH 540">
     </mat-form-field>
+  </div>
+  <div class="row">
+    <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none">
+    <mat-form-field appearance="outline">
+      <mat-label>Anexar Fotos do Veículo</mat-label>
+      <input matInput readonly (click)="fileInput.click()" placeholder="Selecione uma foto">
+      <mat-icon matSuffix (click)="fileInput.click()">attach_file</mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="row">
+    <div class="upload-section">
+      <label class="section-label">Fotos do Veículo</label>
+      
+      <div class="preview-grid">
+        @for (foto of previews; track foto; let i = $index) {
+          <div class="preview-item">
+            <img [src]="foto.path" alt="Preview do veículo">
+            <button type="button" class="remove-btn" (click)="removePhoto(foto)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        }
+  
+      </div>
+          
+    </div>
   </div>
   <div class="row">
     <mat-form-field appearance="outline">

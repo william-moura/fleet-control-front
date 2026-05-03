@@ -46,7 +46,7 @@
         </ng-container>
         <ng-container matColumnDef="vehicle_current_mileage">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Quilometragem Atual </th>
-            <td mat-cell *matCellDef="let row"> {{row.vehicleCurrentMileage}} </td>
+            <td mat-cell *matCellDef="let row"> {{row.vehicleCurrentMileage | number:'1.2-2'}} </td>
         </ng-container>
         <ng-container matColumnDef="vehicle_purchase_date">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Data de Compra </th>
@@ -74,6 +74,9 @@
             </button>
             <button mat-icon-button color="primary" title="Adicionar Quilometragem" (click)="addKilometers(row)">
               <mat-icon>speed</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" title="Visualizar Histórico" (click)="viewHistory(row)">
+              <mat-icon>history</mat-icon>
             </button>
             
           </td>

@@ -14,7 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Driver } from '../../models/driver';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
-import { FormAddDriver } from '../form-add-driver/form-add-driver';
+import { FormAddDriver } from '../../forms/form-add-driver/form-add-driver';
 
 export interface Motorista {
   id: number;

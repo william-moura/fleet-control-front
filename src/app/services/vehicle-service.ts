@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 import { Driver } from '../models/driver';
 import { Pagination } from '../models/pagination';
 import { Kilometer } from '../models/kilometer';
+import { Photo } from '../models/photo';
+import { VehicleHistory } from '../models/vehicle-history';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +17,7 @@ import { Kilometer } from '../models/kilometer';
 export class VehicleService {
   private http = inject(HttpClient);
   private readonly API_URL = environment.apiUrl + '/vehicles';
+  private readonly API_URL_UPLOADS = environment.apiUrl + '/upload';
   getAllVehicles(page: number = 1, perPage: number = 10): Observable<Pagination<Vehicle>> {
     const params = new HttpParams()
     .set('page', (page + 1).toString()) // MatPaginator começa em 0, Laravel em 1
@@ -47,5 +50,14 @@ export class VehicleService {
   }
   createKilometer(vehicleId: number, kilometer: Kilometer): Observable<Kilometer> {
     return this.http.post<Kilometer>(`${this.API_URL}/${vehicleId}/kilometers`, kilometer);
+  }
+  uploadPhotos(photos: FormData): Observable<Photo> {
+    return this.http.post<Photo>(`${this.API_URL_UPLOADS}`, photos);
+  }
+  deletePhoto(photoId: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL_UPLOADS}/${photoId}`);
+  }
+  getVehicleHistory(vehicleId: number): Observable<VehicleHistory[]> {
+    return this.http.get<VehicleHistory[]>(`${this.API_URL}/${vehicleId}/history`);
   }
 }
