@@ -20,6 +20,7 @@ import { FormAddKmComponent } from '../../forms/form-add-km-component/form-add-k
 import { KilometerService } from '../../services/kilometer-service';
 import { CommonModule } from '@angular/common';
 import { VehicleHistoryComponent } from '../../components/vehicle-history-component/vehicle-history-component';
+import { FormAddBrand } from '../../forms/form-add-brand/form-add-brand';
 
 @Component({
   selector: 'app-vehicles',
@@ -194,6 +195,26 @@ export class Vehicles {
     const result = await firstValueFrom(dialogRef.afterClosed());
     if (result) {
       console.log(result);
+    }
+  }
+
+  async addBrand() {
+    const dialogRef = this.dialog.open(FormAddBrand, {
+      width: '600px',
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      try {
+        this.isLoading.set(true);
+        await firstValueFrom(this.vehicleService.createBrand(result));
+        this.snackBar.open('Marca cadastrada com sucesso', 'Fechar', { duration: 3000 });      
+      } catch (error) {
+        console.error('Erro ao cadastrar marca:', error);
+        this.snackBar.open('Erro ao cadastrar marca', 'Fechar', { duration: 3000 });
+      } finally {
+        this.isLoading.set(false);
+        this.snackBar.open('Erro ao cadastrar marca', 'Fechar', { duration: 3000 });      
+      }
     }
   }
 }
