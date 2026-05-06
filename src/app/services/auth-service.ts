@@ -34,6 +34,7 @@ export class AuthService {
     // this.permissions.set(authRes.user.permissions);
     this.permissions.set(authRes.permissions.map((permission: Permission) => permission.name));
     this.user.set(authRes.user);
+    localStorage.setItem('userName', authRes.user.name);
   }
   isAuthenticated() {
     return this.isAuthenticatedSignal();
@@ -46,7 +47,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/login`, credentials).pipe(
       tap((res) => {
         // 1. Salva o token para o Interceptor usar depois
-        localStorage.setItem('token', res.token);
+        localStorage.setItem('token', res.token);        
         
         // 2. Salva os dados do usuário no Signal para uso no menu/sidebar
         this.currentUser.set(res.user);
@@ -74,6 +75,7 @@ export class AuthService {
     localStorage.removeItem('token');
     localStorage.removeItem('permissions');
     localStorage.removeItem('roles');
+    localStorage.removeItem('userName');
     this.currentUser.set(null);
     localStorage.clear();
     // 🔥 PASSO CRÍTICO: Limpa o Signal no Logout

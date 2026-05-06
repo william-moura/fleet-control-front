@@ -12,6 +12,7 @@ import { SupplierComponent } from './pages/supplier-component/supplier-component
 import { Users } from './pages/users/users';
 import { roleGuard } from './auth-guard';
 import { Welcome } from './pages/welcome/welcome';
+import { ReportPreviewComponent } from './components/report-preview-component/report-preview-component';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard]},
@@ -25,4 +26,5 @@ export const routes: Routes = [
     { path: 'supplier', component: SupplierComponent, data: { icon: 'local_shipping', name: 'Fornecedores' , permission: 'listar_fornecedores'}, canActivate: [authGuard, roleGuard] },
     { path: 'users', component: Users, data: { icon: 'groups', name: 'Usuários' , permission: 'listar_usuarios'}, canActivate: [authGuard, roleGuard] },
     { path: 'login', component: LoginComponent },    
+    { path: 'report/preview/:id', component: ReportPreviewComponent, data: { icon: 'report', name: 'Visualizar Relatório', permission: 'nothing'} }
 ];

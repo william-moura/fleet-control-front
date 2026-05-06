@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>Filtros: {{ data.title }}</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <p class="desc">{{ data.description }}</p>
+
+  <div class="filter-row">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Período</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate formControlName="startDate" placeholder="Início">
+        <input matEndDate formControlName="endDate" placeholder="Fim">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    @if (data.id === 'consumption_by_vehicle' || data.id === 'fuel_consumption_by_vehicle') {
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Selecione o Veículo</mat-label>
+        <mat-select formControlName="vehicleId">
+          @for (v of vehicles(); track v.id) {
+            <mat-option [value]="v.id">{{ v.vehiclePlate }} - {{ v.vehicleModel }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+
+    @if (data.id === 'driver_consumption') {
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Selecione o Motorista</mat-label>
+        <mat-select formControlName="driverId">
+          @for (m of drivers(); track m.id) {
+            <mat-option [value]="m.id">{{ m.driverName }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>CANCELAR</button>
+  <button mat-flat-button color="primary" type="button" (click)="gerar()" [disabled]="form.invalid">
+    GERAR RELATÓRIO
+  </button>
+</mat-dialog-actions>
