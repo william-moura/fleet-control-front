@@ -32,8 +32,7 @@ export class ReportsComponent {
     const dialogRef = this.dialog.open(FilterReportComponent, {
       data: reportCard,
     });
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result, 'result');
+    dialogRef.afterClosed().subscribe((result) => {      
       if (result) {
         this.router.navigate(['/report/preview', reportCard.id], { queryParams: result });
       }
