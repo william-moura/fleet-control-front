@@ -44,8 +44,7 @@ export class ReportPreviewComponent implements OnInit {
 
     // 2. Captura os Filtros (queryParams)
     this.route.queryParams.subscribe(params => {
-      this.filtros = params;
-      console.log(this.filtros, 'FILTROS');
+      this.filtros = params;      
       this.carregarDados();
     });
   }
@@ -55,15 +54,16 @@ export class ReportPreviewComponent implements OnInit {
     this.relatorioService.getDados(this.idRelatorio!, this.filtros).subscribe(res => {
        this.colunasExibidas.set(res.columns);
        this.dadosPreview.set(res.data);
-       this.dataSource.data = this.dadosPreview();
-       console.log(this.dadosPreview(), 'DADOS PREVIEW');
+       this.dataSource.data = this.dadosPreview();       
     });
   }
   exportarPDF() {
     console.log('PDF');
+    const queryParams = new URLSearchParams(this.filtros).toString();
+    const url = `${environment.apiUrl}/reports/${this.idRelatorio}/pdf?${queryParams}`;
+    window.open(url, '_blank');    
   }
-  exportarExcel() {
-    console.log('Excel')
+  exportarExcel() {    
     const queryParams = new URLSearchParams(this.filtros).toString();
     const url = `${environment.apiUrl}/reports/${this.idRelatorio}/excel?${queryParams}`;
     window.open(url, '_blank');
