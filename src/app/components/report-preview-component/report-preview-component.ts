@@ -18,6 +18,7 @@ import { Driver } from '../../models/driver';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
 import { FormAddDriver } from '../../forms/form-add-driver/form-add-driver';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -63,5 +64,8 @@ export class ReportPreviewComponent implements OnInit {
   }
   exportarExcel() {
     console.log('Excel')
+    const queryParams = new URLSearchParams(this.filtros).toString();
+    const url = `${environment.apiUrl}/reports/${this.idRelatorio}/excel?${queryParams}`;
+    window.open(url, '_blank');
   }
 }
