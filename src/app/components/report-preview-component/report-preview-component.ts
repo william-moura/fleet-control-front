@@ -1,16 +1,39 @@
-import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ReportService } from '../../services/report-service';
+import { Component, viewChild, AfterViewInit, inject, signal, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCardModule } from '@angular/material/card'
+import { DriverService } from '../../services/driver-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { Driver } from '../../models/driver';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { firstValueFrom } from 'rxjs';
+import { FormAddDriver } from '../../forms/form-add-driver/form-add-driver';
+
 
 @Component({
   selector: 'app-report-preview-component',
-  imports: [],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, 
+    MatSortModule, MatInputModule, MatFormFieldModule, 
+    MatButtonModule, MatIconModule, MatChipsModule, MatCardModule],
   templateUrl: './report-preview-component.html',
   styleUrl: './report-preview-component.scss',
 })
 export class ReportPreviewComponent implements OnInit {
   idRelatorio: string | null = null;
   filtros: any = {};
+  dadosPreview = signal<any[]>([]);
+  colunasExibidas = signal<string[]>([]);
+  dataSource = new MatTableDataSource<any>([]);
 
   constructor(private route: ActivatedRoute, private relatorioService: ReportService) {}
 
@@ -29,7 +52,16 @@ export class ReportPreviewComponent implements OnInit {
   carregarDados() {
     // Agora chama o Laravel passando tudo
     this.relatorioService.getDados(this.idRelatorio!, this.filtros).subscribe(res => {
-       // Alimenta a tabela em tela...
+       this.colunasExibidas.set(res.columns);
+       this.dadosPreview.set(res.data);
+       this.dataSource.data = this.dadosPreview();
+       console.log(this.dadosPreview(), 'DADOS PREVIEW');
     });
+  }
+  exportarPDF() {
+    console.log('PDF');
+  }
+  exportarExcel() {
+    console.log('Excel')
   }
 }
