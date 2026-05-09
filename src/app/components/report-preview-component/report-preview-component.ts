@@ -32,9 +32,11 @@ import { environment } from '../../../environments/environment';
 export class ReportPreviewComponent implements OnInit {
   idRelatorio: string | null = null;
   filtros: any = {};
-  dadosPreview = signal<any[]>([]);
+  dadosPreview: any = [];
   colunasExibidas = signal<string[]>([]);
   dataSource = new MatTableDataSource<any>([]);
+  isLoading = signal<boolean>(true);
+  headers: any = [];
 
   constructor(private route: ActivatedRoute, private relatorioService: ReportService) {}
 
@@ -51,10 +53,11 @@ export class ReportPreviewComponent implements OnInit {
 
   carregarDados() {
     // Agora chama o Laravel passando tudo
-    this.relatorioService.getDados(this.idRelatorio!, this.filtros).subscribe(res => {
-       this.colunasExibidas.set(res.columns);
-       this.dadosPreview.set(res.data);
-       this.dataSource.data = this.dadosPreview();       
+    this.relatorioService.getDados(this.idRelatorio!, this.filtros).subscribe(res => {      
+      this.headers = res.columns;      
+      this.dataSource.data = res.data;
+      this.colunasExibidas.set(Object.keys(this.headers));
+      this.isLoading.set(false);
     });
   }
   exportarPDF() {

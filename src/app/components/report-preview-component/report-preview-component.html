@@ -1,4 +1,4 @@
-@if (dadosPreview().length > 0) {
+@if (!isLoading()) {
     <mat-card class="preview-container">
       <mat-card-header>
         <mat-card-title>Pré-visualização dos Dados</mat-card-title>
@@ -17,16 +17,10 @@
 
           @for (col of colunasExibidas(); track col) {
             <ng-container [matColumnDef]="col">
-              <th mat-header-cell *matHeaderCellDef> {{ col | titlecase }} </th>
+              <th mat-header-cell *matHeaderCellDef> {{ headers[col] | titlecase }} </th>
               <td mat-cell *matCellDef="let element">
-                @if (col === 'total_cost') {
-                  {{ element[col] | currency:'BRL' }}
-                } @else if (col === 'media_kml') {
-                  {{ element[col] | number:'1.2-2' }} km/L
-                } @else {
-                  {{ element[col] }}
-                }
-                 </td>
+                {{ element[col] }}
+              </td>
             </ng-container>
           }
         
