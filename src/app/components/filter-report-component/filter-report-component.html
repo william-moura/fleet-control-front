@@ -2,7 +2,7 @@
 
 <mat-dialog-content [formGroup]="form">
   <p class="desc">{{ data.description }}</p>
-
+  @if (data.filter) {
   <div class="filter-row">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Período</mat-label>
@@ -34,8 +34,9 @@
           }
         </mat-select>
       </mat-form-field>
-    }
-  </div>
+      }
+    </div>
+  }
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">

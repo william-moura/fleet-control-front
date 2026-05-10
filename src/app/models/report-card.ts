@@ -5,6 +5,7 @@ export interface ReportCard {
     icon: string;
     category: 'Combustível' | 'Frota' | 'Financeiro';
     route: string;
+    filter?: boolean;
 }
 
 export const reportCards: ReportCard[] = [
@@ -15,6 +16,7 @@ export const reportCards: ReportCard[] = [
         icon: 'directions_car',
         category: 'Combustível',
         route: '/reports/consumption-by-vehicle',
+        filter: true,
     },
     { 
         id: 'total_cost', 
@@ -22,7 +24,8 @@ export const reportCards: ReportCard[] = [
         description: 'Soma de manutenções e abastecimentos.', 
         icon: 'payments', 
         category: 'Financeiro', 
-        route: '/reports/total-cost'
+        route: '/reports/total-cost',
+        filter: true,
     },
     {
         id: 'fuel_consumption_by_vehicle',
@@ -31,6 +34,24 @@ export const reportCards: ReportCard[] = [
         icon: 'local_gas_station',
         category: 'Combustível',
         route: '/reports/fuel-consumption-by-vehicle',
+        filter: true,
+    },
+    {
+        id: 'consumption_by_driver',
+        title: 'Consumo por Motorista',
+        description: 'Consumo de combustível por motorista.',
+        icon: 'directions_car',
+        category: 'Combustível',
+        route: '/reports/consumption-by-driver',
+        filter: true,
+    },
+    {
+        id: 'active_vehicles',
+        title: 'Veículos Ativos',
+        description: 'Veículos ativos no sistema.',
+        icon: 'directions_car',
+        category: 'Frota',
+        route: '/reports/active-vehicles',
+        filter: false,
     }
-            
 ];

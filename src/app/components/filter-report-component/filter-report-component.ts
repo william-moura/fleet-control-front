@@ -42,15 +42,14 @@ export class FilterReportComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: ReportCard
   ) {
     this.form = this.fb.group({
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      startDate: ['', this.data.filter ? Validators.required : null],
+      endDate: ['', this.data.filter ? Validators.required : null],
       vehicleId: [''],
       driverId: [''],
     });
   }
   // data = inject(MAT_DIALOG_DATA);
-  ngOnInit() {
-    console.log(this.data, 'data');
+  ngOnInit() {    
     this.vehicleService.getAllVehicles(0, 10000).subscribe((vehicles) => {
       this.vehicles.set(vehicles.data);
     });
@@ -62,8 +61,12 @@ export class FilterReportComponent implements OnInit {
   gerar() {
     try {
       const dadosForm = this.form.value;
-      dadosForm.startDate = dadosForm.startDate.toISOString();
-      dadosForm.endDate = dadosForm.endDate.toISOString();
+      if (dadosForm.startDate) {
+        dadosForm.startDate = dadosForm.startDate.toISOString();
+      }
+      if (dadosForm.endDate) {
+        dadosForm.endDate = dadosForm.endDate.toISOString();
+      }
       console.log(dadosForm, 'dados form')
       this.dialogRef.close(dadosForm); 
     } catch (error) {
