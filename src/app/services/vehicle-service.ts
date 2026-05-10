@@ -60,4 +60,13 @@ export class VehicleService {
   getVehicleHistory(vehicleId: number): Observable<VehicleHistory[]> {
     return this.http.get<VehicleHistory[]>(`${this.API_URL}/${vehicleId}/history`);
   }
+  createBrand(brand: Brand): Observable<Brand> {
+    return this.http.post<Brand>(`${this.API_URL}/brands`, brand);
+  }
+  updateBrand(id: number, brand: Brand): Observable<Brand> {
+    return this.http.put<Brand>(`${this.API_URL}/brands/${id}`, brand);
+  }
+  deleteBrand(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/brands/${id}`);
+  }
 }

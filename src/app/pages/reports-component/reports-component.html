@@ -1,1 +1,21 @@
-<p>reports-component works!</p>
+<div class="container">
+    <h1 class="mat-h1">Central de Relatórios</h1>
+  
+    @for (cat of ['Combustível', 'Frota', 'Financeiro']; track cat) {
+      <h2 class="category-title">{{ cat }}</h2>
+      <div class="report-grid">
+        @for (rel of filtrarPorCategoria(cat); track rel.id) {
+          <mat-card class="report-card" >
+            <mat-card-header>
+              <mat-icon mat-card-avatar class="report-icon">{{ rel.icon }}</mat-icon>
+              <mat-card-title>{{ rel.title }}</mat-card-title>
+              <mat-card-subtitle>{{ rel.description }}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-actions align="end">
+              <button mat-button color="primary" (click)="openFilterReport(rel)">VISUALIZAR</button>
+            </mat-card-actions>
+          </mat-card>
+        }
+      </div>
+    }
+  </div>

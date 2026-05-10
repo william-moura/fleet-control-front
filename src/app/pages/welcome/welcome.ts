@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
 })
 export class Welcome {
   protected authService = inject(AuthService);
-  userName = computed(() => this.authService.currentUser()?.name || 'Usuário');
+  userName = computed(() => this.authService.currentUser()?.name || localStorage.getItem('userName'));
   saudacao = computed(() => {
     const hora = new Date().getHours();
     if (hora < 12) return 'Bom dia';
