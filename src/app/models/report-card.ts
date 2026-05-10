@@ -28,15 +28,6 @@ export const reportCards: ReportCard[] = [
         filter: true,
     },
     {
-        id: 'fuel_consumption_by_vehicle',
-        title: 'Consumo de Combustível por Veículo',
-        description: 'Consumo de combustível por veículo.',
-        icon: 'local_gas_station',
-        category: 'Combustível',
-        route: '/reports/fuel-consumption-by-vehicle',
-        filter: true,
-    },
-    {
         id: 'consumption_by_driver',
         title: 'Consumo por Motorista',
         description: 'Consumo de combustível por motorista.',

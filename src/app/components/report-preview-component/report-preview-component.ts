@@ -37,7 +37,7 @@ export class ReportPreviewComponent implements OnInit {
   dataSource = new MatTableDataSource<any>([]);
   isLoading = signal<boolean>(true);
   headers: any = [];
-
+  titleReport = signal<string>('');
   constructor(private route: ActivatedRoute, private relatorioService: ReportService) {}
 
   ngOnInit() {
@@ -57,6 +57,7 @@ export class ReportPreviewComponent implements OnInit {
       this.headers = res.columns;      
       this.dataSource.data = res.data;
       this.colunasExibidas.set(Object.keys(this.headers));
+      this.titleReport.set(res.title);
       this.isLoading.set(false);
     });
   }

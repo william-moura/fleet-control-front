@@ -1,7 +1,7 @@
 @if (!isLoading()) {
     <mat-card class="preview-container">
       <mat-card-header>
-        <mat-card-title>Pré-visualização dos Dados</mat-card-title>
+        <mat-card-title>{{ titleReport() }}</mat-card-title>
         <div class="acoes-exportacao">
           <button mat-stroked-button (click)="exportarExcel()">
             <mat-icon>table_view</mat-icon> Excel
