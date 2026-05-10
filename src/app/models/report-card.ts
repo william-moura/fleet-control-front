@@ -53,5 +53,23 @@ export const reportCards: ReportCard[] = [
         category: 'Frota',
         route: '/reports/active-vehicles',
         filter: false,
+    },
+    {
+        id: 'vehicle_higher_cost',
+        title: 'Veículos com Maior Custo',
+        description: 'Veículos com maior custo de manutenção e abastecimento.',
+        icon: 'directions_car',
+        category: 'Frota',
+        route: '/reports/vehicle-highest-cost',
+        filter: true,
+    },
+    {
+        id: 'monthly_fuel_cost',
+        title: 'Custo Mensal de Combustível por Veículo',
+        description: 'Custo mensal de combustível por veículo.',
+        icon: 'local_gas_station',
+        category: 'Combustível',
+        route: '/reports/monthly-fuel-cost',
+        filter: true,
     }
 ];
