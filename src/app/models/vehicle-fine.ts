@@ -7,8 +7,9 @@ export interface VehicleFine {
     driver: Driver;
     fineDate: Date;
     fineAmount: number;
-    fineStatus: 'Pendente' | 'Pago' | 'Cancelado';
-    fineType: 'Leve' | 'Média' | 'Grave' | 'Gravíssima';
-    fineDueDate: Date;
+    fineStatus: '1' | '2' | '0' | 'pendente' | 'pago' | 'cancelado';
+    fineLevel: 'leve' | 'media' | 'grave' | 'gravissima';
+    finePaidDate: Date;
     fineNotes: string;
+    finePoints: number;
 }

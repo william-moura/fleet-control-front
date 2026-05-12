@@ -41,9 +41,11 @@ export class FormAddVehicleFine {
       driverId: ['', Validators.required],
       fineDate: ['', Validators.required],
       fineAmount: ['', Validators.required],
-      fineType: ['', Validators.required],
-      fineDueDate: ['', Validators.required],
+      fineLevel: ['', Validators.required],
+      finePaidDate: ['', Validators.required],
       fineNotes: [''],
+      fineStatus: ['', ],
+      finePoints: ['', [Validators.required, Validators.min(1)]],
     });
     this.vehicleService.getAllVehicles(0, 1000).subscribe((vehicles) => {
       this.vehicles.set(vehicles.data);

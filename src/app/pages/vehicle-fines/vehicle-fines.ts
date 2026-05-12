@@ -24,7 +24,7 @@ import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
   styleUrl: './vehicle-fines.scss',
 })
 export class VehicleFines implements OnInit {
-  displayedColumns: string[] = ['vehiclePlate', 'driverName', 'fineDate', 'fineAmount', 'fineDueDate', 'fineType', 'acoes'];
+  displayedColumns: string[] = ['vehiclePlate', 'driverName', 'fineDate', 'fineAmount', 'finePaidDate', 'fineLevel', 'acoes'];
   dataSource = new MatTableDataSource<VehicleFine>([]);
   // paginator = viewChild.required(MatPaginator);
   sort = viewChild.required(MatSort);

@@ -32,7 +32,7 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Tipo de Multa</mat-label>
-      <mat-select formControlName="fineType">
+      <mat-select formControlName="fineLevel">
         <mat-option value="leve">Leve</mat-option>
         <mat-option value="media">Media</mat-option>
         <mat-option value="grave">Grave</mat-option>
@@ -40,12 +40,24 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="fineStatus">
+        <mat-option value="pendente">Pendente</mat-option>
+        <mat-option value="pago">Pago</mat-option>
+        <mat-option value="cancelado">Cancelado</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Pontos</mat-label>
+      <input matInput formControlName="finePoints" placeholder="Ex: 3" mask="separator.0" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Descrição</mat-label>
       <input matInput formControlName="fineNotes" />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data de Vencimento</mat-label>
-        <input matInput [matDatepicker]="picker2" formControlName="fineDueDate">
+        <input matInput [matDatepicker]="picker2" formControlName="finePaidDate">
         <mat-hint>/DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker2" ></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
