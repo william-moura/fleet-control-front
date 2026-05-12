@@ -54,6 +54,20 @@ export class FormAddVehicleFine {
       this.drivers.set(drivers.data);
     });
   }
+  ngOnInit() {
+    if (this.data) {
+      const dataForm = { ...this.data };
+      if (dataForm.finePaidDate) {
+        dataForm.finePaidDate = new Date(dataForm.finePaidDate.toString().split('/').reverse().join('-') + 'T00:00:00');        
+      }
+      if (dataForm.fineDate) {
+        dataForm.fineDate = new Date(dataForm.fineDate.toString().split('/').reverse().join('-') + 'T00:00:00');        
+      }
+      console.log(dataForm, 'data formmommomom');
+      this.form.patchValue(dataForm);
+      this.form.get('id')?.disable();
+    }
+  }
   onSubmit() {
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);

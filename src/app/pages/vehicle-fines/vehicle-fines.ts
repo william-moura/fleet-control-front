@@ -39,6 +39,7 @@ export class VehicleFines implements OnInit {
     this.getVehicleFines();
   }
   updateFine(fine: VehicleFine) {
+    console.log(fine, 'finenene');
     const dialogRef = this.dialog.open(FormAddVehicleFine, {
       width: '600px',
       disableClose: true,

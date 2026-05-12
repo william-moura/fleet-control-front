@@ -53,11 +53,11 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Descrição</mat-label>
-      <input matInput formControlName="fineNotes" />
+      <input matInput formControlName="fineNotes"  />
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data de Vencimento</mat-label>
-        <input matInput [matDatepicker]="picker2" formControlName="finePaidDate">
+        <input matInput [matDatepicker]="picker2" formControlName="finePaidDate" >
         <mat-hint>/DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker2" ></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
