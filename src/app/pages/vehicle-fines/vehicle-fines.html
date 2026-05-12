@@ -1,1 +1,53 @@
-<p>vehicle-fines works!</p>
+<div class="container-pagina">
+    <div class="header-acoes">
+      <h2>Gestão de Multas</h2>
+      <button mat-raised-button color="primary" (click)="openAddFineDialog()">
+        <mat-icon>add</mat-icon> Nova Multa
+      </button>
+    </div>
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="vehiclePlate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Placa </th>
+          <td mat-cell *matCellDef="let row"> {{row.vehiclePlate}} </td>
+        </ng-container>
+        <ng-container matColumnDef="driverName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Motorista </th>
+          <td mat-cell *matCellDef="let row"> {{row.driverName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="fineDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Data da Multa </th>
+          <td mat-cell *matCellDef="let row"> {{row.fineDate}} </td>
+        </ng-container>
+        <ng-container matColumnDef="fineAmount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>
+          <td mat-cell *matCellDef="let row"> {{row.fineAmount}} </td>
+        </ng-container>
+        <ng-container matColumnDef="fineStatus">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+          <td mat-cell *matCellDef="let row"> {{row.fineStatus}} </td>
+        </ng-container>
+        <ng-container matColumnDef="fineType">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Multa </th>
+          <td mat-cell *matCellDef="let row"> {{row.fineType}} </td>
+        </ng-container>
+        <ng-container matColumnDef="fineDueDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Vencimento </th>
+            <td mat-cell *matCellDef="let row"> {{row.fineDueDate}} </td>
+          </ng-container>
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef> Ações </th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button color="accent" title="Editar" (click)="updateFine(row)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" title="Excluir" (click)="deleteFine(row)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+</div>

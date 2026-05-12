@@ -1,1 +1,58 @@
-<p>form-add-vehicle-fine works!</p>
+<h2 mat-dialog-title>Cadastro de Multa</h2>
+<mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Veículo</mat-label>
+      <mat-select formControlName="vehicleId">
+        <mat-option [value]="null">Selecione um veículo</mat-option>
+        @for (vehicle of vehicles(); track vehicle.id) {
+          <mat-option [value]="vehicle.id">{{vehicle.vehiclePlate}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Motorista</mat-label>
+      <mat-select formControlName="driverId">
+        <mat-option [value]="null">Selecione um motorista</mat-option>
+        @for (driver of drivers(); track driver.id) {
+          <mat-option [value]="driver.id">{{driver.driverName}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Data da Multa</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fineDate">
+      <mat-hint>/DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Valor da Multa</mat-label>
+      <input matInput formControlName="fineAmount" mask="separator.2" placeholder="Ex: 100.00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de Multa</mat-label>
+      <mat-select formControlName="fineType">
+        <mat-option value="leve">Leve</mat-option>
+        <mat-option value="media">Media</mat-option>
+        <mat-option value="grave">Grave</mat-option>
+        <mat-option value="gravissima">Gravissima</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="fineNotes" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Data de Vencimento</mat-label>
+        <input matInput [matDatepicker]="picker2" formControlName="fineDueDate">
+        <mat-hint>/DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker2" ></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">Salvar</button>
+</mat-dialog-actions>
