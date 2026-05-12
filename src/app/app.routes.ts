@@ -13,12 +13,14 @@ import { Users } from './pages/users/users';
 import { roleGuard } from './auth-guard';
 import { Welcome } from './pages/welcome/welcome';
 import { ReportPreviewComponent } from './components/report-preview-component/report-preview-component';
+import { VehicleFines } from './pages/vehicle-fines/vehicle-fines';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard]},
     { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard',  permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard] },
     { path: 'drivers', component: DriversComponent, data: { icon: 'groups', name: 'Motoristas', permission: 'listar_motoristas'}, canActivate: [authGuard, roleGuard] },
     { path: 'vehicles', component: Vehicles, data: { icon: 'local_shipping', name: 'Veículos', permission: 'listar_veiculos'}, canActivate: [authGuard, roleGuard] },
+    { path: 'vehicle-fines', component: VehicleFines, data: { icon: 'local_shipping', name: 'Multas', permission: 'listar_multas_veiculo'}, canActivate: [authGuard, roleGuard] },
     { path: 'kilometers', component: KmComponent, data: { icon: 'speed', name: 'Kilometragem' }, canActivate: [authGuard] },
     { path: 'maintenance', component: MaintenanceComponent, data: { icon: 'build', name: 'Manutenção' , permission: 'listar_manutencoes'}, canActivate: [authGuard, roleGuard] },
     { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' , permission: 'listar_abastecimento'}, canActivate: [authGuard, roleGuard] },

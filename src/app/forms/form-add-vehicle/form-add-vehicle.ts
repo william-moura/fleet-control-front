@@ -70,8 +70,7 @@ export class FormAddVehicle {
       }
       dataForm.vehicleStatus = dataForm.vehicleStatus === 'Ativo' || dataForm.vehicleStatus === 'ativo'  ? '1' : '0';
       this.previews = dataForm.photos.map((photo: Photo) => photo);
-      this.photosIds = dataForm.photos.map((photo: Photo) => photo.id);
-      console.log(this.previews);
+      this.photosIds = dataForm.photos.map((photo: Photo) => photo.id);      
       this.form.patchValue(dataForm);
       this.form.get('vehicleId')?.disable();
     }
