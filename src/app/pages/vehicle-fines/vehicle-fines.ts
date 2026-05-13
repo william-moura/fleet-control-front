@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { Component, inject, OnInit, signal, viewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -24,7 +24,7 @@ import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
   styleUrl: './vehicle-fines.scss',
 })
 export class VehicleFines implements OnInit {
-  displayedColumns: string[] = ['vehiclePlate', 'driverName', 'fineDate', 'fineAmount', 'finePaidDate', 'fineLevel', 'acoes'];
+  displayedColumns: string[] = ['vehiclePlate', 'driverName', 'fineDate', 'fineAmount', 'finePaidDate', 'fineLevel', 'fineStatus', 'acoes'];
   dataSource = new MatTableDataSource<VehicleFine>([]);
   // paginator = viewChild.required(MatPaginator);
   sort = viewChild.required(MatSort);
@@ -120,5 +120,10 @@ export class VehicleFines implements OnInit {
         this.isLoading.set(false);
       }
     });
+  }
+  onPageChange(event: PageEvent) {
+    this.indicePagina = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.getVehicleFines();
   }
 }

@@ -15,12 +15,13 @@ import { MY_DATE_FORMATS } from '../../app.config';
 import { MatIconModule } from '@angular/material/icon';
 import { Photo } from '../../models/photo';
 import { UppercaseDirective } from '../../uppercase';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-form-add-vehicle',
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, 
     MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, 
-    MatDatepickerModule, MatNativeDateModule, MatIconModule, UppercaseDirective
+    MatDatepickerModule, MatNativeDateModule, MatIconModule, UppercaseDirective, NgxMaskDirective
   ],
   providers:[
     provideNativeDateAdapter(MY_DATE_FORMATS), 

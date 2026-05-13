@@ -69,7 +69,7 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   .nav-list {
     list-style: none;
-    padding: 20px 0;
+    padding: 2px 0;
     flex-grow: 1;
 
     .nav-item {
@@ -91,7 +91,7 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         color: white;
         display: flex;
         align-items: center;
-        padding: 12px 15px;
+        padding: 10px 15px;
         gap: 15px;
 
         .material-icons {
