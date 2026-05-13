@@ -1,3 +1,5 @@
+import { Vehicle } from "./vehicle";
+
 export interface Kilometer {
   id: number;
   kilometersValue: number;
@@ -5,4 +7,5 @@ export interface Kilometer {
   kilometersNotes: string;
   driverId: number;
   vehicleId: number;
+  vehicle: Vehicle;
 }
