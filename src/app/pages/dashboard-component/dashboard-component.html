@@ -75,5 +75,21 @@
           </mat-list>
         </mat-card-content>
       </mat-card>
+      <mat-card class="list-card warning-border">
+        <mat-card-header>
+          <mat-card-title>Multas a pagar</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            @for (f of dashboard()?.recentFines; track f.id) {
+              <mat-list-item>
+                <mat-icon matListItemIcon color="warn">payment</mat-icon>
+                <div matListItemTitle>{{ f.vehicle.vehiclePlate }}</div>
+                <div matListItemLine>Vencimento: {{ f.finePaidDate | date:'dd/MM' }}</div>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>

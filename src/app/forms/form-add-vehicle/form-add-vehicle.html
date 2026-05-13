@@ -71,7 +71,13 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Quilometragem Atual</mat-label>
-        <input matInput formControlName="vehicleCurrentMileage" placeholder="Ex: 100000">
+        <input matInput formControlName="vehicleCurrentMileage" placeholder="Ex: 100000"
+        mask="separator.2" 
+        placeholder="Ex: 10,00"
+        thousandSeparator="." 
+        decimalMarker="," 
+        decimalSeparator=","
+        >
     </mat-form-field>
   </div>
   <div class="row">
