@@ -10,5 +10,5 @@ export interface Dashboard {
     recentFuelSupplies: FuelSupply[] | null;
     recentMaintenances: Maintenance[] | null;
     evolutionExpenses: EvolutionExpenses;
-    recentFines: VehicleFine[] | null;
+    nextFinesToPay: VehicleFine[] | null;
 }
