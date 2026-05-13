@@ -20,7 +20,7 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard',  permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard] },
     { path: 'drivers', component: DriversComponent, data: { icon: 'groups', name: 'Motoristas', permission: 'listar_motoristas'}, canActivate: [authGuard, roleGuard] },
     { path: 'vehicles', component: Vehicles, data: { icon: 'local_shipping', name: 'Veículos', permission: 'listar_veiculos'}, canActivate: [authGuard, roleGuard] },
-    { path: 'vehicle-fines', component: VehicleFines, data: { icon: 'local_shipping', name: 'Multas', permission: 'listar_multas_veiculo'}, canActivate: [authGuard, roleGuard] },
+    { path: 'vehicle-fines', component: VehicleFines, data: { icon: 'payment', name: 'Multas', permission: 'listar_multas_veiculo'}, canActivate: [authGuard, roleGuard] },
     { path: 'kilometers', component: KmComponent, data: { icon: 'speed', name: 'Kilometragem' }, canActivate: [authGuard] },
     { path: 'maintenance', component: MaintenanceComponent, data: { icon: 'build', name: 'Manutenção' , permission: 'listar_manutencoes'}, canActivate: [authGuard, roleGuard] },
     { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' , permission: 'listar_abastecimento'}, canActivate: [authGuard, roleGuard] },
