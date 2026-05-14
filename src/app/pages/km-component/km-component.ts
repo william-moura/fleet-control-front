@@ -20,6 +20,7 @@ import { Kilometer } from '../../models/kilometer';
 import { firstValueFrom } from 'rxjs';
 import { FormAddKmComponent } from '../../forms/form-add-km-component/form-add-km-component';
 import { VehicleService } from '../../services/vehicle-service';
+import { FormAddKmFull } from '../../forms/form-add-km-full/form-add-km-full';
 
 @Component({
   selector: 'app-km-component',
@@ -114,13 +115,13 @@ export class KmComponent {
     }
   }
   openAddKmDialog() {
-    const dialogRef = this.dialog.open(FormAddKmComponent, {
+    const dialogRef = this.dialog.open(FormAddKmFull, {
       width: '600px',
       data: null,
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.kilometerService.createKilometer(result.vehicleId, result.kilometersValue).subscribe({
+        this.kilometerService.createKilometer(result).subscribe({
           next: () => {
             this.getKilometers();
             this.snackBar.open('Quilometragem adicionada com sucesso', 'Fechar', { duration: 3000 });
