@@ -15,4 +15,5 @@ export interface Vehicle {
   vehicleStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
   drivers: Driver[];
   photos: Photo[];
+  totalKilometersCost: number;
 }
