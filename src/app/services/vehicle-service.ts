@@ -69,4 +69,7 @@ export class VehicleService {
   deleteBrand(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/brands/${id}`);
   }
+  listKilometers(): Observable<Kilometer[]> {
+    return this.http.get<Kilometer[]>(`${this.API_URL}/kilometers`);
+  }
 }
