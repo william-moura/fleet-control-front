@@ -212,8 +212,7 @@ export class Vehicles {
         console.error('Erro ao cadastrar marca:', error);
         this.snackBar.open('Erro ao cadastrar marca', 'Fechar', { duration: 3000 });
       } finally {
-        this.isLoading.set(false);
-        this.snackBar.open('Erro ao cadastrar marca', 'Fechar', { duration: 3000 });      
+        this.isLoading.set(false);        
       }
     }
   }

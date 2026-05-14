@@ -113,4 +113,24 @@ export class KmComponent {
       });
     }
   }
+  openAddKmDialog() {
+    const dialogRef = this.dialog.open(FormAddKmComponent, {
+      width: '600px',
+      data: null,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.kilometerService.createKilometer(result.vehicleId, result.kilometersValue).subscribe({
+          next: () => {
+            this.getKilometers();
+            this.snackBar.open('Quilometragem adicionada com sucesso', 'Fechar', { duration: 3000 });
+          },
+          error: (error) => {
+            console.error('Erro ao adicionar quilometragem:', error);
+            this.snackBar.open('Erro ao adicionar quilometragem', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
+    });
+  }
 }
