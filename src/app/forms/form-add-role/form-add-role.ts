@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { UserService } from '../../services/user-service';
 import { Permission } from '../../models/permission';
+import { RolesServices } from '../../services/roles-services';
 
 @Component({
   selector: 'app-form-add-role',
@@ -26,12 +27,12 @@ export class FormAddRole {
   form: FormGroup;
   private fb = inject(FormBuilder);
   permissions = signal<Permission[]>([]);
-  constructor() {
+  constructor(private rolesService: RolesServices) {
     this.form = this.fb.group({
-      role: ['', Validators.required],
+      name: ['', Validators.required],
       permissions: ['', Validators.required],
     });
-    this.userService.getPermissions().subscribe((permissions) => {
+    this.rolesService.getPermissions().subscribe((permissions) => {
       this.permissions.set(permissions);
     });
   }

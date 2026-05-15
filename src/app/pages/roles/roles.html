@@ -10,11 +10,11 @@
       <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Cargo </th>
-          <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+          <td mat-cell *matCellDef="let row"> {{ row.name }} </td>
         </ng-container>
         <ng-container matColumnDef="permissions">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Permissões </th>
-          <td mat-cell *matCellDef="let row"> {{row.permissions}} </td>
+          <td mat-cell *matCellDef="let row"> {{ row.permissions | join }} </td>
         </ng-container>
         <ng-container matColumnDef="acoes">
           <th mat-header-cell *matHeaderCellDef> Ações </th>

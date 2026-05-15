@@ -15,16 +15,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { firstValueFrom } from 'rxjs';
 import { FormAddRole } from '../../forms/form-add-role/form-add-role';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { RolesServices } from '../../services/roles-services';
+import { JoinPipe } from '../../join-pipe';
+import { Permission } from '../../models/permission';
 @Component({
   selector: 'app-roles',
   imports: [CommonModule, MatTableModule, MatPaginatorModule, 
     MatSortModule, MatInputModule, MatFormFieldModule, 
-    MatButtonModule, MatIconModule, MatChipsModule],
+    MatButtonModule, MatIconModule, MatChipsModule, JoinPipe],
   templateUrl: './roles.html',
   styleUrl: './roles.scss',
 })
-export class Roles {
-  private userService = inject(UserService);
+export class Roles {  
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   totalRegistros = 0;
@@ -32,11 +34,13 @@ export class Roles {
   indicePagina = 0; 
   displayedColumns: string[] = ['role', 'permissions', 'acoes'];
   dataSource = new MatTableDataSource<Role>([]);
+  private rolesService = inject(RolesServices);
+  permissions = signal<Permission[]>([]);
   ngOnInit() {
-    this.getRoles();
+    this.getRoles();    
   }
   getRoles() {
-    this.userService.getRoles(this.indicePagina, this.pageSize).subscribe((roles) => {
+    this.rolesService.getRoles(this.indicePagina, this.pageSize).subscribe((roles) => {
       this.dataSource.data = roles.data;
       this.totalRegistros = roles.total;
       this.indicePagina = roles.current_page - 1;
@@ -79,8 +83,18 @@ export class Roles {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getRoles();
+        this.rolesService.createRole(result).subscribe((role) => {
+          this.getRoles();
+        }, error => {
+          console.error('Erro ao criar cargo:', error);
+          this.snackBar.open('Erro ao criar cargo', 'Fechar', { duration: 3000 });
+        });
       }
+    });
+  }
+  getAllPermissions() {
+    this.rolesService.getPermissions().subscribe((permissions) => {
+      this.permissions.set(permissions);
     });
   }
 }
