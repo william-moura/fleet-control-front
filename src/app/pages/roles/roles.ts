@@ -54,7 +54,16 @@ export class Roles {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.getRoles();
+        this.rolesService.updateRole(role.id, result).subscribe({
+          next: (role) => {
+            this.snackBar.open('Cargo atualizado com sucesso', 'Fechar', { duration: 3000 });
+            this.getRoles();
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar cargo:', error);
+            this.snackBar.open('Erro ao atualizar cargo', 'Fechar', { duration: 3000 });
+          }
+        });
       }
     });
   }
