@@ -13,6 +13,7 @@ import { UserService } from '../../services/user-service';
 import { User } from '../../models/user';
 import { Role } from '../../models/role';
 import { Vehicle } from '../../models/vehicle';
+import { RolesServices } from '../../services/roles-services';
 
 @Component({
   selector: 'app-form-add-user',
@@ -25,6 +26,7 @@ export class FormAddUser {
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<FormAddUser>);
   public data = inject(MAT_DIALOG_DATA);
+  private rolesService = inject(RolesServices);
   form: FormGroup;
   roles = signal<Role[]>([]);  
   constructor(private authService: AuthService, private userService: UserService) {
@@ -37,8 +39,8 @@ export class FormAddUser {
     }, {
       validator: this.confirmPasswordValidator,
     });
-    this.authService.getRoles().subscribe((roles) => {
-      this.roles.set(roles);
+    this.rolesService.getRoles(0, 1000).subscribe((roles) => {
+      this.roles.set(roles.data);
     });
   }
   ngOnInit() {

@@ -14,6 +14,7 @@ import { roleGuard } from './auth-guard';
 import { Welcome } from './pages/welcome/welcome';
 import { ReportPreviewComponent } from './components/report-preview-component/report-preview-component';
 import { VehicleFines } from './pages/vehicle-fines/vehicle-fines';
+import { Roles } from './pages/roles/roles';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard]},
@@ -28,5 +29,6 @@ export const routes: Routes = [
     { path: 'supplier', component: SupplierComponent, data: { icon: 'local_shipping', name: 'Fornecedores' , permission: 'listar_fornecedores'}, canActivate: [authGuard, roleGuard] },
     { path: 'users', component: Users, data: { icon: 'groups', name: 'Usuários' , permission: 'listar_usuarios'}, canActivate: [authGuard, roleGuard] },
     { path: 'login', component: LoginComponent },    
-    { path: 'report/preview/:id', component: ReportPreviewComponent, data: { icon: 'report', name: 'Visualizar Relatório', permission: 'nothing'} }
+    { path: 'report/preview/:id', component: ReportPreviewComponent, data: { icon: 'report', name: 'Visualizar Relatório', permission: 'nothing'} },
+    { path: 'users/manage-roles', component: Roles, data: { icon: 'manage_accounts', name: 'Gerenciar Cargos', display: false} }
 ];

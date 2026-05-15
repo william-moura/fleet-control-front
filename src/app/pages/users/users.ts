@@ -19,6 +19,7 @@ import { FormAddSupplier } from '../../forms/form-add-supplier/form-add-supplier
 import { User } from '../../models/user';
 import { FormAddUser } from '../../forms/form-add-user/form-add-user';
 import { UserService } from '../../services/user-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -40,6 +41,7 @@ export class Users {
   totalRegistros = 0;
   pageSize = 5;
   indicePagina = 0;
+  private router = inject(Router);
   ngAfterViewInit() {
     this.dataSource.sort = this.sort();
   }
@@ -123,5 +125,8 @@ export class Users {
     this.indicePagina = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getUsers();
+  }
+  openManageRolesDialog() {
+    this.router.navigate(['/users/manage-roles']);
   }
 }

@@ -4,6 +4,8 @@ import { User } from '../models/user';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Pagination } from '../models/pagination';
+import { Permission } from '../models/permission';
+import { Role } from '../models/role';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +30,14 @@ export class UserService {
   }
   deleteUser(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);
+  }
+  getPermissions(): Observable<Permission[]> {
+    return this.http.get<Permission[]>(`${this.API_URL}/permissions`);
+  }
+  getRoles(page: number = 1, perPage: number = 10): Observable<Pagination<Role>> {
+    const params = new HttpParams()
+    .set('page', (page + 1).toString()) // MatPaginator começa em 0, Laravel em 1
+    .set('per_page', perPage.toString());
+    return this.http.get<Pagination<Role>>(`${this.API_URL}/roles`, { params });
   }
 }

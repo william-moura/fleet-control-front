@@ -11,8 +11,8 @@ import { Pagination } from '../models/pagination';
 export class KilometerService {
   private http = inject(HttpClient);
   private readonly API_URL = environment.apiUrl + '/kilometers';
-  createKilometer(vehicleId: number, kilometer: Kilometer): Observable<Kilometer> {
-    return this.http.post<Kilometer>(`${this.API_URL}/${vehicleId}`, kilometer);
+  createKilometer(kilometer: Kilometer): Observable<Kilometer> {
+    return this.http.post<Kilometer>(`${this.API_URL}`, kilometer);
   }
   getKilometersByVehicleId(vehicleId: number): Observable<Kilometer[]> {
     return this.http.get<Kilometer[]>(`${this.API_URL}/${vehicleId}`);
