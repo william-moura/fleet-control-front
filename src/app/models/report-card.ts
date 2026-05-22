@@ -62,5 +62,14 @@ export const reportCards: ReportCard[] = [
         category: 'Combustível',
         route: '/reports/monthly-fuel-cost',
         filter: true,
+    },
+    {
+        id: 'driver_with_fine_vehicles',
+        title: 'Motoristas com Multas',
+        description: 'Motoristas com multas de veículos.',
+        icon: 'payments',
+        category: 'Financeiro',
+        route: '/reports/driver-with-fine-vehicles',
+        filter: true,
     }
 ];
