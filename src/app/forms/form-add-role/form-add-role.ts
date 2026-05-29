@@ -38,7 +38,12 @@ export class FormAddRole {
   }
   ngOnInit() {
     if (this.data) {
-      const dataForm = { ...this.data };
+      const dataForm = {
+        id: this.data.id,
+        name: this.data.name,
+        permissions: this.data.permissions.map((permission: Permission) => permission.id),
+      };
+      console.log(dataForm,'dataForm');
       this.form.patchValue(dataForm);
     }
   }
@@ -49,5 +54,13 @@ export class FormAddRole {
   }
   onCancel() {
     this.dialogRef.close();
+  }
+  getFirstSelectedPermissionName(): string {
+    const idsSelecionados = this.form.get('permissions')?.value;
+    if (!idsSelecionados || idsSelecionados.length === 0) return '';
+    
+    // Encontra o objeto completo na lista original usando o primeiro ID
+    const primeiraPermissao = this.permissions().find(p => p.id === idsSelecionados[0]);
+    return primeiraPermissao ? primeiraPermissao.name : '';
   }
 }

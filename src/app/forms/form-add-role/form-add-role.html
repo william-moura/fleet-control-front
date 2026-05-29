@@ -11,7 +11,7 @@
       <mat-select formControlName="permissions" multiple>
         
         <mat-select-trigger>
-          {{ form.get('permissions')?.value?.[0]?.name || '' }}
+          {{ getFirstSelectedPermissionName() }}
           @if ((form.get('permissions')?.value?.length || 0) > 1) {
             <span class="exemplo-obs">
               (+{{ (form.get('permissions')?.value?.length || 0) - 1 }} {{ form.get('permissions')?.value?.length === 2 ? 'outro' : 'outros' }})

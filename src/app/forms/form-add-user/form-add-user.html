@@ -9,6 +9,7 @@
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" placeholder="Ex: joao@gmail.com"/>
     </mat-form-field>
+    @if (!update()) {
     <mat-form-field appearance="outline">
       <mat-label>Senha</mat-label>
       <input matInput formControlName="password" type="password" placeholder="********"/>
@@ -17,6 +18,7 @@
       <mat-label>Confirmar Senha</mat-label>
       <input matInput formControlName="confirmPassword" type="password" placeholder="********"/>
     </mat-form-field>
+    }
     <mat-form-field appearance="outline">
       <mat-label>Cargo</mat-label>
       <mat-select formControlName="role_id">

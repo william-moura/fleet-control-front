@@ -28,13 +28,14 @@ export class FormAddUser {
   public data = inject(MAT_DIALOG_DATA);
   private rolesService = inject(RolesServices);
   form: FormGroup;
-  roles = signal<Role[]>([]);  
+  roles = signal<Role[]>([]);
+  update = signal(false);
   constructor(private authService: AuthService, private userService: UserService) {
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
+      password: ['', this.isPasswordRequired() ? Validators.required : ''],
+      confirmPassword: ['', this.isPasswordRequired() ? Validators.required : ''],
       role_id: ['', Validators.required],
     }, {
       validator: this.confirmPasswordValidator,
@@ -45,8 +46,16 @@ export class FormAddUser {
   }
   ngOnInit() {
     if (this.data) {
-      const dataForm = { ...this.data };
+      const dataForm = {
+        id: this.data.id,
+        name: this.data.name,
+        email: this.data.email,
+        role_id: this.data.role.id,
+      };
+      this.update.set(true);
       this.form.patchValue(dataForm);
+    } else {
+      this.update.set(false);
     }
   }
   onSubmit() {
@@ -65,5 +74,8 @@ export class FormAddUser {
       return { passwordMismatch: true };
     }
     return null;
+  }
+  isPasswordRequired(): boolean {
+    return !this.update();
   }
 }
