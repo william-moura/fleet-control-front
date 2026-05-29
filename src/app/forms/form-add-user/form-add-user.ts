@@ -31,11 +31,16 @@ export class FormAddUser {
   roles = signal<Role[]>([]);
   update = signal(false);
   constructor(private authService: AuthService, private userService: UserService) {
+    if (this.data) {
+      this.update.set(true);
+    } else {
+      this.update.set(false);
+    }
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
-      password: ['', this.isPasswordRequired() ? Validators.required : ''],
-      confirmPassword: ['', this.isPasswordRequired() ? Validators.required : ''],
+      password: ['', (!this.update())?Validators.required : null],
+      confirmPassword: ['', (!this.update())?Validators.required : null],
       role_id: ['', Validators.required],
     }, {
       validator: this.confirmPasswordValidator,
