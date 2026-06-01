@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Cadastro de Fornecedor</h2>
-<mat-dialog-content>
+<mat-dialog-content class="conteudo-modal">
   <form [formGroup]="form">
     <mat-form-field appearance="outline">
       <mat-label>Nome Fantasia</mat-label>
@@ -87,7 +87,7 @@
   </mat-form-field>
   </form>
 </mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions class="rodape-modal">
   <button mat-button (click)="onCancel()">Cancelar</button>
   <button mat-button (click)="onSubmit()" >Salvar</button>
 </mat-dialog-actions>

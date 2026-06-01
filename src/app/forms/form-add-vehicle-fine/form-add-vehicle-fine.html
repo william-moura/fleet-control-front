@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Cadastro de Multa</h2>
-<mat-dialog-content>
+<mat-dialog-content class="conteudo-modal">
   <form [formGroup]="form">
     <mat-form-field appearance="outline">
       <mat-label>Veículo</mat-label>
@@ -79,7 +79,7 @@
     </mat-form-field>
   </form>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
+<mat-dialog-actions class="rodape-modal">
   <button mat-button (click)="onCancel()">Cancelar</button>
   <button mat-flat-button color="primary" (click)="onSubmit()">Salvar</button>
 </mat-dialog-actions>
