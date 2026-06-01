@@ -98,4 +98,7 @@ export class AuthService {
   hasRole(role: Role): boolean {
     return this.userRoles().includes(role.name);
   }
+  esqueciSenha(email: string): Observable<any> {
+    return this.http.post<any>(`${this.API_URL}/esqueci-senha`, { email });
+  }
 }

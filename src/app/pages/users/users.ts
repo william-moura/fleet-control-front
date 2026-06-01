@@ -46,7 +46,7 @@ export class Users {
     this.dataSource.sort = this.sort();
   }
   getUsers() {
-    this.userService.getUsers(0, 10000).subscribe((pagination) => {
+    this.userService.getUsers(this.indicePagina, this.pageSize).subscribe((pagination) => {
       this.dataSource.data = pagination.data;
       this.totalRegistros = pagination.total;
       this.isLoading.set(false);

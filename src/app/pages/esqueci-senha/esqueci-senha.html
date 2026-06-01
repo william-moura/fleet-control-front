@@ -1,0 +1,47 @@
+<div class="login-wrapper">
+    <mat-card class="login-card">
+      <div class="login-header">
+        <div class="logo-circle">
+          <mat-icon>local_shipping</mat-icon>
+        </div>
+        <h1>FrotaSync</h1>
+        <p>Acesse o painel de gestão de frota</p>
+      </div>
+  
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="exemplo@frotasync.com">
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+              E-mail é obrigatório
+            </mat-error>
+          </mat-form-field>
+  
+          <button mat-flat-button color="primary" class="login-btn" [disabled]="loginForm.invalid">
+            RECEBER NOVA SENHA
+          </button>
+        </form>
+      </mat-card-content>
+  
+      <mat-card-footer class="login-footer">
+        <span>&copy; 2026 FrotaSync - Gestão Logística</span>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+  @if (errorMessage()) {
+    <div class="error-banner">
+      {{ errorMessage() }}
+    </div>
+  }
+  
+  <button mat-flat-button color="primary" class="login-btn" 
+          [disabled]="loginForm.invalid || isLoading()">
+    @if (isLoading()) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      ENTRAR NO SISTEMA
+    }
+  </button>
