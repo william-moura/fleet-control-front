@@ -13,7 +13,7 @@
         </ng-container>
         <ng-container matColumnDef="driverName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Motorista </th>
-          <td mat-cell *matCellDef="let row"> {{row.driver.driverName}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.driver?.driverName??'-'}} </td>
         </ng-container>
         <ng-container matColumnDef="fineDate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Data da Multa </th>
