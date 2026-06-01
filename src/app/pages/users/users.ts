@@ -20,6 +20,7 @@ import { User } from '../../models/user';
 import { FormAddUser } from '../../forms/form-add-user/form-add-user';
 import { UserService } from '../../services/user-service';
 import { Router } from '@angular/router';
+import { UpdatePassword } from '../../forms/update-password/update-password';
 
 @Component({
   selector: 'app-users',
@@ -128,5 +129,25 @@ export class Users {
   }
   openManageRolesDialog() {
     this.router.navigate(['/users/manage-roles']);
+  }
+  openUpdatePasswordDialog(user: User) {
+    const dialogRef = this.dialog.open(UpdatePassword, {
+      width: '500px',
+      data: user,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.updatePassword(user.id, result.password).subscribe({
+          next: () => {
+            this.snackBar.open('Senha atualizada com sucesso', 'Fechar', { duration: 3000 });
+            this.getUsers();
+          },
+          error: (error) => {
+            console.error('Erro ao atualizar senha:', error);
+            this.snackBar.open('Erro ao atualizar senha', 'Fechar', { duration: 3000 });
+          }
+        });
+      }
+    });
   }
 }

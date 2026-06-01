@@ -40,4 +40,7 @@ export class UserService {
     .set('per_page', perPage.toString());
     return this.http.get<Pagination<Role>>(`${this.API_URL}/roles`, { params });
   }
+  updatePassword(id: number, password: string): Observable<void> {
+    return this.http.put<void>(`${this.API_URL}/${id}/password`, { password });
+  }
 }
