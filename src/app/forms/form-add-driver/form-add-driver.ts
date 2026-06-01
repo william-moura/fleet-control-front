@@ -13,6 +13,7 @@ import { DriverService } from '../../services/driver-service';
 import { NgxMaskDirective } from 'ngx-mask';
 import { UppercaseDirective } from '../../uppercase';
 import { CepService } from '../../services/cep-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-driver',
@@ -32,6 +33,7 @@ export class FormAddDriver {
   private dialogRef = inject(MatDialogRef<FormAddDriver>);
   private driverService = inject(DriverService);
   private cepService = inject(CepService);
+  private snackBar = inject(MatSnackBar);
   public data = inject(MAT_DIALOG_DATA);
   form: FormGroup;
   constructor() {
@@ -60,9 +62,15 @@ export class FormAddDriver {
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }
+
   }
   onCancel() {
     this.dialogRef.close();

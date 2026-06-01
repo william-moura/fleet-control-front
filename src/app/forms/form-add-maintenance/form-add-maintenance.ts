@@ -19,6 +19,7 @@ import { SupplierType } from '../../models/supplier-type';
 import { MaintenanceTypeService } from '../../services/maintenance-type-service';
 import { MaintenanceServiceModel } from '../../models/maintenance-service-model';
 import { NgxMaskDirective } from 'ngx-mask';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-maintenance',
@@ -39,6 +40,7 @@ export class FormAddMaintenance {
   suppliers = signal<Supplier[]>([]);
   vehicles = signal<Vehicle[]>([]);
   services = signal<MaintenanceServiceModel[]>([]);
+  private snackBar = inject(MatSnackBar);
   constructor() {
     this.form = this.fb.group({
       maintenanceDate: ['', Validators.required],
@@ -65,6 +67,11 @@ export class FormAddMaintenance {
     this.getMaintenanceTypes();    
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {      
       this.dialogRef.close(this.form.value);
     }

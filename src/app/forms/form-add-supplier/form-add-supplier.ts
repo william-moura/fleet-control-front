@@ -14,6 +14,7 @@ import { SupplierService } from '../../services/supplier-service';
 import { NgxMaskDirective } from 'ngx-mask';
 import { UppercaseDirective } from '../../uppercase';
 import { CepService } from '../../services/cep-service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-supplier',
@@ -34,7 +35,7 @@ export class FormAddSupplier {
   private supplierService = inject(SupplierService);
   public data = inject(MAT_DIALOG_DATA);
   private cepService = inject(CepService);
-
+  private snackBar = inject(MatSnackBar);
   form: FormGroup;
   constructor() {
     this.form = this.fb.group({
@@ -58,6 +59,11 @@ export class FormAddSupplier {
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.form.value.supplierType = Number(this.form.value.supplierType);
       this.dialogRef.close(this.form.value);

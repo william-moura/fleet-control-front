@@ -14,6 +14,7 @@ import { User } from '../../models/user';
 import { Role } from '../../models/role';
 import { Vehicle } from '../../models/vehicle';
 import { RolesServices } from '../../services/roles-services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-user',
@@ -30,6 +31,7 @@ export class FormAddUser {
   form: FormGroup;
   roles = signal<Role[]>([]);
   update = signal(false);
+  private snackBar = inject(MatSnackBar);
   constructor(private authService: AuthService, private userService: UserService) {
     if (this.data) {
       this.update.set(true);
@@ -64,6 +66,11 @@ export class FormAddUser {
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }

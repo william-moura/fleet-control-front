@@ -96,7 +96,7 @@ export class DriversComponent implements AfterViewInit {
   }
   openAddDriverDialog() {
     const dialogRef = this.dialog.open(FormAddDriver, {
-      width: '600px',
+      width: '800px',
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe(result => {

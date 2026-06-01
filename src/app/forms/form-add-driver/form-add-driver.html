@@ -4,14 +4,23 @@
     <mat-form-field appearance="outline">
       <mat-label>Nome</mat-label>
       <input matInput formControlName="driverName" />
+      <mat-error *ngIf="form.get('driverName')?.hasError('required')">
+        O campo <strong>Nome</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>CNH</mat-label>
       <input matInput formControlName="driverLicenseNumber" />
+      <mat-error *ngIf="form.get('driverLicenseNumber')?.hasError('required')">
+        O campo <strong>CNH</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Categoria</mat-label>
       <input matInput formControlName="driverLicenseCategory" />
+      <mat-error *ngIf="form.get('driverLicenseCategory')?.hasError('required')">
+        O campo <strong>Categoria</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
@@ -19,55 +28,91 @@
         <mat-option value="1">Ativo</mat-option>
         <mat-option value="0">Inativo</mat-option>
       </mat-select>
+      <mat-error *ngIf="form.get('driverStatus')?.hasError('required')">
+        O campo <strong>Status</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data de Nascimento</mat-label>
         <input matInput [matDatepicker]="picker1" formControlName="driverBirthDate" />
         <mat-datepicker-toggle matIconSuffix [for]="picker1" ></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
+        <mat-error *ngIf="form.get('driverBirthDate')?.hasError('required')">
+          O campo <strong>Data de Nascimento</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Telefone</mat-label>
         <input matInput formControlName="driverPhone"  mask="(00) 0000-0000||(00) 00000-0000" />
+        <mat-error *ngIf="form.get('driverPhone')?.hasError('required')">
+          O campo <strong>Telefone</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>CEP</mat-label>
       <input matInput formControlName="driverZipCode"  mask="99999-999"  (change)="getCep(form.value.driverZipCode)"/>
       <mat-hint>Digite o CEP para preencher o endereço</mat-hint>
+      <mat-error *ngIf="form.get('driverZipCode')?.hasError('required')">
+        O campo <strong>CEP</strong> é obrigatório.
+      </mat-error>
   </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Endereço</mat-label>
         <input matInput formControlName="driverAddress" />
+        <mat-error *ngIf="form.get('driverAddress')?.hasError('required')">
+          O campo <strong>Endereço</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Cidade</mat-label>
         <input matInput formControlName="driverCity" />
+        <mat-error *ngIf="form.get('driverCity')?.hasError('required')">
+          O campo <strong>Cidade</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Estado</mat-label>
         <input matInput formControlName="driverState"  mask="AA" appUppercase />
+        <mat-error *ngIf="form.get('driverState')?.hasError('required')">
+          O campo <strong>Estado</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>    
     <mat-form-field appearance="outline">
         <mat-label>Tipo Sanguíneo</mat-label>
         <input matInput formControlName="driverBloodType" />
+        <mat-error *ngIf="form.get('driverBloodType')?.hasError('required')">
+          O campo <strong>Tipo Sanguíneo</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>RG</mat-label>
         <input matInput formControlName="driverRg" />
+        <mat-error *ngIf="form.get('driverRg')?.hasError('required')">
+          O campo <strong>RG</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>CPF</mat-label>
         <input matInput formControlName="driverCpf" mask="999.999.999-99" placeholder="Ex: 123.456.789-00"/>
+        <mat-error *ngIf="form.get('driverCpf')?.hasError('required')">
+          O campo <strong>CPF</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data de Expiração da CNH</mat-label>
         <input matInput [matDatepicker]="picker2" formControlName="driverLicenseExpirationDate" />
         <mat-datepicker-toggle matIconSuffix [for]="picker2" ></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
+        <mat-error *ngIf="form.get('driverLicenseExpirationDate')?.hasError('required')">
+          O campo <strong>Data de Expiração da CNH</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Número de Registro</mat-label>
         <input matInput formControlName="driverRegisteredNumber" />
+        <mat-error *ngIf="form.get('driverRegisteredNumber')?.hasError('required')">
+          O campo <strong>Número de Registro</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>

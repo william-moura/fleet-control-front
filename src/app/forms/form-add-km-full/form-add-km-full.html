@@ -9,10 +9,16 @@
               <mat-option [value]="vehicle.id">{{vehicle.vehiclePlate}} - {{vehicle.vehicleModel}}</mat-option>
             }
         </mat-select>
+        <mat-error *ngIf="form.get('vehicleId')?.hasError('required')">
+          O campo <strong>Veículo</strong> é obrigatório.
+        </mat-error>
       </mat-form-field>    
       <mat-form-field appearance="outline">
         <mat-label>Quilometragem</mat-label>
         <input matInput formControlName="kilometersValue" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+        <mat-error *ngIf="form.get('kilometersValue')?.hasError('required')">
+          O campo <strong>Quilometragem</strong> é obrigatório.
+        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Motorista</mat-label>
@@ -22,6 +28,9 @@
             <mat-option [value]="driver.id">{{driver.driverName}}</mat-option>
           }
         </mat-select>
+        <mat-error *ngIf="form.get('driverId')?.hasError('required')">
+          O campo <strong>Motorista</strong> é obrigatório.
+        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Data</mat-label>        
@@ -30,6 +39,9 @@
           <mat-hint>/DD/MM/YYYY</mat-hint>
           <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('kilometersDate')?.hasError('required')">
+          O campo <strong>Data</strong> é obrigatório.
+        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Notas</mat-label>
@@ -39,5 +51,5 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button (click)="onCancel()">Cancelar</button>
-    <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">Salvar</button>
+    <button mat-flat-button color="primary" (click)="onSubmit()" >Salvar</button>
   </mat-dialog-actions>

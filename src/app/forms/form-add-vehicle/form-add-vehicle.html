@@ -68,6 +68,9 @@
     <mat-form-field appearance="outline">
         <mat-label>Ano</mat-label>
         <input matInput formControlName="vehicleYear" placeholder="Ex: 2026">
+        <mat-error *ngIf="form.get('vehicleYear')?.hasError('required')">
+          O campo <strong>Ano</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Quilometragem Atual</mat-label>
@@ -78,6 +81,9 @@
         decimalMarker="," 
         decimalSeparator=","
         >
+        <mat-error *ngIf="form.get('vehicleCurrentMileage')?.hasError('required')">
+          O campo <strong>Quilometragem Atual</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
   </div>
   <div class="row">
@@ -88,10 +94,16 @@
               <mat-option [value]="fuelType.id">{{fuelType.name}}</mat-option>
             }
         </mat-select>
+        <mat-error *ngIf="form.get('fuelTypeId')?.hasError('required')">
+          O campo <strong>Tipo de Combustível</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Capacidade de Combustível</mat-label>
         <input matInput formControlName="vehicleTankCapacity" placeholder="Ex: 100">
+        <mat-error *ngIf="form.get('vehicleTankCapacity')?.hasError('required')">
+          O campo <strong>Capacidade de Combustível</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data de Compra</mat-label>        
@@ -100,6 +112,9 @@
         <mat-hint>/DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('vehiclePurchaseDate')?.hasError('required')">
+          O campo <strong>Data de Compra</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Notas</mat-label>
@@ -110,7 +125,7 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+  <button mat-flat-button color="primary" (click)="onSubmit()">
     Salvar Veículo
   </button>
 </mat-dialog-actions>

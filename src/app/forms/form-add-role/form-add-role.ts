@@ -11,6 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { UserService } from '../../services/user-service';
 import { Permission } from '../../models/permission';
 import { RolesServices } from '../../services/roles-services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-role',
@@ -27,7 +28,9 @@ export class FormAddRole {
   form: FormGroup;
   private fb = inject(FormBuilder);
   permissions = signal<Permission[]>([]);
-  constructor(private rolesService: RolesServices) {
+  private snackBar = inject(MatSnackBar);
+  private rolesService = inject(RolesServices);
+  constructor() {
     this.form = this.fb.group({
       name: ['', Validators.required],
       permissions: ['', Validators.required],
@@ -48,6 +51,11 @@ export class FormAddRole {
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }

@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Photo } from '../../models/photo';
 import { UppercaseDirective } from '../../uppercase';
 import { NgxMaskDirective } from 'ngx-mask';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-vehicle',
@@ -42,6 +43,7 @@ export class FormAddVehicle {
   previews:Photo[] = [];
   selectedFiles:File[] = [];
   photosIds:number[] = [];
+  private snackBar = inject(MatSnackBar);
   constructor() {
     this.form = this.fb.group({
       vehiclePlate: ['', [Validators.required, Validators.pattern(/^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/)]], // Padrão Mercosul
@@ -77,6 +79,11 @@ export class FormAddVehicle {
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.form.value.photosIds = this.photosIds;
       this.form.value.vehicleCurrentMileage = Number(this.form.value.vehicleCurrentMileage);
