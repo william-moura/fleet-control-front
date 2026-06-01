@@ -9,6 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; // Correct import path
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login-component',
@@ -26,6 +27,7 @@ export class LoginComponent {
   hidePassword = true;
   private ngZone = inject(NgZone);
   private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
   constructor(private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required]],
@@ -46,9 +48,8 @@ export class LoginComponent {
           });
         },
         error: (err: Error) => {
-          this.isLoading.set(false);
-          this.errorMessage.set('Usuário ou senha inválidos.');
-          console.error('Erro de login:', err);
+          this.snackBar.open('Usuário ou senha inválidos.', 'Fechar', { duration: 3000 });          
+          alert('Usuário ou senha inválidos.');
         }
       });
     }

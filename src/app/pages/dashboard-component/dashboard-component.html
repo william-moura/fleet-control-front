@@ -88,7 +88,7 @@
                 <div matListItemLine>Vencimento: {{ f.finePaidDate | date:'dd/MM' }}</div>
                 <div matListItemLine>Valor: {{ f.fineAmount | currency:'BRL' }}</div>
                 <div matListItemLine>Pontos: {{ f.finePoints }}</div>
-                <div matListItemLine>Status: {{ f.driver.driverName }}</div>
+                <div matListItemLine>Status: {{ f.driver?.driverName??'-' }}</div>
 
               </mat-list-item>
             }

@@ -4,7 +4,7 @@ import { Vehicle } from "./vehicle";
 export interface VehicleFine {
     id: number;
     vehicle: Vehicle;
-    driver: Driver;
+    driver?: Driver | null;
     fineDate: Date;
     fineAmount: number;
     fineStatus: '1' | '2' | '0' | 'pendente' | 'pago' | 'cancelado';
