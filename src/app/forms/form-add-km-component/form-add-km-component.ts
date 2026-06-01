@@ -13,6 +13,7 @@ import { MY_DATE_FORMATS } from '../../app.config';
 import { NgxMaskDirective } from 'ngx-mask';
 import { VehicleService } from '../../services/vehicle-service';
 import { Driver } from '../../models/driver';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-km-component',
@@ -33,6 +34,7 @@ export class FormAddKmComponent {
   private vehicleService = inject(VehicleService);
   drivers = signal<Driver[]>([]);
   form: FormGroup;
+  private snackBar = inject(MatSnackBar);
   constructor() {
     this.form = this.fb.group({
       kilometersValue: ['', Validators.required],
@@ -51,6 +53,11 @@ export class FormAddKmComponent {
     });
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.form.value.vehicleId = this.data.id;
       this.dialogRef.close(this.form.value);

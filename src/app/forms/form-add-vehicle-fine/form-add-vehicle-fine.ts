@@ -14,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MY_DATE_FORMATS } from '../../app.config';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -36,6 +37,7 @@ export class FormAddVehicleFine {
   private driverService = inject(DriverService);
   vehicles = signal<Vehicle[]>([]);
   drivers = signal<Driver[]>([]);
+  private snackBar = inject(MatSnackBar);
   constructor() {
     this.form = this.fb.group({
       vehicleId: ['', Validators.required],
@@ -70,6 +72,11 @@ export class FormAddVehicleFine {
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }

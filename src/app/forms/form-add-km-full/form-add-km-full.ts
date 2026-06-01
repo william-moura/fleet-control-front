@@ -14,6 +14,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CommonModule } from '@angular/common';
 import { MY_DATE_FORMATS } from '../../app.config';
 import { MAT_DATE_LOCALE, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-km-full',
@@ -35,6 +36,7 @@ export class FormAddKmFull implements OnInit {
   form: FormGroup;
   vehicles = signal<Vehicle[]>([]);
   drivers = signal<Driver[]>([]);
+  private snackBar = inject(MatSnackBar);
   constructor() {
     this.form = this.fb.group({
       vehicleId: ['', Validators.required],
@@ -54,6 +56,11 @@ export class FormAddKmFull implements OnInit {
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }

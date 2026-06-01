@@ -11,6 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { UserService } from '../../services/user-service';
 import { Permission } from '../../models/permission';
 import { RolesServices } from '../../services/roles-services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-role',
@@ -27,7 +28,9 @@ export class FormAddRole {
   form: FormGroup;
   private fb = inject(FormBuilder);
   permissions = signal<Permission[]>([]);
-  constructor(private rolesService: RolesServices) {
+  private snackBar = inject(MatSnackBar);
+  private rolesService = inject(RolesServices);
+  constructor() {
     this.form = this.fb.group({
       name: ['', Validators.required],
       permissions: ['', Validators.required],
@@ -38,16 +41,34 @@ export class FormAddRole {
   }
   ngOnInit() {
     if (this.data) {
-      const dataForm = { ...this.data };
+      const dataForm = {
+        id: this.data.id,
+        name: this.data.name,
+        permissions: this.data.permissions.map((permission: Permission) => permission.id),
+      };
+      console.log(dataForm,'dataForm');
       this.form.patchValue(dataForm);
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }
   }
   onCancel() {
     this.dialogRef.close();
+  }
+  getFirstSelectedPermissionName(): string {
+    const idsSelecionados = this.form.get('permissions')?.value;
+    if (!idsSelecionados || idsSelecionados.length === 0) return '';
+    
+    // Encontra o objeto completo na lista original usando o primeiro ID
+    const primeiraPermissao = this.permissions().find(p => p.id === idsSelecionados[0]);
+    return primeiraPermissao ? primeiraPermissao.name : '';
   }
 }

@@ -14,6 +14,7 @@ import { User } from '../../models/user';
 import { Role } from '../../models/role';
 import { Vehicle } from '../../models/vehicle';
 import { RolesServices } from '../../services/roles-services';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-user',
@@ -28,13 +29,20 @@ export class FormAddUser {
   public data = inject(MAT_DIALOG_DATA);
   private rolesService = inject(RolesServices);
   form: FormGroup;
-  roles = signal<Role[]>([]);  
+  roles = signal<Role[]>([]);
+  update = signal(false);
+  private snackBar = inject(MatSnackBar);
   constructor(private authService: AuthService, private userService: UserService) {
+    if (this.data) {
+      this.update.set(true);
+    } else {
+      this.update.set(false);
+    }
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
-      password: ['', Validators.required],
-      confirmPassword: ['', Validators.required],
+      password: ['', (!this.update())?Validators.required : null],
+      confirmPassword: ['', (!this.update())?Validators.required : null],
       role_id: ['', Validators.required],
     }, {
       validator: this.confirmPasswordValidator,
@@ -45,11 +53,24 @@ export class FormAddUser {
   }
   ngOnInit() {
     if (this.data) {
-      const dataForm = { ...this.data };
+      const dataForm = {
+        id: this.data.id,
+        name: this.data.name,
+        email: this.data.email,
+        role_id: this.data.role.id,
+      };
+      this.update.set(true);
       this.form.patchValue(dataForm);
+    } else {
+      this.update.set(false);
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }
@@ -65,5 +86,8 @@ export class FormAddUser {
       return { passwordMismatch: true };
     }
     return null;
+  }
+  isPasswordRequired(): boolean {
+    return !this.update();
   }
 }

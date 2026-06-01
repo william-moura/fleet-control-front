@@ -11,7 +11,7 @@
       <mat-select formControlName="permissions" multiple>
         
         <mat-select-trigger>
-          {{ form.get('permissions')?.value?.[0]?.name || '' }}
+          {{ getFirstSelectedPermissionName() }}
           @if ((form.get('permissions')?.value?.length || 0) > 1) {
             <span class="exemplo-obs">
               (+{{ (form.get('permissions')?.value?.length || 0) - 1 }} {{ form.get('permissions')?.value?.length === 2 ? 'outro' : 'outros' }})
@@ -24,10 +24,13 @@
         }
     
       </mat-select>
+      <mat-error *ngIf="form.get('permissions')?.hasError('required')">
+        O campo <strong>Permissões</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">Salvar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" >Salvar</button>
 </mat-dialog-actions>

@@ -18,6 +18,7 @@ import { Vehicle } from '../../models/vehicle';
 import { SupplierType } from '../../models/supplier-type';
 import { MaintenanceTypeService } from '../../services/maintenance-type-service';
 import { MaintenanceServiceModel } from '../../models/maintenance-service-model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-maintenance-service',
@@ -35,6 +36,7 @@ export class FormAddMaintenanceService {
   private dialogRef = inject(MatDialogRef<FormAddMaintenanceService>);
   public data = inject(MAT_DIALOG_DATA);
   form: FormGroup;
+  private snackBar = inject(MatSnackBar);
   constructor() {
     this.form = this.fb.group({
       maintenanceServiceName: ['', Validators.required],
@@ -47,6 +49,11 @@ export class FormAddMaintenanceService {
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }

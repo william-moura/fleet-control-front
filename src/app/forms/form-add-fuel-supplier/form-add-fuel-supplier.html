@@ -9,6 +9,9 @@
           <mat-option [value]="supplier.id">{{supplier.supplierFantasyName}}</mat-option>
         }        
       </mat-select>
+      <mat-error *ngIf="form.get('supplierId')?.hasError('required')">
+        O campo <strong>Fornecedor</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Veículo</mat-label>
@@ -18,6 +21,9 @@
           <mat-option [value]="vehicle.id">{{vehicle.vehiclePlate}}</mat-option>
         }
       </mat-select>
+      <mat-error *ngIf="form.get('vehicleId')?.hasError('required')">
+        O campo <strong>Veículo</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Motorista</mat-label>
@@ -27,6 +33,9 @@
           <mat-option [value]="driver.id">{{driver.driverName}}</mat-option>
         }
     </mat-select>
+    <mat-error *ngIf="form.get('driverId')?.hasError('required')">
+      O campo <strong>Motorista</strong> é obrigatório.
+    </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data de Abastecimento</mat-label>        
@@ -35,6 +44,9 @@
         <mat-hint>/DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="form.get('fuelSupplierDate')?.hasError('required')">
+          O campo <strong>Data de Abastecimento</strong> é obrigatório.
+        </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Tipo de Combustível</mat-label>
@@ -44,6 +56,9 @@
           <mat-option [value]="fuelType.id">{{fuelType.name}}</mat-option>
         }
       </mat-select>
+      <mat-error *ngIf="form.get('fuelTypeId')?.hasError('required')">
+        O campo <strong>Tipo de Combustível</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Kilometragem</mat-label>
@@ -53,6 +68,12 @@
         thousandSeparator="." 
         decimalMarker=","
       />
+      <mat-error *ngIf="form.get('fuelSupplierKilometers')?.hasError('required')">
+        O campo <strong>Kilometragem</strong> é obrigatório.
+      </mat-error>
+      <mat-error *ngIf="form.get('fuelSupplierKilometers')?.hasError('min')">
+        O campo <strong>Kilometragem</strong> deve ser maior que 0.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Quantidade</mat-label>
@@ -62,6 +83,12 @@
         decimalMarker=","
         (change)="calculateTotal()"
       />
+      <mat-error *ngIf="form.get('fuelSupplierQuantity')?.hasError('required')">
+        O campo <strong>Quantidade</strong> é obrigatório.
+      </mat-error>
+      <mat-error *ngIf="form.get('fuelSupplierQuantity')?.hasError('min')">
+        O campo <strong>Quantidade</strong> deve ser maior que 0.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Valor por Litro</mat-label>
@@ -74,6 +101,12 @@
         decimalSeparator=","        
         (change)="calculateTotal()"
       />
+      <mat-error *ngIf="form.get('fuelSupplierPrice')?.hasError('required')">
+        O campo <strong>Valor por Litro</strong> é obrigatório.
+      </mat-error>
+      <mat-error *ngIf="form.get('fuelSupplierPrice')?.hasError('min')">
+        O campo <strong>Valor por Litro</strong> deve ser maior que 0.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Valor Total</mat-label>
@@ -85,10 +118,19 @@
         decimalMarker=","
       
       />
+      <mat-error *ngIf="form.get('fuelSupplierTotal')?.hasError('required')">
+        O campo <strong>Valor Total</strong> é obrigatório.
+      </mat-error>
+      <mat-error *ngIf="form.get('fuelSupplierTotal')?.hasError('min')">
+        O campo <strong>Valor Total</strong> deve ser maior que 0.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Número do Comprovante</mat-label>
       <input matInput formControlName="fuelSupplierInvoiceNumber" />
+      <mat-error *ngIf="form.get('fuelSupplierInvoiceNumber')?.hasError('required')">
+        O campo <strong>Número do Comprovante</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Observações</mat-label>
@@ -98,7 +140,7 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+  <button mat-flat-button color="primary" (click)="onSubmit()">
     Salvar Abastecimento
   </button>
 </mat-dialog-actions>

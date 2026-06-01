@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UppercaseDirective } from '../../uppercase';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-brand',
@@ -19,6 +20,7 @@ import { UppercaseDirective } from '../../uppercase';
 export class FormAddBrand {
   private fb = inject(FormBuilder);
   private dialogRef = inject(MatDialogRef<FormAddBrand>);  
+  private snackBar = inject(MatSnackBar);
   public data = inject(MAT_DIALOG_DATA);
   form: FormGroup;
   constructor() {
@@ -33,6 +35,11 @@ export class FormAddBrand {
     }
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }

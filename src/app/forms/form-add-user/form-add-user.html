@@ -4,19 +4,33 @@
     <mat-form-field appearance="outline">
       <mat-label>Nome do Usuário</mat-label>
       <input matInput formControlName="name" placeholder="Ex: João da Silva"/>
+      <mat-error *ngIf="form.get('name')?.hasError('required')">
+        O campo <strong>Nome do Usuário</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
       <input matInput formControlName="email" placeholder="Ex: joao@gmail.com"/>
+      <mat-error *ngIf="form.get('email')?.hasError('required')">
+        O campo <strong>Email</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
+    @if (!update()) {
     <mat-form-field appearance="outline">
       <mat-label>Senha</mat-label>
       <input matInput formControlName="password" type="password" placeholder="********"/>
+      <mat-error *ngIf="form.get('password')?.hasError('required')">
+        O campo <strong>Senha</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Confirmar Senha</mat-label>
       <input matInput formControlName="confirmPassword" type="password" placeholder="********"/>
+      <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
+        O campo <strong>Confirmar Senha</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
+    }
     <mat-form-field appearance="outline">
       <mat-label>Cargo</mat-label>
       <mat-select formControlName="role_id">
@@ -24,12 +38,15 @@
           <mat-option [value]="role.id">{{role.name}}</mat-option>
         }
       </mat-select>
+      <mat-error *ngIf="form.get('role_id')?.hasError('required')">
+        O campo <strong>Cargo</strong> é obrigatório.
+      </mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-button (click)="onCancel()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+  <button mat-flat-button color="primary" (click)="onSubmit()" >
     Salvar Usuário
   </button>
 </mat-dialog-actions>

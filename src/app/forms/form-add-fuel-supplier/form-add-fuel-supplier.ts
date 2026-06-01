@@ -17,6 +17,7 @@ import { FuelType } from '../../models/fuel-type';
 import { MY_DATE_FORMATS } from '../../app.config';
 import { NgxMaskDirective } from 'ngx-mask';
 import { SupplierType } from '../../models/supplier-type';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-form-add-fuel-supplier',
@@ -35,7 +36,7 @@ export class FormAddFuelSupplier {
   public data = inject(MAT_DIALOG_DATA);
   private supplierService = inject(SupplierService);
   private vehicleService = inject(VehicleService);
-  
+  private snackBar = inject(MatSnackBar);
   drivers = signal<Driver[]>([]);
   vehicles = signal<Vehicle[]>([]);
   suppliers = signal<Supplier[]>([]);
@@ -70,6 +71,11 @@ export class FormAddFuelSupplier {
     });
   }
   onSubmit() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
       this.dialogRef.close(this.form.value);
     }
