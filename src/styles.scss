@@ -5,6 +5,16 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+/* Garante que todo campo de formulário tenha um espaço no topo para a label respirar */
+.mat-mdc-form-field {
+  margin-top: 8px !important;
+}
+
+/* Se o problema for o topo do formulário dentro do modal */
+mat-dialog-content {
+  padding-top: 16px !important; 
+  overflow: visible !important; /* Permite que a label "saia" um pouco do container sem sumir */
+}
 
 html {
   @include mat.theme((
