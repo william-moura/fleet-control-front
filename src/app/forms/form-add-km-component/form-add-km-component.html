@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Cadastro de Quilometragem</h2>
 
-<mat-dialog-content>
+<mat-dialog-content class="conteudo-modal">
   <form [formGroup]="form">
     <mat-form-field appearance="outline">
       <mat-label>Veículo</mat-label>
@@ -31,7 +31,10 @@
     <mat-form-field appearance="outline">
       <mat-label>Data</mat-label>        
         <!-- <input matInput formControlName="vehiclePurchaseDate" placeholder="Ex: 01/01/2026"> -->
-        <input matInput [matDatepicker]="picker" formControlName="kilometersDate">
+        <input matInput [matDatepicker]="picker" formControlName="kilometersDate"
+        mask="00/00/0000" 
+        [dropSpecialCharacters]="false"
+        placeholder="DD/MM/AAAA">
         <mat-hint>/DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
@@ -45,7 +48,7 @@
     </mat-form-field>
   </form>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
+<mat-dialog-actions class="rodape-modal">
   <button mat-button (click)="onCancel()">Cancelar</button>
   <button mat-flat-button color="primary" (click)="onSubmit()" >Salvar</button>
 </mat-dialog-actions>

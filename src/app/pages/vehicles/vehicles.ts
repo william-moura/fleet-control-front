@@ -83,7 +83,7 @@ export class Vehicles {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        result.vehiclePurchaseDate = result.vehiclePurchaseDate.toISOString().split('T')[0];
+        result.vehiclePurchaseDate = result.vehiclePurchaseDate.split('/').reverse().join('-');
         this.vehicleService.createVehicle(result).subscribe({
           next: (vehicle) => {
             this.snackBar.open('Veículo cadastrado com sucesso', 'Fechar', { duration: 3000 });
@@ -130,6 +130,7 @@ export class Vehicles {
     if (result) {
       try {
         this.isLoading.set(true);
+        result.vehiclePurchaseDate = result.vehiclePurchaseDate.split('/').reverse().join('-');
         await firstValueFrom(this.vehicleService.updateVehicle(vehicle.id, result));
         this.snackBar.open('Veículo atualizado com sucesso', 'Fechar', { duration: 3000 });
         this.getVehicles();
@@ -177,6 +178,7 @@ export class Vehicles {
     if (result) {
       try {
         this.isLoading.set(true);
+        result.kilometersDate = result.kilometersDate.split('/').reverse().join('-');
         await firstValueFrom(this.vehicleService.createKilometer(vehicle.id, result));
         this.snackBar.open('Quilometragem adicionada com sucesso', 'Fechar', { duration: 3000 });        
       } catch (error) {

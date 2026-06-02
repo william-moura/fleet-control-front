@@ -82,6 +82,9 @@ export class MaintenanceComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        result.maintenancePreviousDateFinished = result.maintenancePreviousDateFinished.split('/').reverse().join('-');
+        result.maintenanceNextDate = result.maintenanceNextDate.split('/').reverse().join('-');
+        result.maintenanceDate = result.maintenanceDate.split('/').reverse().join('-');
         this.maintenanceService.createMaintenance(result).subscribe({
           next: (maintenance) => {
             this.snackBar.open('Manutenção cadastrada com sucesso', 'Fechar', { duration: 3000 });
@@ -102,6 +105,9 @@ export class MaintenanceComponent {
       data: maintenance,
     }).afterClosed());
     if (result) {
+      result.maintenancePreviousDateFinished = result.maintenancePreviousDateFinished.split('/').reverse().join('-');
+      result.maintenanceNextDate = result.maintenanceNextDate.split('/').reverse().join('-');
+      result.maintenanceDate = result.maintenanceDate.split('/').reverse().join('-');
       this.maintenanceService.updateMaintenance(maintenance.id, result).subscribe(() => {
         this.snackBar.open('Manutenção atualizada com sucesso', 'Fechar', { duration: 3000 });
         this.getAllMaintenances();

@@ -55,6 +55,7 @@ export class FuelComponent implements OnInit{
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        result.fuelSupplierDate = result.fuelSupplierDate.split('/').reverse().join('-');
         this.fuelSupplyService.createFuelSupply(result).subscribe({
           next: (fuelSupply) => {
             this.snackBar.open('Abastecimento cadastrado com sucesso', 'Fechar', { duration: 3000 });
@@ -98,6 +99,7 @@ export class FuelComponent implements OnInit{
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        result.fuelSupplyDate = result.fuelSupplyDate.split('/').reverse().join('-');
         this.fuelSupplyService.updateFuelSupply(fuelSupply.id, result).subscribe({
           next: (fuelSupply) => {
             this.snackBar.open('Abastecimento atualizado com sucesso', 'Fechar', { duration: 3000 });

@@ -101,9 +101,10 @@ export class DriversComponent implements AfterViewInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        console.log('result', result);
         //result.vehiclePurchaseDate = result.vehiclePurchaseDate.toISOString().split('T')[0];
-        result.driverLicenseExpirationDate = result.driverLicenseExpirationDate.toISOString().split('T')[0];
-        result.driverBirthDate = result.driverBirthDate.toISOString().split('T')[0];        
+        result.driverLicenseExpirationDate = result.driverLicenseExpirationDate.split('/').reverse().join('-');
+        result.driverBirthDate = result.driverBirthDate.split('/').reverse().join('-');        
         this.driverService.createDriver(result).subscribe({
           next: (driver) => {
             this.snackBar.open('Motorista cadastrado com sucesso', 'Fechar', { duration: 3000 });
@@ -126,6 +127,8 @@ export class DriversComponent implements AfterViewInit {
     const result = await firstValueFrom(dialogRef.afterClosed());
     if (result) {
       try {
+        result.driverLicenseExpirationDate = result.driverLicenseExpirationDate.split('/').reverse().join('-');
+        result.driverBirthDate = result.driverBirthDate.split('/').reverse().join('-');        
         await firstValueFrom(this.driverService.updateDriver(driver.id, result));
         this.snackBar.open('Motorista atualizado com sucesso', 'Fechar', { duration: 3000 });
         this.getDrivers();
