@@ -59,10 +59,10 @@ export class FormAddVehicleFine {
     if (this.data) {
       const dataForm = { ...this.data };
       if (dataForm.finePaidDate) {
-        dataForm.finePaidDate = new Date(dataForm.finePaidDate.toString().split('/').reverse().join('-') + 'T00:00:00');        
+        dataForm.finePaidDate = dataForm.finePaidDate.split('-').reverse().join('/');
       }
       if (dataForm.fineDate) {
-        dataForm.fineDate = new Date(dataForm.fineDate.toString().split('/').reverse().join('-') + 'T00:00:00');        
+        dataForm.fineDate = dataForm.fineDate.split('-').reverse().join('/');
       }
       console.log(dataForm, 'data formmommomom');
       this.form.patchValue(dataForm);

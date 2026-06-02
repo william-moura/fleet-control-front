@@ -43,6 +43,9 @@ export class FormAddKmComponent {
   }
   ngOnInit() {
     if (this.data) {
+      if (this.data.kilometersDate) {
+        this.data.kilometersDate = this.data.kilometersDate.split('-').reverse().join('/');
+      }
       const dataForm = { ...this.data };
       this.form.patchValue(dataForm);
     }

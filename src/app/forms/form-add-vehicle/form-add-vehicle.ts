@@ -65,9 +65,6 @@ export class FormAddVehicle {
   ngOnInit() {
     if (this.data) {
       const dataForm = { ...this.data };
-      if (dataForm.vehiclePurchaseDate) {
-        dataForm.vehiclePurchaseDate = new Date(dataForm.vehiclePurchaseDate.toString().split('/').reverse().join('-') + 'T00:00:00');        
-      }
       dataForm.vehicleStatus = dataForm.vehicleStatus === 'Ativo' || dataForm.vehicleStatus === 'ativo'  ? '1' : '0';
       this.previews = dataForm.photos.map((photo: Photo) => photo);
       this.photosIds = dataForm.photos.map((photo: Photo) => photo.id);      

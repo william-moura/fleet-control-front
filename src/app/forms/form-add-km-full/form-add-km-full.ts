@@ -50,6 +50,9 @@ export class FormAddKmFull implements OnInit {
     });    
     if (this.data) {
       const dataForm = { ...this.data };
+      if (dataForm.kilometersDate) {
+        dataForm.kilometersDate = dataForm.kilometersDate.split('-').reverse().join('/');
+      }
       this.form.patchValue(dataForm);
     }
   }

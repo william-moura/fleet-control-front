@@ -58,6 +58,9 @@ export class FormAddFuelSupplier {
   }
   ngOnInit() {
     if (this.data) {
+      if (this.data.fuelSupplierDate) {
+        this.data.fuelSupplierDate = this.data.fuelSupplierDate.split('-').reverse().join('/');
+      }
       const dataForm = { ...this.data };
       this.form.patchValue(dataForm);
     }

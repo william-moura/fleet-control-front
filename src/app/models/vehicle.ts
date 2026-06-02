@@ -10,7 +10,7 @@ export interface Vehicle {
   fuelType: string;
   vehicleTankCapacity: number;
   vehicleCurrentMileage: number;
-  vehiclePurchaseDate: Date;
+  vehiclePurchaseDate: string | Date;
   vehicleNotes: string;
   vehicleStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
   drivers: Driver[];

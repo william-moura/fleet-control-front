@@ -121,6 +121,7 @@ export class Vehicles {
     }
   }
   async updateVehicle(vehicle: Vehicle) {
+    console.log(vehicle, 'vehicle');
     const dialogRef = this.dialog.open(FormAddVehicle, {
       width: '600px',
       disableClose: true,
