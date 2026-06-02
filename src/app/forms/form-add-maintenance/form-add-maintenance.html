@@ -49,7 +49,7 @@
     <mat-form-field appearance="outline">
         <mat-label>Data da Manutenção</mat-label>        
         <!-- <input matInput formControlName="vehiclePurchaseDate" placeholder="Ex: 01/01/2026"> -->
-        <input matInput [matDatepicker]="picker" formControlName="maintenanceDate">
+        <input matInput [matDatepicker]="picker" formControlName="maintenanceDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
         <mat-hint>/DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
