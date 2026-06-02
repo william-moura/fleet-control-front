@@ -38,8 +38,7 @@ export class VehicleFines implements OnInit {
   ngOnInit() {
     this.getVehicleFines();
   }
-  updateFine(fine: VehicleFine) {
-    console.log(fine, 'finenene');
+  updateFine(fine: VehicleFine) {    
     const dialogRef = this.dialog.open(FormAddVehicleFine, {
       width: '600px',
       disableClose: true,
