@@ -18,20 +18,21 @@
       border-radius: 8px;
       overflow: hidden;
     }
+    
   
     table {
       width: 100%;
     }
   
-    .badge {
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-weight: bold;
-      
-      &.ativo { background-color: #e8f5e9; color: #2e7d32; }
-      &.inativo { background-color: #ffebee; color: #c62828; }
-    }
+  }
+  .badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    
+    &.ativo { background-color: #e8f5e9; color: #2e7d32; }
+    &.inativo { background-color: #ffebee; color: #c62828; }
   }
 
   
