@@ -17,7 +17,7 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Categoria</mat-label>
-      <input matInput formControlName="driverLicenseCategory" />
+      <input matInput formControlName="driverLicenseCategory" appUppercase/>
       <mat-error *ngIf="form.get('driverLicenseCategory')?.hasError('required')">
         O campo <strong>Categoria</strong> é obrigatório.
       </mat-error>
