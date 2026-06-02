@@ -67,6 +67,12 @@ export class FormAddDriver {
   }
   ngOnInit() {
     if (this.data) {
+      if (this.data.driverBirthDate) {
+        this.data.driverBirthDate = this.data.driverBirthDate.split('-').reverse().join('/');
+      }
+      if (this.data.driverLicenseExpirationDate) {
+        this.data.driverLicenseExpirationDate = this.data.driverLicenseExpirationDate.split('-').reverse().join('/');
+      }
       const dataForm = { ...this.data };
       this.form.patchValue(dataForm);
     }

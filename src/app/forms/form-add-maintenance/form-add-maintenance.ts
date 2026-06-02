@@ -58,6 +58,15 @@ export class FormAddMaintenance {
 
   ngOnInit() {
     if (this.data) {
+      if (this.data.maintenanceDate) {
+        this.data.maintenanceDate = this.data.maintenanceDate.split('-').reverse().join('/');
+      }
+      if (this.data.maintenanceNextDate) {
+        this.data.maintenanceNextDate = this.data.maintenanceNextDate.split('-').reverse().join('/');
+      }
+      if (this.data.maintenancePreviousDateFinished) {
+        this.data.maintenancePreviousDateFinished = this.data.maintenancePreviousDateFinished.split('-').reverse().join('/');
+      }
       this.data.services = this.data.services.map((service: MaintenanceServiceModel) => service.id);
       const dataForm = { ...this.data };
       this.form.patchValue(dataForm);
