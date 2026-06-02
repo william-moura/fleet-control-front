@@ -7,17 +7,18 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule, provideNativeDateAdapter } from '@angular/material/core';
 import { SupplierService } from '../../services/supplier-service';
 import { Supplier } from '../../models/supplier';
 import { VehicleService } from '../../services/vehicle-service';
 import { Vehicle } from '../../models/vehicle';
 import { Driver } from '../../models/driver';
 import { FuelType } from '../../models/fuel-type';
-import { MY_DATE_FORMATS } from '../../app.config';
+import { MY_DATE_FORMATS, MY_LUXON_FORMATS } from '../../app.config';
 import { NgxMaskDirective } from 'ngx-mask';
 import { SupplierType } from '../../models/supplier-type';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 
 @Component({
   selector: 'app-form-add-fuel-supplier',
@@ -26,8 +27,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './form-add-fuel-supplier.html',
   styleUrl: './form-add-fuel-supplier.scss',
   providers:[
-    provideNativeDateAdapter(MY_DATE_FORMATS),     
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
 })
 export class FormAddFuelSupplier {

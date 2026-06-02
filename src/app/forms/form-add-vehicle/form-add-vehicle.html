@@ -108,7 +108,10 @@
     <mat-form-field appearance="outline">
         <mat-label>Data de Compra</mat-label>        
         <!-- <input matInput formControlName="vehiclePurchaseDate" placeholder="Ex: 01/01/2026"> -->
-        <input matInput [matDatepicker]="picker" formControlName="vehiclePurchaseDate">
+        <input matInput [matDatepicker]="picker" formControlName="vehiclePurchaseDate"
+        mask="00/00/0000" 
+        [dropSpecialCharacters]="false"
+        placeholder="DD/MM/AAAA">
         <mat-hint>/DD/MM/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>

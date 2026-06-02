@@ -22,8 +22,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, 
     MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, NgxMaskDirective],
   providers:[
-    provideNativeDateAdapter(MY_DATE_FORMATS),     
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
   templateUrl: './form-add-vehicle-fine.html',
   styleUrl: './form-add-vehicle-fine.scss',

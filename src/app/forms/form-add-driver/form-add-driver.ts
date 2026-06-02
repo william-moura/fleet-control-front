@@ -14,6 +14,19 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { UppercaseDirective } from '../../uppercase';
 import { CepService } from '../../services/cep-service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter'; // <-- MUDOU AQUI
+
+export const MY_LUXON_FORMATS = {
+  parse: {
+    dateInput: 'dd/MM/yyyy', // Força o Luxon a ler estritamente como Dia/Mês/Ano
+  },
+  display: {
+    dateInput: 'dd/MM/yyyy', // Como exibe no input
+    monthYearLabel: 'LLL yyyy',
+    dateA11yLabel: 'DD',
+    monthYearA11yLabel: 'LLL yyyy',
+  },
+};
 
 @Component({
   selector: 'app-form-add-driver',
@@ -21,9 +34,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule,
    UppercaseDirective, NgxMaskDirective],
   providers:[
-    provideNativeDateAdapter(MY_DATE_FORMATS), 
-    // { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }, 
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
   templateUrl: './form-add-driver.html',
   styleUrl: './form-add-driver.scss',

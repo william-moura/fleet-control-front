@@ -47,6 +47,8 @@ export class VehicleFines implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        result.finePaidDate = result.finePaidDate.split('/').reverse().join('-');
+        result.fineDate = result.fineDate.split('/').reverse().join('-');
         this.vehicleFineService.updateVehicleFine(fine.id, result).subscribe({
           next: (fine: VehicleFine) => {
             this.snackBar.open('Multa atualizada com sucesso', 'Fechar', { duration: 3000 });
@@ -92,6 +94,8 @@ export class VehicleFines implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        result.finePaidDate = result.finePaidDate.split('/').reverse().join('-');
+        result.fineDate = result.fineDate.split('/').reverse().join('-');
         this.vehicleFineService.createVehicleFine(result).subscribe({
           next: (fine: VehicleFine) => {
             this.snackBar.open('Multa cadastrada com sucesso', 'Fechar', { duration: 3000 });

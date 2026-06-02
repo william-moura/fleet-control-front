@@ -102,6 +102,7 @@ export class KmComponent {
     });
     const result = await firstValueFrom(dialogRef.afterClosed());
     if (result) {
+      result.kilometersDate = result.kilometersDate.split('/').reverse().join('-');
       this.kilometerService.updateKilometer(kilometer.id, result).subscribe({
         next: () => {
           this.getKilometers();
@@ -121,6 +122,7 @@ export class KmComponent {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        result.kilometersDate = result.kilometersDate.split('/').reverse().join('-');
         this.kilometerService.createKilometer(result).subscribe({
           next: () => {
             this.getKilometers();
