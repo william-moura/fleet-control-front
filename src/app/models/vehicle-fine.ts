@@ -3,7 +3,7 @@ import { Vehicle } from "./vehicle";
 
 export interface VehicleFine {
     id: number;
-    vehicle: Vehicle;
+    vehicle?: Vehicle | null;
     driver?: Driver | null;
     fineDate: Date;
     fineAmount: number;
