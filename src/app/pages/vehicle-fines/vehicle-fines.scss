@@ -84,6 +84,17 @@ table {
     gap: 3px; // Espaçamento entre os botões
   }
 }
+.center-cell {
+  text-align: center;
+  justify-content: center;
+}
+.mat-sort-header-content {
+  width: 100% !important;
+}
+:host ::ng-deep .mat-sort-header-container {
+  display: flex;
+  justify-content: center !important;
+}
 
 // .badge {
 //     padding: 4px 8px;

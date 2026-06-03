@@ -20,28 +20,28 @@
           <td mat-cell *matCellDef="let row"> {{row.supplierFantasyName}} </td>
         </ng-container>
         <ng-container matColumnDef="supplierCorporateName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Razão Social </th>
-          <td mat-cell *matCellDef="let row"> {{row.supplierCorporateName}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Razão Social </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{row.supplierCorporateName}} </td>
         </ng-container>
         <ng-container matColumnDef="supplierCnpj">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> CNPJ </th>
-          <td mat-cell *matCellDef="let row"> {{row.supplierCnpj}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> CNPJ </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{row.supplierCnpj}} </td>
         </ng-container>
         <ng-container matColumnDef="supplierAddress">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Endereço </th>
-          <td mat-cell *matCellDef="let row"> {{row.supplierAddress}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Endereço </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{row.supplierAddress}} </td>
         </ng-container>
         <ng-container matColumnDef="supplierCity">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Cidade </th>
-          <td mat-cell *matCellDef="let row"> {{row.supplierCity}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Cidade </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{row.supplierCity}} </td>
         </ng-container>
         <ng-container matColumnDef="supplierState">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
-          <td mat-cell *matCellDef="let row"> {{row.supplierState}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Estado </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{row.supplierState}} </td>
         </ng-container>
         <ng-container matColumnDef="supplierStatus">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-          <td mat-cell *matCellDef="let row">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Status </th>
+          <td mat-cell *matCellDef="let row" class="center-cell">
             <span class="badge" [class.ativo]="row.supplierStatus === '1' || row.supplierStatus === 1" [class.inativo]="row.supplierStatus === '0' || row.supplierStatus === 0">
               @if (row.supplierStatus === '1' || row.supplierStatus === 1) {
                 Ativo
@@ -52,8 +52,8 @@
         </ng-container>
   
         <ng-container matColumnDef="acoes" stickyEnd>
-          <th mat-header-cell *matHeaderCellDef> Ações </th>
-          <td mat-cell *matCellDef="let row">
+          <th mat-header-cell *matHeaderCellDef class="center-cell"> Ações </th>
+          <td mat-cell *matCellDef="let row" class="center-cell">
             <button mat-icon-button color="accent" title="Editar" (click)="updateSupplier(row)">
               <mat-icon>edit</mat-icon>
             </button>

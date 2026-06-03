@@ -8,38 +8,38 @@
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="vehiclePlate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Placa </th>
-          <td mat-cell *matCellDef="let row"> {{row.vehicle?.vehiclePlate??'-'}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Placa </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{row.vehicle?.vehiclePlate??'-'}} </td>
         </ng-container>
         <ng-container matColumnDef="driverName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Motorista </th>
-          <td mat-cell *matCellDef="let row"> {{row.driver?.driverName??'-'}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Motoristas </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{row.driver?.driverName??'-'}} </td>
         </ng-container>
         <ng-container matColumnDef="fineDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Data da Multa </th>
-          <td mat-cell *matCellDef="let row"> {{ row.fineDate | date:'dd/MM/yyyy'}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Data da Multa </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{ row.fineDate | date:'dd/MM/yyyy'}} </td>
         </ng-container>
         <ng-container matColumnDef="fineAmount">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Valor </th>
-          <td mat-cell *matCellDef="let row"> {{row.fineAmount}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Valor </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{row.fineAmount}} </td>
         </ng-container>
         <ng-container matColumnDef="fineStatus">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-          <td mat-cell *matCellDef="let row" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Status </th>
+          <td mat-cell *matCellDef="let row" class="center-cell">
             <span class="badge" [class.pendente]="row.fineStatus === 'pendente'" [class.pago]="row.fineStatus === 'pago'" [class.cancelado]="row.fineStatus === 'cancelado'" > {{row.fineStatus}} </span>
           </td>
         </ng-container>
         <ng-container matColumnDef="fineLevel">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Multa </th>
-          <td mat-cell *matCellDef="let row"> {{row.fineLevel}} </td>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Tipo de Multa </th>
+          <td mat-cell *matCellDef="let row" class="center-cell"> {{row.fineLevel}} </td>
         </ng-container>
         <ng-container matColumnDef="finePaidDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Vencimento </th>
-            <td mat-cell *matCellDef="let row"> {{ row.finePaidDate | date:'dd/MM/yyyy'}} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="center-cell"> Vencimento </th>
+            <td mat-cell *matCellDef="let row" class="center-cell"> {{ row.finePaidDate | date:'dd/MM/yyyy'}} </td>
           </ng-container>
         <ng-container matColumnDef="acoes">
-          <th mat-header-cell *matHeaderCellDef> Ações </th>
-          <td mat-cell *matCellDef="let row">
+          <th mat-header-cell *matHeaderCellDef class="center-cell"> Ações </th>
+          <td mat-cell *matCellDef="let row" class="center-cell">
             <button mat-icon-button color="accent" title="Editar" (click)="updateFine(row)">
               <mat-icon>edit</mat-icon>
             </button>

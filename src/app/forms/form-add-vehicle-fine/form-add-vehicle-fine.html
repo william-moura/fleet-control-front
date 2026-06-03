@@ -33,10 +33,16 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Valor da Multa</mat-label>
-      <input matInput formControlName="fineAmount" mask="separator.2" placeholder="Ex: 100.00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
-      <mat-error *ngIf="form.get('fineAmount')?.hasError('required')">
-        O campo <strong>Valor da Multa</strong> é obrigatório.
+      <mat-label>Data de Vencimento</mat-label>
+      <input matInput [matDatepicker]="picker2" formControlName="finePaidDate"
+      mask="00/00/0000" 
+      [dropSpecialCharacters]="false"
+      placeholder="DD/MM/AAAA">
+      <mat-hint>/DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker2" ></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+      <mat-error *ngIf="form.get('finePaidDate')?.hasError('required')">
+        O campo <strong>Data de Vencimento</strong> é obrigatório.
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
@@ -52,13 +58,12 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="fineStatus">
-        <mat-option value="pendente">Pendente</mat-option>
-        <mat-option value="pago">Pago</mat-option>
-        <mat-option value="cancelado">Cancelado</mat-option>
-      </mat-select>
-    </mat-form-field>
+      <mat-label>Valor da Multa</mat-label>
+      <input matInput formControlName="fineAmount" mask="separator.2" placeholder="Ex: 100.00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+      <mat-error *ngIf="form.get('fineAmount')?.hasError('required')">
+        O campo <strong>Valor da Multa</strong> é obrigatório.
+      </mat-error>
+    </mat-form-field>        
     <mat-form-field appearance="outline">
       <mat-label>Pontos</mat-label>
       <input matInput formControlName="finePoints" placeholder="Ex: 3" mask="separator.0" thousandSeparator="." decimalMarker="," decimalSeparator="," />
@@ -67,21 +72,16 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="outline">
-      <mat-label>Descrição</mat-label>
-      <input matInput formControlName="fineNotes"  />      
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="fineStatus">
+        <mat-option value="pendente">Pendente</mat-option>
+        <mat-option value="pago">Pago</mat-option>
+        <mat-option value="cancelado">Cancelado</mat-option>
+      </mat-select>
     </mat-form-field>
     <mat-form-field appearance="outline">
-        <mat-label>Data de Vencimento</mat-label>
-        <input matInput [matDatepicker]="picker2" formControlName="finePaidDate"
-        mask="00/00/0000" 
-        [dropSpecialCharacters]="false"
-        placeholder="DD/MM/AAAA">
-        <mat-hint>/DD/MM/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker2" ></mat-datepicker-toggle>
-        <mat-datepicker #picker2></mat-datepicker>
-        <mat-error *ngIf="form.get('finePaidDate')?.hasError('required')">
-          O campo <strong>Data de Vencimento</strong> é obrigatório.
-        </mat-error>
+      <mat-label>Descrição</mat-label>
+      <input matInput formControlName="fineNotes"  />      
     </mat-form-field>
   </form>
 </mat-dialog-content>
