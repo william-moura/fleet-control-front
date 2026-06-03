@@ -7,8 +7,14 @@
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Período</mat-label>
       <mat-date-range-input [rangePicker]="picker">
-        <input matStartDate formControlName="startDate" placeholder="Início">
-        <input matEndDate formControlName="endDate" placeholder="Fim">
+        <input matStartDate formControlName="startDate" placeholder="Início" 
+        mask="00/00/0000" 
+        [dropSpecialCharacters]="false"
+        placeholder="DD/MM/AAAA">
+        <input matEndDate formControlName="endDate" placeholder="Fim"
+        mask="00/00/0000" 
+        [dropSpecialCharacters]="false"
+        placeholder="DD/MM/AAAA">
       </mat-date-range-input>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>

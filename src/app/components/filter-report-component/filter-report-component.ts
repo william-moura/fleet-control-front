@@ -16,14 +16,13 @@ import { Vehicle } from '../../models/vehicle';
 import { Driver } from '../../models/driver';
 import { DriverService } from '../../services/driver-service';
 import { MY_DATE_FORMATS } from '../../app.config';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-filter-report-component',
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule],
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule, 
+    MatDatepickerModule, MatNativeDateModule, ReactiveFormsModule, NgxMaskDirective],
   providers:[
-    provideNativeDateAdapter(MY_DATE_FORMATS), 
-    // { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }, 
-    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
   ],
   templateUrl: './filter-report-component.html',
   styleUrl: './filter-report-component.scss',
@@ -62,10 +61,10 @@ export class FilterReportComponent implements OnInit {
     try {
       const dadosForm = this.form.value;
       if (dadosForm.startDate) {
-        dadosForm.startDate = dadosForm.startDate.toISOString();
+        dadosForm.startDate = dadosForm.startDate.split('/').reverse().join('-');
       }
       if (dadosForm.endDate) {
-        dadosForm.endDate = dadosForm.endDate.toISOString();
+        dadosForm.endDate = dadosForm.endDate.split('/').reverse().join('-');
       }
       console.log(dadosForm, 'dados form')
       this.dialogRef.close(dadosForm); 
