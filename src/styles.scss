@@ -10,6 +10,14 @@
   margin-top: 8px !important;
 }
 
+.center-cell {
+  text-align: center;
+  justify-content: center;
+}
+:host ::ng-deep .mat-sort-header-container {
+  display: flex;
+  justify-content: center !important;
+}
 /* Se o problema for o topo do formulário dentro do modal */
 mat-dialog-content {
   padding-top: 16px !important; 
