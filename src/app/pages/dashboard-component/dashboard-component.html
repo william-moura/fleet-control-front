@@ -84,7 +84,7 @@
             @for (f of dashboard()?.nextFinesToPay; track f.id) {
               <mat-list-item>
                 <mat-icon matListItemIcon color="warn">payment</mat-icon>
-                <div matListItemTitle>{{ f.vehicle.vehiclePlate }} - {{ f.vehicle.vehicleModel }}</div>
+                <div matListItemTitle>{{ f.vehicle?.vehiclePlate??'-' }} - {{ f.vehicle?.vehicleModel??'-' }}</div>
                 <div matListItemLine>Vencimento: {{ f.finePaidDate | date:'dd/MM' }}</div>
                 <div matListItemLine>Valor: {{ f.fineAmount | currency:'BRL' }}</div>
                 <div matListItemLine>Pontos: {{ f.finePoints }}</div>
