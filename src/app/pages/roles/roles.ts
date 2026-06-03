@@ -77,6 +77,16 @@ export class Roles {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.rolesService.deleteRole(role.id).subscribe({
+          next: () => {
+          this.snackBar.open('Cargo excluído com sucesso', 'Fechar', { duration: 3000 });
+          this.getRoles();
+          },
+          error: (error) => {
+          console.error('Erro ao excluir cargo:', error);
+          this.snackBar.open('Erro ao excluir cargo', 'Fechar', { duration: 3000 });
+          }
+        });
         this.getRoles();
       }
     });
