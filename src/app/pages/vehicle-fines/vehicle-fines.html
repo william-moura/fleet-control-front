@@ -9,7 +9,7 @@
       <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="vehiclePlate">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Placa </th>
-          <td mat-cell *matCellDef="let row"> {{row.vehicle.vehiclePlate}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.vehicle?.vehiclePlate??'-'}} </td>
         </ng-container>
         <ng-container matColumnDef="driverName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Motorista </th>
