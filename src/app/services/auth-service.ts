@@ -78,6 +78,14 @@ export class AuthService {
     localStorage.removeItem('userName');
     this.currentUser.set(null);
     localStorage.clear();
+    this.http.post(`${environment.apiUrl}/logout`, {}).subscribe({
+      next: () => {
+        console.log('Logout realizado com sucesso');
+      },
+      error: (error) => {
+        console.error('Erro ao realizar logout', error);
+      }
+    });
     // 🔥 PASSO CRÍTICO: Limpa o Signal no Logout
     this.permissions.set([]); 
     this.router.navigate(['/login']);
