@@ -39,14 +39,4 @@ export class SideMenuComponent {
       this.authService.logout();
     }
   }
-  // ngOnInit(): void {
-  //   this.filteredRoutes = this.routes.filter(item => {
-  //     console.log(item.data?.['permission'], 'hihi');
-  //     if (item.data?.['permission']) {
-  //       console.log('entrou no if');
-  //       return this.authService.hasPermission(item.data?.['permission']);
-  //     }
-  //     return true;
-  //   });
-  // }
 }
