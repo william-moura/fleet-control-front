@@ -46,6 +46,10 @@
       background: #cbd5e1;
       border-radius: 10px;
     }
+    &.center-cell {
+      text-align: center !important;
+      justify-content: center !important;
+    }
   }
   
   table {
@@ -66,7 +70,7 @@
     }
   }
 
-  .center-cell {
-    text-align: center;
-    justify-content: center;
+  th.center-cell {
+    text-align: center !important;
+    justify-content: center !important;
   }

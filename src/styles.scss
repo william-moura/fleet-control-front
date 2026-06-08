@@ -27,6 +27,19 @@ mat-dialog-content {
 mat-form-field {
   margin-bottom: 10px;
 }
+
+.mat-sort-header-container {
+  text-align: center !important;
+  justify-content: center !important;
+}
+.mat-mdc-cell {
+  text-align: center !important;
+  justify-content: center !important;
+}
+.mat-sort-header-container {
+  justify-content: center !important;
+  text-align: center !important;
+}
 .conteudo-modal {
   display: block;
   width: 100%;

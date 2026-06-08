@@ -31,9 +31,9 @@
         
         <mat-select-trigger>
           {{ form.get('services')?.value?.[0]?.maintenance_control_service_name || '' }}
-          @if ((form.get('services')?.value?.length || 0) > 1) {
+          @if ((form.get('services')?.value?.length || 0) > 0) {
             <span class="exemplo-obs">
-              (+{{ (form.get('services')?.value?.length || 0) - 1 }} {{ form.get('services')?.value?.length === 2 ? 'outro' : 'outros' }})
+              (+{{ (form.get('services')?.value?.length || 0)}} {{ form.get('services')?.value?.length === 2 ? 'outro' : 'outros' }})
             </span>
           }
         </mat-select-trigger>
