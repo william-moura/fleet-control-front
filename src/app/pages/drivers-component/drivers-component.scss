@@ -32,6 +32,18 @@
     &.ativo { background-color: #e8f5e9; color: #2e7d32; }
     &.inativo { background-color: #ffebee; color: #c62828; }
   }
+
+  .centralizar-chips {
+    justify-content: center !important;
+    &.mdc-evolution-chip-set__chips {
+      justify-content: center !important;
+    }
+  }
+  .mdc-evolution-chip-set__chips {
+    justify-content: center !important;
+  }
+
+  
 }
 
 .table-responsive {
@@ -64,4 +76,27 @@ table {
     white-space: nowrap; // Garante que o texto da célula fique em uma linha só
     padding: 12px 16px;
   }
+  .center-cell {
+    text-align: center;
+    justify-content: center;
+  }
+  
+}
+
+/* Centraliza o conteúdo dentro das células da tabela */
+.center-cell {
+  text-align: center;
+  justify-content: center; /* Caso a célula use flexbox internamente */
+}
+
+/* Centraliza os chips dentro do mat-chip-set */
+.centralizar-chips {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Força o container interno do Angular Material a também centralizar */
+::v-deep .centralizar-chips .mat-mdc-chip-set-grid {
+  justify-content: center !important;
 }
