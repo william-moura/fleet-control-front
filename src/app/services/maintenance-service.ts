@@ -49,4 +49,7 @@ export class MaintenanceService {
   getMaintenanceServicesByMaintenanceId(maintenanceId: number): Observable<MaintenanceServiceModel[]> {
     return this.http.get<MaintenanceServiceModel[]>(`${this.API_URL_SERVICES}/maintenance/${maintenanceId}`);
   }
+  getMaintenancesByVehicleId(vehicleId: number): Observable<Maintenance[]> {
+    return this.http.get<Maintenance[]>(`${this.API_URL}/vehicle/${vehicleId}`);
+  }
 }
