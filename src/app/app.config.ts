@@ -5,20 +5,23 @@ import { authInterceptor } from './auth-interceptor'; // O interceptor que criam
 import localePt from '@angular/common/locales/pt';
 
 import { routes } from './app.routes';
-import { MAT_DATE_FORMATS, MatDateFormats, provideNativeDateAdapter } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDateFormats, provideNativeDateAdapter } from '@angular/material/core';
 import { provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
 import { registerLocaleData } from '@angular/common';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 
+
 export const MY_LUXON_FORMATS = {
   parse: {
-    dateInput: 'dd/MM/yyyy', // Força o Luxon a ler estritamente como Dia/Mês/Ano
+    // Permite que o Angular interprete o texto digitado no formato brasileiro
+    dateInput: 'dd/MM/yyyy', 
   },
   display: {
-    dateInput: 'dd/MM/yyyy', // Como exibe no input
+    // Formato de exibição visual dentro do input
+    dateInput: 'dd/MM/yyyy',
     monthYearLabel: 'LLL yyyy',
     dateA11yLabel: 'DD',
-    monthYearA11yLabel: 'LLL yyyy',
+    monthYearA11yLabel: 'MMMM yyyy',
   },
 };
 
@@ -34,8 +37,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideNativeDateAdapter(),
     provideEnvironmentNgxMask(),
-    provideNgxMask(),
-    { provide: LOCALE_ID, useValue: 'pt-BR' },
+    { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
     provideLuxonDateAdapter(),
     { provide: MAT_DATE_FORMATS, useValue: MY_LUXON_FORMATS }
   ]

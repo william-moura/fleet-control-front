@@ -1,4 +1,5 @@
 <div class="container-pagina">
+  
     <header class="header-pag">
       <div class="titulo-wrapper">
         <button mat-icon-button aria-label="Voltar" (click)="voltar()">
@@ -23,7 +24,12 @@
               <mat-icon>photo_camera</mat-icon>
             </button>
           </div>
-          
+          @if (isLoading()) {
+            <div class="loading-overlay">
+              <mat-spinner diameter="60" mode="indeterminate" color="primary"></mat-spinner>
+              <p class="loading-text">Carregando, por favor aguarde...</p>
+            </div>
+          }
           <mat-card-content class="resumo-info">
             <div class="placa-status">
               <h2>{{ veiculoDados?.vehiclePlate }}</h2>
@@ -32,42 +38,18 @@
             <h3>{{ veiculoDados?.brand }} {{ veiculoDados?.vehicleModel }}</h3>
             
             <div class="tags-rapidas">
-              <span><mat-icon>calendar_today</mat-icon> {{ veiculoDados?.vehicleYear }}/{{ veiculoDados?.vehicleYear }}</span>
+              <span><mat-icon>calendar_today</mat-icon> {{ veiculoDados?.vehicleYear }}/{{ veiculoDados?.vehicleModelYear }}</span>
               <span><mat-icon>local_gas_station</mat-icon> {{ veiculoDados?.fuelType }}</span>
-              <span><mat-icon>tune</mat-icon> </span>
+              <span><mat-icon>tune</mat-icon> {{ veiculoDados?.vehicleTransmissionType }}</span>
+              <span><mat-icon>color_lens</mat-icon> {{ veiculoDados?.vehicleColor }}</span>
             </div>
   
             <hr class="divisor">
   
-            <div class="detalhes-lista">
-              <div class="item-detalhe">
-                <mat-icon>account_balance</mat-icon>
-                <div>
-                  <p class="label">Órgão / Secretaria</p>
-                  <p class="valor"></p>
-                </div>
-              </div>
-              <div class="item-detalhe">
-                <mat-icon>business</mat-icon>
-                <div>
-                  <p class="label">Centro de Custo</p>
-                  <p class="valor"></p>
-                </div>
-              </div>
-              <div class="item-detalhe">
-                <mat-icon>person</mat-icon>
-                <div>
-                  <p class="label">Motorista Atual</p>
-                  <p class="valor font-bold"></p>
-                  <p class="sub-valor"></p>
-                </div>
-              </div>
-            </div>
-  
             <div class="informacoes-gerais-box">
               <h4>Informações Gerais</h4>
-              <p><strong>Renavam:</strong></p>
-              <p><strong>Chassi:</strong> </p>
+              <p><strong>Renavam:</strong> {{ veiculoDados?.vehicleRenavamNumber }}</p>
+              <p><strong>Chassi:</strong> {{ veiculoDados?.vehicleChassisNumber }}</p>
               <p><strong>Aquisição:</strong> {{ veiculoDados?.vehiclePurchaseDate | date:'dd/MM/yyyy' }}</p>
             </div>
           </mat-card-content>
@@ -97,7 +79,11 @@
   
                   <mat-form-field appearance="outline">
                     <mat-label>Marca</mat-label>
-                    <input matInput formControlName="brand">
+                    <mat-select formControlName="brandId">
+                      @for (brand of brands(); track brand.id) {
+                        <mat-option [value]="brand.id">{{brand.name | uppercase}}</mat-option>
+                      }
+                    </mat-select>
                   </mat-form-field>
   
                   <mat-form-field appearance="outline">
@@ -112,25 +98,32 @@
   
                   <mat-form-field appearance="outline">
                     <mat-label>Ano Modelo</mat-label>
-                    <input matInput type="number" formControlName="vehicleYearModel">
+                    <input matInput type="number" formControlName="vehicleModelYear">
                   </mat-form-field>
   
                   <mat-form-field appearance="outline">
                     <mat-label>Combustível</mat-label>
-                    <mat-select formControlName="fuelType">
-                      <mat-option value="Flex">Flex</mat-option>
-                      <mat-option value="Gasolina">Gasolina</mat-option>
-                      <mat-option value="Etanol">Etanol</mat-option>
-                      <mat-option value="Diesel">Diesel</mat-option>
+                    <mat-select formControlName="fuelTypeId">
+                      @for (fuelType of fuelTypes(); track fuelType.id) {
+                        <mat-option [value]="fuelType.id">{{fuelType.name | uppercase}}</mat-option>
+                      }
                     </mat-select>
                   </mat-form-field>
   
                   <mat-form-field appearance="outline">
                     <mat-label>Câmbio</mat-label>
-                    <mat-select formControlName="vehicleTransmission">
-                      <mat-option value="Automático">Automático</mat-option>
-                      <mat-option value="Manual">Manual</mat-option>
+                    <mat-select formControlName="vehicleTransmissionType">
+                      <mat-option value="automatico">Automática</mat-option>
+                      <mat-option value="manual">Manual</mat-option>
                     </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Renavam</mat-label>
+                    <input matInput formControlName="vehicleRenavamNumber">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Chassi</mat-label>
+                    <input matInput formControlName="vehicleChassisNumber">
                   </mat-form-field>
                 </div>
   
@@ -159,9 +152,11 @@
   
                   <mat-form-field appearance="outline">
                     <mat-label>Data de Aquisição</mat-label>
-                    <input matInput [matDatepicker]="picker" formControlName="vehiclePurchaseDate">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                    <input matInput formControlName="vehiclePurchaseDate"                    
+                    mask="00/00/0000" 
+                    [dropSpecialCharacters]="false"
+                    [leadZeroDateTime]="true">
+                    <mat-hint>/DD/MM/YYYY</mat-hint>
                   </mat-form-field>
                 </div>
               </section>
@@ -173,11 +168,14 @@
                   <p class="sub-instrucao">Formatos aceitos: JPG, PNG (Máx. 5MB cada)</p>
                   
                   <div class="lista-fotos-preview">
-                    <div class="foto-preview-item">
-                      <img [src]="veiculoDados?.photos?.[0]?.path || 'assets/fiat-fastback.png'" alt="Miniatura">
-                      <button mat-icon-button class="btn-remover-foto"><mat-icon>close</mat-icon></button>
-                    </div>
-                    <button type="button" class="btn-adicionar-foto-drop">
+                    <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none">
+                    @for (foto of previews; track foto; let i = $index) {
+                      <div class="foto-preview-item">
+                        <img [src]="foto.path" alt="Miniatura">
+                        <button mat-icon-button class="btn-remover-foto"><mat-icon>close</mat-icon></button>
+                      </div>
+                    }
+                    <button type="button" class="btn-adicionar-foto-drop" (click)="fileInput.click()">
                       <mat-icon>add</mat-icon>
                       <span>Adicionar Foto</span>
                     </button>
@@ -240,3 +238,4 @@
       </main>
     </div>
   </div>
+  

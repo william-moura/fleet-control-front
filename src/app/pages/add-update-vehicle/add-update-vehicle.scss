@@ -308,3 +308,34 @@ mat-form-field {
   border-top: 1px solid $borda-cor;
   background: #ffffff;
 }
+
+.loading-overlay {
+  backdrop-filter: blur(4px); /* Borra o conteúdo que está atrás *
+  /* Fixa o container na tela inteira */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  
+  /* Coloca o loader na camada mais alta de todas */
+  z-index: 9999;
+  
+  /* Fundo escurecido semi-transparente (ajuste o 0.5 se quiser mais claro/escuro) */
+  background-color: rgba(0, 0, 0, 0.5);
+  
+  /* Flexbox para centralizar o spinner e o texto */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 16px; /* Espaço entre o spinner e o texto */
+}
+
+/* Opcional: Estilo para o texto abaixo do spinner */
+.loading-text {
+  color: #ffffff;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}

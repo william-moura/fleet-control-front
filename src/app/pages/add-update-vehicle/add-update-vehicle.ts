@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MatNativeDateModule } from '@angular/material/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Vehicle } from '../../models/vehicle';
 import { VehicleStateService } from '../../services/vehicle-state-service';
@@ -24,6 +24,15 @@ import { MaintenanceService } from '../../services/maintenance-service';
 import { FuelSupplyService } from '../../services/fuel-supply-service';
 import { ListFuelSuppliers } from '../../components/list-fuel-suppliers/list-fuel-suppliers';
 import { ListMaintenance } from '../../components/list-maintenance/list-maintenance';
+import { Brand } from '../../models/brand';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FuelType } from '../../models/fuel-type';
+import { NgxMaskDirective } from 'ngx-mask';
+import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
+import { MY_DATE_FORMATS, MY_LUXON_FORMATS } from '../../app.config';
+import { Photo } from '../../models/photo';
+
 @Component({
   selector: 'app-add-update-vehicle',
   imports: [
@@ -42,7 +51,11 @@ import { ListMaintenance } from '../../components/list-maintenance/list-maintena
     MatListModule,
     MatProgressBarModule,    
     ListFuelSuppliers,
-    ListMaintenance
+    ListMaintenance,
+    MatProgressSpinnerModule,
+    NgxMaskDirective
+  ],
+  providers:[
   ],
   templateUrl: './add-update-vehicle.html',
   styleUrl: './add-update-vehicle.scss',
@@ -54,24 +67,40 @@ export class AddUpdateVehicle {
   update = signal(false);  
   private router = inject(Router);
   private vehicleStateService = inject(VehicleStateService);
-  isLoading = signal(true);
+  isLoading = signal<boolean>(true);
   historico = signal<VehicleHistory[]>([]);
   private vehicleService = inject(VehicleService);
   maintenances = signal<Maintenance[]>([]);
   fuelSupplies = signal<FuelSupply[]>([]);
   private maintenanceService = inject(MaintenanceService);
   private fuelSupplyService = inject(FuelSupplyService);
+  brands = signal<Brand[]>([]);  
+  private snackBar = inject(MatSnackBar);
+  fuelTypes = signal<FuelType[]>([]);
+  previews:Photo[] = [];
+  selectedFiles:File[] = [];
+  photosIds:number[] = [];
   ngOnInit() {
-    const veiculoDadoss = this.vehicleStateService.selectedVehicle();
-    console.log(veiculoDadoss, 'selectedVehicle');        
+    const veiculoDadoss = this.vehicleStateService.selectedVehicle();    
+    this.vehicleService.getBrands().subscribe((brands) => {
+      this.brands.set(brands);
+    });
+    this.vehicleService.getFuelTypes().subscribe((fuelTypes) => {
+      this.fuelTypes.set(fuelTypes);
+    });
     if (veiculoDadoss) {
       this.update.set(true);
+      if (veiculoDadoss.vehiclePurchaseDate) {
+        const purchaseDate = veiculoDadoss.vehiclePurchaseDate as string;
+        veiculoDadoss.vehiclePurchaseDate = purchaseDate.split('-').reverse().join('/');
+      }
+      this.previews = veiculoDadoss.photos.map((photo: Photo) => photo);
+      this.photosIds = veiculoDadoss.photos.map((photo: Photo) => photo.id);      
       this.veiculoDados = veiculoDadoss;
       this.veiculoForm.patchValue(veiculoDadoss);
       this.vehicleService.getVehicleHistory(this.veiculoDados?.id).subscribe({
         next: (history: VehicleHistory[]) => {
           this.historico.set(history);
-          this.isLoading.set(false);
         },
         error: (error) => {
           console.error('Erro ao buscar histórico do veículo:', error);
@@ -102,59 +131,104 @@ export class AddUpdateVehicle {
       this.update.set(false);
     }
   }
-  // Mock de dados para simular o preenchimento da tela
-  /*
-  veiculoDados = {
-    placa: 'EUF0F59',
-    status: 'Ativo',
-    marca: 'Fiat',
-    modelo: 'Fastback',
-    anoFabricacao: 2023,
-    anoModelo: 2024,
-    combustivel: 'Flex',
-    cambio: 'Automático',
-    cor: 'Cinza',
-    orgao: 'Secretaria de Administração',
-    centroCusto: 'Transporte Oficial',
-    capacidadeCombustivel: 45,
-    quilometragem: 12580,
-    dataAquisicao: new Date(2023, 2, 15), // 15/03/2023
-    renavam: '12345678901',
-    chassi: '9BD3745B0R1234567',
-    motorista: 'João Silva',
-    telefoneMotorista: '(11) 99999-9999'
-  };
-  */
+
   constructor(private fb: FormBuilder) {
     this.veiculoForm = this.fb.group({
       vehiclePlate: ['', Validators.required],
       vehicleStatus: ['', Validators.required],
-      brand: ['', Validators.required],
+      brandId: ['', Validators.required],
       vehicleModel: ['', Validators.required],
       vehicleYear: ['', Validators.required],
-      fuelType: ['', Validators.required],
+      fuelTypeId: ['', Validators.required],
       vehicleCurrentMileage: ['', Validators.required],
       vehiclePurchaseDate: ['', Validators.required],
       vehicleNotes: ['', Validators.required],
       vehicleTankCapacity: ['', Validators.required],
-      vehicleTransmission: ['', Validators.required],
+      vehicleTransmissionType: ['', Validators.required],
       vehicleColor: ['', Validators.required],
-      vehicleYearModel: ['', Validators.required],
-      
+      vehicleModelYear: ['', Validators.required],
+      vehicleRenavamNumber: ['', Validators.required],
+      vehicleChassisNumber: ['', Validators.required],
     });
   }
 
   salvar() {
     if (this.veiculoForm.valid) {
-      console.log('Dados salvos:', this.veiculoForm.value);
+      this.isLoading.set(true);      
+      this.veiculoForm.value.vehicleStatus = this.veiculoForm.value.vehicleStatus == 'ativo' ? '1' : '2';
+      this.veiculoForm.value.vehiclePurchaseDate = this.veiculoForm.value.vehiclePurchaseDate.split('/').reverse().join('-');
+      this.veiculoForm.value.photosIds = this.photosIds;
+      if (this.update()) {
+        this.updateVehicle();
+      } else {
+        this.createVehicle();
+      }
     }
   }
 
   cancelar() {
-    console.log('Ação cancelada');
+    this.router.navigate(['/vehicles']);
   }
 
   voltar() {
     this.router.navigate(['/vehicles']);
+  }
+
+  private updateVehicle() {
+    const id = this.veiculoDados?.id;
+    if (!id) {
+      return;
+    }
+    this.isLoading.set(true);
+    this.vehicleService.updateVehicle(id, this.veiculoForm.value).subscribe({
+      next: () => {
+        this.isLoading.set(false);
+        this.snackBar.open('Veículo atualizado com sucesso', 'Fechar', { duration: 3000 });
+        this.router.navigate(['/vehicles']);
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar veículo:', error);
+        this.isLoading.set(false);
+        this.snackBar.open('Erro ao atualizar veículo', 'Fechar', { duration: 3000 });
+      }
+    });
+  }
+
+  private createVehicle() {    
+    this.vehicleService.createVehicle(this.veiculoForm.value).subscribe({
+      next: (vehicle: Vehicle) => {
+        this.isLoading.set(false);
+        this.snackBar.open('Veículo cadastrado com sucesso', 'Fechar', { duration: 3000 });
+        this.router.navigate(['/vehicles']);
+      },
+      error: (error) => {
+        console.error('Erro ao cadastrar veículo:', error);
+        this.isLoading.set(false);
+        this.snackBar.open('Erro ao cadastrar veículo', 'Fechar', { duration: 3000 });
+      }
+    });
+  }
+
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        const reader = new FileReader();
+        
+        reader.onload = (e: any) => {
+          //this.previews.push(e.target.result); // URL para o [src] da img
+          this.selectedFiles.push(files[i]);   // Arquivo real para o backend
+        };
+  
+        reader.readAsDataURL(files[i]);
+        const formData = new FormData();
+        formData.append('file', files[i]);
+        this.vehicleService.uploadPhotos(formData).subscribe((photo) => {
+          this.photosIds.push(photo.id);
+          this.previews.push(photo);
+          console.log(this.previews);
+        });
+      }
+    }
   }
 }

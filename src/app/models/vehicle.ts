@@ -16,4 +16,10 @@ export interface Vehicle {
   drivers: Driver[];
   photos: Photo[];
   totalKilometersCost: number;
+  vehicleModelYear: number;
+  vehicleTransmissionType: string;
+  vehicleColor: string;
+  vehicleChassisNumber: string;
+  vehicleRenavamNumber: string;
+  fuelTypeId: number;
 }
