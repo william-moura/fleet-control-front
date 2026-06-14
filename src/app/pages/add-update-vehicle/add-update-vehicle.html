@@ -19,7 +19,7 @@
       <aside class="sidebar-veiculo">
         <mat-card class="card-foto-resumo">
           <div class="foto-container">
-            <img [src]="selectedPhoto?.path || 'assets/images/default-vehicle.png'" [alt]="selectedPhoto?.name" class="foto-veiculo">
+            <img [src]="selectedPhoto?.path || 'default.png'" [alt]="selectedPhoto?.name" class="foto-veiculo">
             <!-- <button mat-mini-fab color="primary" class="btn-trocar-foto">
               <mat-icon>photo_camera</mat-icon>
             </button> -->
@@ -48,9 +48,9 @@
   
             <div class="informacoes-gerais-box">
               <h4>Informações Gerais</h4>
-              <p><strong>Renavam:</strong> {{ veiculoDados?.vehicleRenavamNumber }}</p>
-              <p><strong>Chassi:</strong> {{ veiculoDados?.vehicleChassisNumber }}</p>
-              <p><strong>Aquisição:</strong> {{ veiculoDados?.vehiclePurchaseDate | date:'dd/MM/yyyy' }}</p>
+              <p><strong>Renavam:</strong> {{ veiculoDados?.vehicleRenavamNumber || 'Não informado' }}</p>
+              <p><strong>Chassi:</strong> {{ veiculoDados?.vehicleChassisNumber || 'Não informado' }}</p>
+              <p><strong>Aquisição:</strong> {{ veiculoDados?.vehiclePurchaseDate}}</p>
             </div>
           </mat-card-content>
         </mat-card>
@@ -194,50 +194,54 @@
               </section>
   
             </form>
-          </mat-tab>          
-          <mat-tab label="Manutenções" *ngIf="!update()">
-            <div class="p-4">
-              <app-list-maintenance [maintenances]="maintenances"></app-list-maintenance>
-            </div>
           </mat-tab>
-          <mat-tab label="Abastecimentos" *ngIf="!update()"><div class="p-4">            
-            <app-list-fuel-suppliers [fuelSupplies]="fuelSupplies"></app-list-fuel-suppliers>
-          </div></mat-tab>
-          <mat-tab label="Histórico" *ngIf="!update()"><div class="p-4">
-            <div class="timeline-container">
-                <h2>Histórico do Veículo</h2>
-                @if (isLoading()) {
-                  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-                } @else {
-            
-                  <mat-list>
-                    @for (item of historico(); track item.id + item.type) {
-                      <mat-list-item class="timeline-item">
-                        <mat-icon matListItemIcon [color]="item.type === 'Abastecimento' ? 'primary' : 'warn'">
-                          {{ item.type === 'Abastecimento' ? 'local_gas_station' : 'build' }}
-                        </mat-icon>
-                
-                        <div matListItemTitle>
-                          <strong>{{ item.type }}</strong> - {{ item.date | date:'dd/MM/yyyy' }}
-                        </div>
-                        
-                        <div matListItemLine class="description">
-                          {{ item.description }}
-                        </div>
-                
-                        <div matListItemMeta class="value">
-                          {{ item.totalCost | currency:'BRL' }}
-                        </div>
-                      </mat-list-item>
-                      <mat-divider></mat-divider>
-                    } @empty {
-                      <p>Nenhuma atividade registrada para este veículo.</p>
-                    }
-                  </mat-list>
-                }
+          @if (update()) {         
+            <mat-tab label="Manutenções">
+              <div class="p-4">
+                <app-list-maintenance [maintenances]="maintenances"></app-list-maintenance>
               </div>
-          </div></mat-tab>
-        </mat-tab-group>
+            </mat-tab>
+            <mat-tab label="Abastecimentos">
+              <div class="p-4">            
+                <app-list-fuel-suppliers [fuelSupplies]="fuelSupplies"></app-list-fuel-suppliers>
+              </div>
+            </mat-tab>          
+            <mat-tab label="Histórico" ><div class="p-4">
+              <div class="timeline-container">
+                  <h2>Histórico do Veículo</h2>
+                  @if (isLoading()) {
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                  } @else {
+              
+                    <mat-list>
+                      @for (item of historico(); track item.id + item.type) {
+                        <mat-list-item class="timeline-item">
+                          <mat-icon matListItemIcon [color]="item.type === 'Abastecimento' ? 'primary' : 'warn'">
+                            {{ item.type === 'Abastecimento' ? 'local_gas_station' : 'build' }}
+                          </mat-icon>
+                  
+                          <div matListItemTitle>
+                            <strong>{{ item.type }}</strong> - {{ item.date | date:'dd/MM/yyyy' }}
+                          </div>
+                          
+                          <div matListItemLine class="description">
+                            {{ item.description }}
+                          </div>
+                  
+                          <div matListItemMeta class="value">
+                            {{ item.totalCost | currency:'BRL' }}
+                          </div>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                      } @empty {
+                        <p>Nenhuma atividade registrada para este veículo.</p>
+                      }
+                    </mat-list>
+                  }
+                </div>
+            </div></mat-tab>
+          }
+          </mat-tab-group>
   
         <footer class="acoes-footer">
           <button mat-button (click)="cancelar()">Cancelar</button>

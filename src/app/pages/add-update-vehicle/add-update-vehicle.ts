@@ -66,7 +66,7 @@ export class AddUpdateVehicle {
   veiculoForm: FormGroup;
   veiculoDados: Vehicle | null = null;
   //veiculoDadoss = input<Vehicle | null>(null);
-  update = signal(false);  
+  update = signal<boolean>(false);  
   private router = inject(Router);
   private vehicleStateService = inject(VehicleStateService);
   isLoading = signal<boolean>(true);
