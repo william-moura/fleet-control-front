@@ -32,6 +32,7 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { MY_DATE_FORMATS, MY_LUXON_FORMATS } from '../../app.config';
 import { Photo } from '../../models/photo';
+import { DragDropDirective } from '../../drag-drop-directive';
 
 @Component({
   selector: 'app-add-update-vehicle',
@@ -53,7 +54,8 @@ import { Photo } from '../../models/photo';
     ListFuelSuppliers,
     ListMaintenance,
     MatProgressSpinnerModule,
-    NgxMaskDirective
+    NgxMaskDirective,
+    DragDropDirective
   ],
   providers:[
   ],
@@ -80,6 +82,7 @@ export class AddUpdateVehicle {
   previews:Photo[] = [];
   selectedFiles:File[] = [];
   photosIds:number[] = [];
+  selectedPhoto:Photo | null = null;
   ngOnInit() {
     const veiculoDadoss = this.vehicleStateService.selectedVehicle();    
     this.vehicleService.getBrands().subscribe((brands) => {
@@ -88,6 +91,7 @@ export class AddUpdateVehicle {
     this.vehicleService.getFuelTypes().subscribe((fuelTypes) => {
       this.fuelTypes.set(fuelTypes);
     });
+    console.log(veiculoDadoss, 'veiculoDadoss');
     if (veiculoDadoss) {
       this.update.set(true);
       if (veiculoDadoss.vehiclePurchaseDate) {
@@ -95,7 +99,8 @@ export class AddUpdateVehicle {
         veiculoDadoss.vehiclePurchaseDate = purchaseDate.split('-').reverse().join('/');
       }
       this.previews = veiculoDadoss.photos.map((photo: Photo) => photo);
-      this.photosIds = veiculoDadoss.photos.map((photo: Photo) => photo.id);      
+      this.photosIds = veiculoDadoss.photos.map((photo: Photo) => photo.id);
+      this.selectedPhoto = veiculoDadoss.photos[0];
       this.veiculoDados = veiculoDadoss;
       this.veiculoForm.patchValue(veiculoDadoss);
       this.vehicleService.getVehicleHistory(this.veiculoDados?.id).subscribe({
@@ -129,6 +134,7 @@ export class AddUpdateVehicle {
       });
     } else {
       this.update.set(false);
+      this.isLoading.set(false);
     }
   }
 
@@ -142,7 +148,7 @@ export class AddUpdateVehicle {
       fuelTypeId: ['', Validators.required],
       vehicleCurrentMileage: ['', Validators.required],
       vehiclePurchaseDate: ['', Validators.required],
-      vehicleNotes: ['', Validators.required],
+      vehicleNotes: [''],
       vehicleTankCapacity: ['', Validators.required],
       vehicleTransmissionType: ['', Validators.required],
       vehicleColor: ['', Validators.required],
@@ -167,10 +173,12 @@ export class AddUpdateVehicle {
   }
 
   cancelar() {
+    this.clearForm();
     this.router.navigate(['/vehicles']);
   }
 
   voltar() {
+    this.clearForm();
     this.router.navigate(['/vehicles']);
   }
 
@@ -184,6 +192,7 @@ export class AddUpdateVehicle {
       next: () => {
         this.isLoading.set(false);
         this.snackBar.open('Veículo atualizado com sucesso', 'Fechar', { duration: 3000 });
+        this.clearForm();
         this.router.navigate(['/vehicles']);
       },
       error: (error) => {
@@ -199,6 +208,7 @@ export class AddUpdateVehicle {
       next: (vehicle: Vehicle) => {
         this.isLoading.set(false);
         this.snackBar.open('Veículo cadastrado com sucesso', 'Fechar', { duration: 3000 });
+        this.clearForm();
         this.router.navigate(['/vehicles']);
       },
       error: (error) => {
@@ -212,23 +222,47 @@ export class AddUpdateVehicle {
   onFileSelected(event: any) {
     const files = event.target.files;
     if (files) {
-      for (let i = 0; i < files.length; i++) {
-        const reader = new FileReader();
-        
-        reader.onload = (e: any) => {
-          //this.previews.push(e.target.result); // URL para o [src] da img
-          this.selectedFiles.push(files[i]);   // Arquivo real para o backend
-        };
-  
-        reader.readAsDataURL(files[i]);
-        const formData = new FormData();
-        formData.append('file', files[i]);
-        this.vehicleService.uploadPhotos(formData).subscribe((photo) => {
-          this.photosIds.push(photo.id);
-          this.previews.push(photo);
-          console.log(this.previews);
-        });
-      }
+      this.processFiles(files);
     }
+  }
+  onFileDropped(file: File) {
+    this.processFiles([file]);
+  }
+  processFiles(files: File[]) {
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      
+      reader.onload = (e: any) => {
+        //this.previews.push(e.target.result); // URL para o [src] da img
+        this.selectedFiles.push(files[i]);   // Arquivo real para o backend
+      };
+
+      reader.readAsDataURL(files[i]);
+      const formData = new FormData();
+      formData.append('file', files[i]);
+      this.vehicleService.uploadPhotos(formData).subscribe((photo) => {
+        this.photosIds.push(photo.id);
+        this.previews.push(photo);
+        console.log(this.previews);
+      });
+    }
+  }
+  removePhoto(photo: Photo) {
+    this.previews = this.previews.filter((p) => p.id !== photo.id);
+    this.photosIds = this.photosIds.filter((id) => id !== photo.id);
+    this.vehicleService.deletePhoto(photo.id).subscribe((response) => {
+      console.log(response);
+    });
+    console.log(this.previews);
+  }
+  private clearForm() {
+    this.selectedPhoto = null;
+    this.previews = [];
+    this.photosIds = [];
+    this.veiculoForm.patchValue({});
+    this.veiculoDados = null;
+    this.update.set(false);
+    this.isLoading.set(false);
+    this.vehicleStateService.setVehicle(null);
   }
 }

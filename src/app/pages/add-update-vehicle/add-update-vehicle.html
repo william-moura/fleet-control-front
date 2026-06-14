@@ -19,10 +19,10 @@
       <aside class="sidebar-veiculo">
         <mat-card class="card-foto-resumo">
           <div class="foto-container">
-            <img [src]="veiculoDados?.photos?.[0]?.path" alt="Fiat Fastback" class="foto-veiculo">
-            <button mat-mini-fab color="primary" class="btn-trocar-foto">
+            <img [src]="selectedPhoto?.path || 'assets/images/default-vehicle.png'" [alt]="selectedPhoto?.name" class="foto-veiculo">
+            <!-- <button mat-mini-fab color="primary" class="btn-trocar-foto">
               <mat-icon>photo_camera</mat-icon>
-            </button>
+            </button> -->
           </div>
           @if (isLoading()) {
             <div class="loading-overlay">
@@ -158,21 +158,31 @@
                     [leadZeroDateTime]="true">
                     <mat-hint>/DD/MM/YYYY</mat-hint>
                   </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Notas</mat-label>
+                    <input matInput formControlName="vehicleNotes">
+                  </mat-form-field>
                 </div>
               </section>
   
-              <section class="secao-form">
+              <section class="secao-form" >
                 <h3>Fotos do Veículo</h3>
-                <div class="upload-dropzone">
+                <div class="upload-dropzone" (filesDropped)="onFileDropped($event)" appDragDrop (click)="fileInput.click()">
                   <p class="instrucao-upload">Arraste e solte imagens aqui ou clique para selecionar</p>
                   <p class="sub-instrucao">Formatos aceitos: JPG, PNG (Máx. 5MB cada)</p>
                   
+                  <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none">
+                </div>
+                <div class="upload-dropzone">
+
                   <div class="lista-fotos-preview">
-                    <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none">
                     @for (foto of previews; track foto; let i = $index) {
-                      <div class="foto-preview-item">
+                      <div class="foto-preview-item" (click)="selectedPhoto = foto">
                         <img [src]="foto.path" alt="Miniatura">
-                        <button mat-icon-button class="btn-remover-foto"><mat-icon>close</mat-icon></button>
+                        <!-- <button mat-icon-button class="btn-remover-foto"><mat-icon>close</mat-icon></button> -->
+                        <button mat-icon-button class="btn-remover-foto" (click)="removePhoto(foto)">
+                          <mat-icon>close</mat-icon>
+                        </button>
                       </div>
                     }
                     <button type="button" class="btn-adicionar-foto-drop" (click)="fileInput.click()">
@@ -185,15 +195,15 @@
   
             </form>
           </mat-tab>          
-          <mat-tab label="Manutenções">
+          <mat-tab label="Manutenções" *ngIf="!update()">
             <div class="p-4">
               <app-list-maintenance [maintenances]="maintenances"></app-list-maintenance>
             </div>
           </mat-tab>
-          <mat-tab label="Abastecimentos"><div class="p-4">            
+          <mat-tab label="Abastecimentos" *ngIf="!update()"><div class="p-4">            
             <app-list-fuel-suppliers [fuelSupplies]="fuelSupplies"></app-list-fuel-suppliers>
           </div></mat-tab>
-          <mat-tab label="Histórico"><div class="p-4">
+          <mat-tab label="Histórico" *ngIf="!update()"><div class="p-4">
             <div class="timeline-container">
                 <h2>Histórico do Veículo</h2>
                 @if (isLoading()) {
