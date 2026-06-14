@@ -16,6 +16,7 @@ import { ReportPreviewComponent } from './components/report-preview-component/re
 import { VehicleFines } from './pages/vehicle-fines/vehicle-fines';
 import { Roles } from './pages/roles/roles';
 import { AddUpdateVehicle } from './pages/add-update-vehicle/add-update-vehicle';
+import { AddUpdateDriver } from './pages/add-update-driver/add-update-driver';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard]},
@@ -33,5 +34,7 @@ export const routes: Routes = [
     { path: 'report/preview/:id', component: ReportPreviewComponent, data: { icon: 'report', name: 'Visualizar Relatório', permission: 'nothing'} },
     { path: 'users/manage-roles', component: Roles, data: { icon: 'manage_accounts', name: 'Gerenciar Cargos', display: false} },
     { path: 'vehicle/editar', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} },
-    { path: 'vehicle/new', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} }
+    { path: 'vehicle/new', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} },
+    { path: 'driver/edit', component: AddUpdateDriver, data: { icon: 'groups', name: 'Motorista', display: false} },
+    { path: 'driver/new', component: AddUpdateDriver, data: { icon: 'groups', name: 'Motorista', display: false} }
 ];
