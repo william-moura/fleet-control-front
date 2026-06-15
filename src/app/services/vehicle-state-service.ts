@@ -6,6 +6,7 @@ import { Kilometer } from '../models/kilometer';
 import { Maintenance } from '../models/maintenance';
 import { FuelSupply } from '../models/fuel-supply';
 import { Supplier } from '../models/supplier';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class VehicleStateService {
   private _selectedMaintenance = signal<Maintenance | null>(null);
   private _selectedFuelSupply = signal<FuelSupply | null>(null);
   private _selectedSupplier = signal<Supplier | null>(null);
+  private _selectedUser = signal<User | null>(null);
   
   // Exposição pública apenas para leitura
   readonly selectedVehicle = this._selectedVehicle.asReadonly();
@@ -28,6 +30,7 @@ export class VehicleStateService {
   readonly selectedMaintenance = this._selectedMaintenance.asReadonly();
   readonly selectedFuelSupply = this._selectedFuelSupply.asReadonly();
   readonly selectedSupplier = this._selectedSupplier.asReadonly();
+  readonly selectedUser = this._selectedUser.asReadonly();
   setVehicle(veiculo: Vehicle | null) {
     this._selectedVehicle.set(veiculo);
   }
@@ -48,5 +51,8 @@ export class VehicleStateService {
   }
   setSupplier(supplier: Supplier | null) {
     this._selectedSupplier.set(supplier);
+  }
+  setUser(user: User | null) {
+    this._selectedUser.set(user);
   }
 }

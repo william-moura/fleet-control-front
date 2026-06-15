@@ -1,0 +1,102 @@
+<div class="container-pagina">
+    <header class="header-pag">
+      <div class="titulo-wrapper">
+        <button mat-icon-button (click)="cancelar()" aria-label="Voltar">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <div>
+          <span class="breadcrumbs">Usuários >{{ update() ? 'Editar Usuário' : 'Novo Usuário' }}</span>
+          <h1>{{ update() ? 'Editar Usuário' : 'Novo Usuário' }}</h1>
+        </div>
+      </div>
+      <button mat-stroked-button color="primary" (click)="cancelar()">
+        <mat-icon>list</mat-icon> Ver Lista
+      </button>
+    </header>
+  
+    <div class="conteudo-principal">
+      <aside class="sidebar-veiculo">
+        <mat-card class="card-foto-resumo">
+          <mat-card-content class="resumo-info">
+            <div class="nome-status">
+              <h2>{{ user()?.name || 'Novo Usuário' }}</h2>
+            </div>
+            
+            <hr class="divisor">
+  
+            <div class="detalhes-lista">
+              <div class="item-detalhe">
+                <mat-icon>car</mat-icon>
+                <div>
+                  <p class="label">Placa</p>
+                  <p class="valor">{{ user()?.email || '---' }}</p>
+                </div>
+              </div>
+              <div class="item-detalhe">
+                <mat-icon>credit_card</mat-icon>
+                <div>
+                  <p class="label">Cargo</p>
+                  <p class="valor">{{ user()?.role?.name || '---' }}</p>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </aside>
+  
+      <main class="formulario-wrapper">
+        <mat-tab-group animationDuration="0ms" class="abas-navegacao">
+          
+          <mat-tab label="Dados Pessoais">
+            <form [formGroup]="form" class="form-container">
+              
+              <section class="secao-form">
+                <h3><mat-icon>car</mat-icon> Dados do Usuário</h3>
+                <div class="grid-form-3col">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Nome</mat-label>
+                    <input matInput formControlName="name" />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-span-2">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" 
+                    email />
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline"> 
+                    <mat-label>Cargo</mat-label>
+                    <mat-select formControlName="role_id">
+                      <mat-option [value]="null">Selecione um cargo</mat-option>
+                      @for (role of roles(); track role.id) {
+                        <mat-option [value]="role.id">{{role.name}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                  @if (!update()) {
+                    <mat-form-field appearance="outline">
+                      <mat-label>Senha</mat-label>
+                      <input matInput formControlName="password" type="password" />
+                    </mat-form-field>
+                  }
+                  @if (!update()) {
+                    <mat-form-field appearance="outline">
+                      <mat-label>Confirmar Senha</mat-label>
+                      <input matInput formControlName="confirmPassword" type="password" />
+                    </mat-form-field>
+                  }
+                </div>
+              </section>
+  
+            </form>
+          </mat-tab>
+        </mat-tab-group>
+  
+        <footer class="acoes-footer">
+          <button mat-button (click)="cancelar()">Cancelar</button>
+          <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">
+            <mat-icon>save</mat-icon> Salvar Cadastro
+          </button>
+        </footer>
+      </main>
+    </div>
+  </div>

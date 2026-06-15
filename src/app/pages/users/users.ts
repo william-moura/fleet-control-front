@@ -21,6 +21,7 @@ import { FormAddUser } from '../../forms/form-add-user/form-add-user';
 import { UserService } from '../../services/user-service';
 import { Router } from '@angular/router';
 import { UpdatePassword } from '../../forms/update-password/update-password';
+import { VehicleStateService } from '../../services/vehicle-state-service';
 
 @Component({
   selector: 'app-users',
@@ -43,6 +44,7 @@ export class Users {
   pageSize = 5;
   indicePagina = 0;
   private router = inject(Router);
+  private userStateService = inject(VehicleStateService);
   ngAfterViewInit() {
     this.dataSource.sort = this.sort();
   }
@@ -57,6 +59,9 @@ export class Users {
     this.getUsers();
   }
   openAddUserDialog() {
+    this.userStateService.setUser(null);
+    this.router.navigate(['/users/new']);
+    return;
     const dialogRef = this.dialog.open(FormAddUser, {
       width: '500px',
     });
@@ -76,6 +81,9 @@ export class Users {
     });
   }
   updateUser(user: User) {
+    this.userStateService.setUser(user);
+    this.router.navigate(['/users/edit']);
+    return;
     const dialogRef = this.dialog.open(FormAddUser, {
       width: '500px',
       data: user,
