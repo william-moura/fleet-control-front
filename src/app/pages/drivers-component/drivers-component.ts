@@ -15,6 +15,8 @@ import { Driver } from '../../models/driver';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
 import { FormAddDriver } from '../../forms/form-add-driver/form-add-driver';
+import { Router } from '@angular/router';
+import { VehicleStateService } from '../../services/vehicle-state-service';
 
 export interface Motorista {
   id: number;
@@ -41,7 +43,8 @@ export class DriversComponent implements AfterViewInit {
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   displayedColumns: string[] = ['nome', 'driverRegisteredNumber', 'cnh', 'categoria', 'status', 'acoes'];
-  
+  private router = inject(Router);
+  private driverStateService = inject(VehicleStateService);
   // Fonte de dados usando Signals para reatividade básica
   dataSource = new MatTableDataSource<Driver>([]);
 
@@ -95,6 +98,8 @@ export class DriversComponent implements AfterViewInit {
     this.getDrivers();
   }
   openAddDriverDialog() {
+    this.router.navigate(['/driver/new']);
+    return;
     const dialogRef = this.dialog.open(FormAddDriver, {
       width: '800px',
       disableClose: true,
@@ -119,6 +124,9 @@ export class DriversComponent implements AfterViewInit {
     });
   }
   async updateDriver(driver: Driver) {
+    this.driverStateService.setDriver(driver);
+    this.router.navigate(['/driver/edit']);
+    return;
     const dialogRef = this.dialog.open(FormAddDriver, {
       width: '600px',
       disableClose: true,

@@ -15,6 +15,14 @@ import { Welcome } from './pages/welcome/welcome';
 import { ReportPreviewComponent } from './components/report-preview-component/report-preview-component';
 import { VehicleFines } from './pages/vehicle-fines/vehicle-fines';
 import { Roles } from './pages/roles/roles';
+import { AddUpdateVehicle } from './pages/add-update-vehicle/add-update-vehicle';
+import { AddUpdateDriver } from './pages/add-update-driver/add-update-driver';
+import { AddUpdateVehicleFine } from './pages/add-update-vehicle-fine/add-update-vehicle-fine';
+import { AddUpdateKm } from './pages/add-update-km/add-update-km';
+import { AddUpdateMaintenance } from './pages/add-update-maintenance/add-update-maintenance';
+import { AddUpdateFuel } from './pages/add-update-fuel/add-update-fuel';
+import { AddUpdateSupplier } from './pages/add-update-supplier/add-update-supplier';
+import { AddUpdateUsers } from './pages/add-update-users/add-update-users';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard]},
@@ -30,5 +38,21 @@ export const routes: Routes = [
     { path: 'users', component: Users, data: { icon: 'groups', name: 'Usuários' , permission: 'listar_usuarios'}, canActivate: [authGuard, roleGuard] },
     { path: 'login', component: LoginComponent },    
     { path: 'report/preview/:id', component: ReportPreviewComponent, data: { icon: 'report', name: 'Visualizar Relatório', permission: 'nothing'} },
-    { path: 'users/manage-roles', component: Roles, data: { icon: 'manage_accounts', name: 'Gerenciar Cargos', display: false} }
+    { path: 'users/manage-roles', component: Roles, data: { icon: 'manage_accounts', name: 'Gerenciar Cargos', display: false} },
+    { path: 'vehicle/editar', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} },
+    { path: 'vehicle/new', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} },
+    { path: 'driver/edit', component: AddUpdateDriver, data: { icon: 'groups', name: 'Motorista', display: false} },
+    { path: 'driver/new', component: AddUpdateDriver, data: { icon: 'groups', name: 'Motorista', display: false} },
+    { path: 'vehicle-fine/edit', component: AddUpdateVehicleFine, data: { icon: 'payment', name: 'Multa', display: false} },
+    { path: 'vehicle-fine/new', component: AddUpdateVehicleFine, data: { icon: 'payment', name: 'Multa', display: false} },
+    { path: 'kilometer/edit', component: AddUpdateKm, data: { icon: 'speed', name: 'Quilometragem', display: false} },
+    { path: 'kilometer/new', component: AddUpdateKm, data: { icon: 'speed', name: 'Quilometragem', display: false} },
+    { path: 'maintenance/edit', component: AddUpdateMaintenance, data: { icon: 'build', name: 'Manutenção', display: false} },
+    { path: 'maintenance/new', component: AddUpdateMaintenance, data: { icon: 'build', name: 'Manutenção', display: false} },
+    { path: 'fuel/edit', component: AddUpdateFuel, data: { icon: 'local_gas_station', name: 'Abastecimento', display: false} },
+    { path: 'fuel/new', component: AddUpdateFuel, data: { icon: 'local_gas_station', name: 'Abastecimento', display: false} },
+    { path: 'supplier/edit', component: AddUpdateSupplier, data: { icon: 'local_shipping', name: 'Fornecedor', display: false} },
+    { path: 'supplier/new', component: AddUpdateSupplier, data: { icon: 'local_shipping', name: 'Fornecedor', display: false} },
+    { path: 'users/edit', component: AddUpdateUsers, data: { icon: 'groups', name: 'Usuário', display: false} },
+    { path: 'users/new', component: AddUpdateUsers, data: { icon: 'groups', name: 'Usuário', display: false} }
 ];

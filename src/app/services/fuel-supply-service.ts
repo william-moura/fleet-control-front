@@ -29,4 +29,7 @@ export class FuelSupplyService {
   deleteFuelSupply(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);
   }
+  getFuelSuppliesByVehicleId(vehicleId: number): Observable<FuelSupply[]> {
+    return this.http.get<FuelSupply[]>(`${this.API_URL}/vehicle/${vehicleId}`);
+  }
 }

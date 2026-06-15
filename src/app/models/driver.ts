@@ -10,9 +10,9 @@ export interface Driver {
   driverRg: string;
   driverCpf: string;
   driverLicenseNumber: string;
-  driverLicenseExpirationDate: Date;
+  driverLicenseExpirationDate: string;
   driverLicenseCategory: string;
-  driverBirthDate: Date;
+  driverBirthDate: string;
   driverPhone: string;
   driverStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
 }

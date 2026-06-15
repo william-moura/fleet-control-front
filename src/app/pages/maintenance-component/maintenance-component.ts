@@ -17,6 +17,8 @@ import { Maintenance } from '../../models/maintenance';
 import { FormAddMaintenance } from '../../forms/form-add-maintenance/form-add-maintenance';
 import { FormAddMaintenanceService } from '../../forms/form-add-maintenance-service/form-add-maintenance-service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
+import { VehicleStateService } from '../../services/vehicle-state-service';
 
 @Component({
   selector: 'app-maintenance-component',
@@ -41,6 +43,8 @@ export class MaintenanceComponent {
   totalRegistros = 0;
   pageSize = 5;
   indicePagina = 0;
+  router = inject(Router);
+  private vehicleStateService = inject(VehicleStateService);
   ngAfterViewInit() {    
     this.dataSource.sort = this.sort();
   }
@@ -76,6 +80,9 @@ export class MaintenanceComponent {
   }
 
   async openAddMaintenanceDialog() {
+    this.vehicleStateService.setMaintenance(null);
+    this.router.navigate(['/maintenance/new']);
+    return;
     const dialogRef = this.dialog.open(FormAddMaintenance, {
       width: '600px',
       disableClose: true,
@@ -99,6 +106,9 @@ export class MaintenanceComponent {
     });
   }
   async updateMaintenance(maintenance: Maintenance) {
+    this.vehicleStateService.setMaintenance(maintenance);
+    this.router.navigate(['/maintenance/edit']);
+    return;
     console.log(maintenance,'maintenance');
     const result = await firstValueFrom(this.dialog.open(FormAddMaintenance, {
       width: '600px',

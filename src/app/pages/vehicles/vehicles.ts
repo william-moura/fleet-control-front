@@ -21,6 +21,8 @@ import { KilometerService } from '../../services/kilometer-service';
 import { CommonModule } from '@angular/common';
 import { VehicleHistoryComponent } from '../../components/vehicle-history-component/vehicle-history-component';
 import { FormAddBrand } from '../../forms/form-add-brand/form-add-brand';
+import { Router } from '@angular/router';
+import { VehicleStateService } from '../../services/vehicle-state-service';
 
 @Component({
   selector: 'app-vehicles',
@@ -34,13 +36,15 @@ export class Vehicles {
   private kilometerService = inject(KilometerService);
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+  private router = inject(Router);
   totalRegistros = 0;
   pageSize = 5;
   indicePagina = 0;
+  veiculoSelecionado: Vehicle | null = null;
   // constructor(private paginator: MatPaginator) {
   //   this.paginator = paginator;
   // }
-  constructor(private title: Title) {}
+  constructor(private title: Title, private vehicleStateService: VehicleStateService) {}
   isLoading = signal(true);
   displayedColumns: string[] = ['vehicle_plate', 'vehicle_brand', 'vehicle_model', 'vehicle_year', 'vehicle_fuel_type', 'vehicle_fuel_capacity', 'vehicle_current_mileage', 'vehicle_purchase_date', 'vehicle_notes', 'vehicle_status', 'acoes'];
   dataSource = new MatTableDataSource<Vehicle>([]);
@@ -77,6 +81,8 @@ export class Vehicles {
     this.title.setTitle('Gestão de Veículos');
   }
   openAddVehicleDialog() {
+    this.router.navigate(['/vehicle/new']);
+    return;
     const dialogRef = this.dialog.open(FormAddVehicle, {
       width: '600px',
       disableClose: true,
@@ -121,6 +127,9 @@ export class Vehicles {
     }
   }
   async updateVehicle(vehicle: Vehicle) {
+    this.vehicleStateService.setVehicle(vehicle);
+    this.router.navigate(['/vehicle/editar']);
+    return;
     console.log(vehicle, 'vehicle');
     const dialogRef = this.dialog.open(FormAddVehicle, {
       width: '600px',

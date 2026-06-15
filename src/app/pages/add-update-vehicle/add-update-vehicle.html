@@ -1,0 +1,255 @@
+<div class="container-pagina">
+  
+    <header class="header-pag">
+      <div class="titulo-wrapper">
+        <button mat-icon-button aria-label="Voltar" (click)="voltar()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <div>
+          <span class="breadcrumbs">Veículos > {{ update() ? 'Editar Veículo' : 'Novo Veículo' }}</span>
+          <h1>{{ update() ? 'Editar Veículo' : 'Novo Veículo' }}</h1>
+        </div>
+      </div>
+      <button mat-stroked-button color="primary" (click)="voltar()">
+        <mat-icon>list</mat-icon> Ver Lista
+      </button>
+    </header>
+  
+    <div class="conteudo-principal">
+      <aside class="sidebar-veiculo">
+        <mat-card class="card-foto-resumo">
+          <div class="foto-container">
+            <img [src]="selectedPhoto?.path || 'default.png'" [alt]="selectedPhoto?.name" class="foto-veiculo">
+            <!-- <button mat-mini-fab color="primary" class="btn-trocar-foto">
+              <mat-icon>photo_camera</mat-icon>
+            </button> -->
+          </div>
+          @if (isLoading()) {
+            <div class="loading-overlay">
+              <mat-spinner diameter="60" mode="indeterminate" color="primary"></mat-spinner>
+              <p class="loading-text">Carregando, por favor aguarde...</p>
+            </div>
+          }
+          <mat-card-content class="resumo-info">
+            <div class="placa-status">
+              <h2>{{ veiculoDados?.vehiclePlate }}</h2>
+              <span class="badge-status ativo">{{ veiculoDados?.vehicleStatus}}</span>
+            </div>
+            <h3>{{ veiculoDados?.brand }} {{ veiculoDados?.vehicleModel }}</h3>
+            
+            <div class="tags-rapidas">
+              <span><mat-icon>calendar_today</mat-icon> {{ veiculoDados?.vehicleYear }}/{{ veiculoDados?.vehicleModelYear }}</span>
+              <span><mat-icon>local_gas_station</mat-icon> {{ veiculoDados?.fuelType }}</span>
+              <span><mat-icon>tune</mat-icon> {{ veiculoDados?.vehicleTransmissionType }}</span>
+              <span><mat-icon>color_lens</mat-icon> {{ veiculoDados?.vehicleColor }}</span>
+            </div>
+  
+            <hr class="divisor">
+  
+            <div class="informacoes-gerais-box">
+              <h4>Informações Gerais</h4>
+              <p><strong>Renavam:</strong> {{ veiculoDados?.vehicleRenavamNumber || 'Não informado' }}</p>
+              <p><strong>Chassi:</strong> {{ veiculoDados?.vehicleChassisNumber || 'Não informado' }}</p>
+              <p><strong>Aquisição:</strong> {{ veiculoDados?.vehiclePurchaseDate}}</p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </aside>
+  
+      <main class="formulario-wrapper">
+        <mat-tab-group animationDuration="0ms" class="abas-navegacao">
+          <mat-tab label="Dados Principais">
+            <form [formGroup]="veiculoForm" class="form-container">
+              
+              <section class="secao-form">
+                <h3><mat-icon>directions_car</mat-icon> Dados do Veículo</h3>
+                <div class="grid-form">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Placa</mat-label>
+                    <input matInput formControlName="vehiclePlate">
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>Status</mat-label>
+                    <mat-select formControlName="vehicleStatus">
+                      <mat-option value="ativo">Ativo</mat-option>
+                      <mat-option value="inativo">Inativo</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>Marca</mat-label>
+                    <mat-select formControlName="brandId">
+                      @for (brand of brands(); track brand.id) {
+                        <mat-option [value]="brand.id">{{brand.name | uppercase}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>Modelo</mat-label>
+                    <input matInput formControlName="vehicleModel">
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>Ano Fabricação</mat-label>
+                    <input matInput type="number" formControlName="vehicleYear">
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>Ano Modelo</mat-label>
+                    <input matInput type="number" formControlName="vehicleModelYear">
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>Combustível</mat-label>
+                    <mat-select formControlName="fuelTypeId">
+                      @for (fuelType of fuelTypes(); track fuelType.id) {
+                        <mat-option [value]="fuelType.id">{{fuelType.name | uppercase}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>Câmbio</mat-label>
+                    <mat-select formControlName="vehicleTransmissionType">
+                      <mat-option value="automatico">Automática</mat-option>
+                      <mat-option value="manual">Manual</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Renavam</mat-label>
+                    <input matInput formControlName="vehicleRenavamNumber">
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Chassi</mat-label>
+                    <input matInput formControlName="vehicleChassisNumber">
+                  </mat-form-field>
+                </div>
+  
+                <div class="linha-full">
+                  <mat-form-field appearance="outline" class="w-full">
+                    <mat-label>Cor</mat-label>
+                    <input matInput formControlName="vehicleColor">
+                  </mat-form-field>
+                </div>
+              </section>
+  
+              <section class="secao-form">
+                <h3><mat-icon>info</mat-icon> Outras Informações</h3>
+                <div class="grid-form-3col">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Capacidade de Combustível</mat-label>
+                    <input matInput type="number" formControlName="vehicleTankCapacity">
+                    <span matSuffix class="sufixo-input">Litros</span>
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>Quilometragem Atual</mat-label>
+                    <input matInput type="number" formControlName="vehicleCurrentMileage">
+                    <span matSuffix class="sufixo-input">km</span>
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline">
+                    <mat-label>Data de Aquisição</mat-label>
+                    <input matInput formControlName="vehiclePurchaseDate"                    
+                    mask="00/00/0000" 
+                    [dropSpecialCharacters]="false"
+                    [leadZeroDateTime]="true">
+                    <mat-hint>/DD/MM/YYYY</mat-hint>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Notas</mat-label>
+                    <input matInput formControlName="vehicleNotes">
+                  </mat-form-field>
+                </div>
+              </section>
+  
+              <section class="secao-form" >
+                <h3>Fotos do Veículo</h3>
+                <div class="upload-dropzone" (filesDropped)="onFileDropped($event)" appDragDrop (click)="fileInput.click()">
+                  <p class="instrucao-upload">Arraste e solte imagens aqui ou clique para selecionar</p>
+                  <p class="sub-instrucao">Formatos aceitos: JPG, PNG (Máx. 5MB cada)</p>
+                  
+                  <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none">
+                </div>
+                <div class="upload-dropzone">
+
+                  <div class="lista-fotos-preview">
+                    @for (foto of previews; track foto; let i = $index) {
+                      <div class="foto-preview-item" (click)="selectedPhoto = foto">
+                        <img [src]="foto.path" alt="Miniatura">
+                        <!-- <button mat-icon-button class="btn-remover-foto"><mat-icon>close</mat-icon></button> -->
+                        <button mat-icon-button class="btn-remover-foto" (click)="removePhoto(foto)">
+                          <mat-icon>close</mat-icon>
+                        </button>
+                      </div>
+                    }
+                    <button type="button" class="btn-adicionar-foto-drop" (click)="fileInput.click()">
+                      <mat-icon>add</mat-icon>
+                      <span>Adicionar Foto</span>
+                    </button>
+                  </div>
+                </div>
+              </section>
+  
+            </form>
+          </mat-tab>
+          @if (update()) {         
+            <mat-tab label="Manutenções">
+              <div class="p-4">
+                <app-list-maintenance [maintenances]="maintenances"></app-list-maintenance>
+              </div>
+            </mat-tab>
+            <mat-tab label="Abastecimentos">
+              <div class="p-4">            
+                <app-list-fuel-suppliers [fuelSupplies]="fuelSupplies"></app-list-fuel-suppliers>
+              </div>
+            </mat-tab>          
+            <mat-tab label="Histórico" ><div class="p-4">
+              <div class="timeline-container">
+                  <h2>Histórico do Veículo</h2>
+                  @if (isLoading()) {
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                  } @else {
+              
+                    <mat-list>
+                      @for (item of historico(); track item.id + item.type) {
+                        <mat-list-item class="timeline-item">
+                          <mat-icon matListItemIcon [color]="item.type === 'Abastecimento' ? 'primary' : 'warn'">
+                            {{ item.type === 'Abastecimento' ? 'local_gas_station' : 'build' }}
+                          </mat-icon>
+                  
+                          <div matListItemTitle>
+                            <strong>{{ item.type }}</strong> - {{ item.date | date:'dd/MM/yyyy' }}
+                          </div>
+                          
+                          <div matListItemLine class="description">
+                            {{ item.description }}
+                          </div>
+                  
+                          <div matListItemMeta class="value">
+                            {{ item.totalCost | currency:'BRL' }}
+                          </div>
+                        </mat-list-item>
+                        <mat-divider></mat-divider>
+                      } @empty {
+                        <p>Nenhuma atividade registrada para este veículo.</p>
+                      }
+                    </mat-list>
+                  }
+                </div>
+            </div></mat-tab>
+          }
+          </mat-tab-group>
+  
+        <footer class="acoes-footer">
+          <button mat-button (click)="cancelar()">Cancelar</button>
+          <button mat-flat-button color="primary" [disabled]="veiculoForm.invalid" (click)="salvar()">
+            <mat-icon>save</mat-icon> Salvar Alterações
+          </button>
+        </footer>
+      </main>
+    </div>
+  </div>
+  

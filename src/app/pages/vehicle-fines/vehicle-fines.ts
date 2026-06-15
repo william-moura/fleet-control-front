@@ -15,6 +15,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { VehicleFineService } from '../../services/vehicle-fine-service';
 import { Pagination } from '../../models/pagination';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { VehicleStateService } from '../../services/vehicle-state-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehicle-fines',
@@ -35,10 +37,15 @@ export class VehicleFines implements OnInit {
   private dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
   private vehicleFineService = inject(VehicleFineService);
+  private vehicleFineStateService = inject(VehicleStateService);
+  private router = inject(Router);
   ngOnInit() {
     this.getVehicleFines();
   }
-  updateFine(fine: VehicleFine) {    
+  updateFine(fine: VehicleFine) {
+    this.vehicleFineStateService.setVehicleFine(fine);
+    this.router.navigate(['/vehicle-fine/edit']);
+    return;
     const dialogRef = this.dialog.open(FormAddVehicleFine, {
       width: '600px',
       disableClose: true,
@@ -87,6 +94,8 @@ export class VehicleFines implements OnInit {
   }
 
   openAddFineDialog() {
+    this.router.navigate(['/vehicle-fine/new']);
+    return;
     const dialogRef = this.dialog.open(FormAddVehicleFine, {
       width: '600px',
       disableClose: true,

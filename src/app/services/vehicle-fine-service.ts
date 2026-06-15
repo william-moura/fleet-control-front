@@ -29,4 +29,7 @@ export class VehicleFineService {
   deleteVehicleFine(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);
   }
+  getVehicleFinesByDriverId(driverId: number): Observable<VehicleFine[]> {
+    return this.http.get<VehicleFine[]>(`${this.API_URL}/driver/${driverId}`);
+  }
 }
