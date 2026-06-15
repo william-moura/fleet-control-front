@@ -8,7 +8,7 @@ export interface FuelSupply {
     fuelTypeId: number;
     driverId: number;
     fuelSupplierPrice: number;
-    fuelSupplierDate: Date;
+    fuelSupplierDate: string;
     fuelPrice: number;
     fuelSupplierQuantity: number;
     fuelSupplierTotal: number;

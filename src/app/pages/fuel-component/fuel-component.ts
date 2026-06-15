@@ -20,6 +20,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormAddFuelSupplier } from '../../forms/form-add-fuel-supplier/form-add-fuel-supplier';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { Router } from '@angular/router';
+import { VehicleStateService } from '../../services/vehicle-state-service';
 
 
 @Component({
@@ -45,10 +47,14 @@ export class FuelComponent implements OnInit{
   totalRegistros = 0;
   pageSize = 5;
   indicePagina = 0;
+  private router = inject(Router);
+  private fuelSupplyStateService = inject(VehicleStateService);
   ngOnInit() {
     this.getFuelSupplies();
   }
   abrirModalCadastro() {
+    this.router.navigate(['/fuel/new']);
+    return;
     const dialogRef = this.dialog.open(FormAddFuelSupplier, {
       width: '500px',
       disableClose: true,
@@ -93,6 +99,9 @@ export class FuelComponent implements OnInit{
     });
   }
   updateFuelSupply(fuelSupply: FuelSupply) {
+    this.fuelSupplyStateService.setFuelSupply(fuelSupply);
+    this.router.navigate(['/fuel/edit']);
+    return;
     const dialogRef = this.dialog.open(FormAddFuelSupplier, {
       width: '500px',
       data: fuelSupply,
