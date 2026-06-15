@@ -102,48 +102,9 @@ export class KmComponent {
   async updateKilometer(kilometer: Kilometer) {
     this.vehicleStateService.setKilometer(kilometer);
     this.router.navigate(['/kilometer/edit']);
-    return;
-    const dialogRef = this.dialog.open(FormAddKmComponent, {
-      width: '600px',
-      data: kilometer,
-    });
-    const result = await firstValueFrom(dialogRef.afterClosed());
-    if (result) {
-      result.kilometersDate = result.kilometersDate.split('/').reverse().join('-');
-      this.kilometerService.updateKilometer(kilometer.id, result).subscribe({
-        next: () => {
-          this.getKilometers();
-          this.snackBar.open('Quilometragem atualizada com sucesso', 'Fechar', { duration: 3000 });
-        },
-        error: (error) => {
-          console.error('Erro ao atualizar quilometragem:', error);
-          this.snackBar.open('Erro ao atualizar quilometragem', 'Fechar', { duration: 3000 });
-        },
-      });
-    }
   }
   openAddKmDialog() {
     this.vehicleStateService.setKilometer(null);
     this.router.navigate(['/kilometer/new']);
-    return;
-    const dialogRef = this.dialog.open(FormAddKmFull, {
-      width: '600px',
-      data: null,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        result.kilometersDate = result.kilometersDate.split('/').reverse().join('-');
-        this.kilometerService.createKilometer(result).subscribe({
-          next: () => {
-            this.getKilometers();
-            this.snackBar.open('Quilometragem adicionada com sucesso', 'Fechar', { duration: 3000 });
-          },
-          error: (error) => {
-            console.error('Erro ao adicionar quilometragem:', error);
-            this.snackBar.open('Erro ao adicionar quilometragem', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
 }

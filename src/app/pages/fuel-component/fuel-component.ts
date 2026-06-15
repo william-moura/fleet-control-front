@@ -54,26 +54,6 @@ export class FuelComponent implements OnInit{
   }
   abrirModalCadastro() {
     this.router.navigate(['/fuel/new']);
-    return;
-    const dialogRef = this.dialog.open(FormAddFuelSupplier, {
-      width: '500px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        result.fuelSupplierDate = result.fuelSupplierDate.split('/').reverse().join('-');
-        this.fuelSupplyService.createFuelSupply(result).subscribe({
-          next: (fuelSupply) => {
-            this.snackBar.open('Abastecimento cadastrado com sucesso', 'Fechar', { duration: 3000 });
-            this.getFuelSupplies();
-          },
-          error: (error) => {
-            console.error('Erro ao cadastrar abastecimento:', error);
-            this.snackBar.open('Erro ao cadastrar abastecimento', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
   deleteFuelSupply(id: number) {
     const dialogRef = this.dialog.open(ConfirmDialog, {
@@ -101,26 +81,6 @@ export class FuelComponent implements OnInit{
   updateFuelSupply(fuelSupply: FuelSupply) {
     this.fuelSupplyStateService.setFuelSupply(fuelSupply);
     this.router.navigate(['/fuel/edit']);
-    return;
-    const dialogRef = this.dialog.open(FormAddFuelSupplier, {
-      width: '500px',
-      data: fuelSupply,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        result.fuelSupplyDate = result.fuelSupplyDate.split('/').reverse().join('-');
-        this.fuelSupplyService.updateFuelSupply(fuelSupply.id, result).subscribe({
-          next: (fuelSupply) => {
-            this.snackBar.open('Abastecimento atualizado com sucesso', 'Fechar', { duration: 3000 });
-            this.getFuelSupplies();
-          },
-          error: (error) => {
-            console.error('Erro ao atualizar abastecimento:', error);
-            this.snackBar.open('Erro ao atualizar abastecimento', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

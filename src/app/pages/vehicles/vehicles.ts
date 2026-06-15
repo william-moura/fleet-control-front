@@ -81,27 +81,8 @@ export class Vehicles {
     this.title.setTitle('Gestão de Veículos');
   }
   openAddVehicleDialog() {
+    this.vehicleStateService.setVehicle(null);
     this.router.navigate(['/vehicle/new']);
-    return;
-    const dialogRef = this.dialog.open(FormAddVehicle, {
-      width: '600px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        result.vehiclePurchaseDate = result.vehiclePurchaseDate.split('/').reverse().join('-');
-        this.vehicleService.createVehicle(result).subscribe({
-          next: (vehicle) => {
-            this.snackBar.open('Veículo cadastrado com sucesso', 'Fechar', { duration: 3000 });
-            this.getVehicles();
-          },
-          error: (error) => {
-            console.error('Erro ao cadastrar veículo:', error);
-            this.snackBar.open('Erro ao cadastrar veículo', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
   async deleteVehicle(vehicle: Vehicle) {
     const dialogRef = this.dialog.open(ConfirmDialog, {
@@ -128,30 +109,7 @@ export class Vehicles {
   }
   async updateVehicle(vehicle: Vehicle) {
     this.vehicleStateService.setVehicle(vehicle);
-    this.router.navigate(['/vehicle/editar']);
-    return;
-    console.log(vehicle, 'vehicle');
-    const dialogRef = this.dialog.open(FormAddVehicle, {
-      width: '600px',
-      disableClose: true,
-      data: vehicle,
-    });
-    const result = await firstValueFrom(dialogRef.afterClosed());
-    if (result) {
-      try {
-        this.isLoading.set(true);
-        result.vehiclePurchaseDate = result.vehiclePurchaseDate.split('/').reverse().join('-');
-        await firstValueFrom(this.vehicleService.updateVehicle(vehicle.id, result));
-        this.snackBar.open('Veículo atualizado com sucesso', 'Fechar', { duration: 3000 });
-        this.getVehicles();
-      } catch (error) {
-        console.error('Erro ao atualizar veículo:', error);
-        this.snackBar.open('Erro ao atualizar veículo', 'Fechar', { duration: 3000 });
-      }
-      finally {
-        this.isLoading.set(false);
-      }
-    }
+    this.router.navigate(['/vehicle/edit']);
   }
   async syncDrivers(vehicle: Vehicle) {
     const dialogRef = this.dialog.open(SyncDriverComponent, {

@@ -45,28 +45,6 @@ export class VehicleFines implements OnInit {
   updateFine(fine: VehicleFine) {
     this.vehicleFineStateService.setVehicleFine(fine);
     this.router.navigate(['/vehicle-fine/edit']);
-    return;
-    const dialogRef = this.dialog.open(FormAddVehicleFine, {
-      width: '600px',
-      disableClose: true,
-      data: fine,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        result.finePaidDate = result.finePaidDate.split('/').reverse().join('-');
-        result.fineDate = result.fineDate.split('/').reverse().join('-');
-        this.vehicleFineService.updateVehicleFine(fine.id, result).subscribe({
-          next: (fine: VehicleFine) => {
-            this.snackBar.open('Multa atualizada com sucesso', 'Fechar', { duration: 3000 });
-            this.getVehicleFines();
-          },
-          error: (error) => {
-            console.error('Erro ao atualizar multa:', error);
-            this.snackBar.open('Erro ao atualizar multa', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
 
   deleteFine(fine: VehicleFine) {
@@ -94,28 +72,8 @@ export class VehicleFines implements OnInit {
   }
 
   openAddFineDialog() {
+    this.vehicleFineStateService.setVehicleFine(null);
     this.router.navigate(['/vehicle-fine/new']);
-    return;
-    const dialogRef = this.dialog.open(FormAddVehicleFine, {
-      width: '600px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        result.finePaidDate = result.finePaidDate.split('/').reverse().join('-');
-        result.fineDate = result.fineDate.split('/').reverse().join('-');
-        this.vehicleFineService.createVehicleFine(result).subscribe({
-          next: (fine: VehicleFine) => {
-            this.snackBar.open('Multa cadastrada com sucesso', 'Fechar', { duration: 3000 });
-            this.getVehicleFines();
-          },
-          error: (error) => {
-            console.error('Erro ao cadastrar multa:', error);
-            this.snackBar.open('Erro ao cadastrar multa', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
   getVehicleFines() {
     this.isLoading.set(true);

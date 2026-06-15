@@ -39,7 +39,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },    
     { path: 'report/preview/:id', component: ReportPreviewComponent, data: { icon: 'report', name: 'Visualizar Relatório', permission: 'nothing'} },
     { path: 'users/manage-roles', component: Roles, data: { icon: 'manage_accounts', name: 'Gerenciar Cargos', display: false} },
-    { path: 'vehicle/editar', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} },
+    { path: 'vehicle/edit', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} },
     { path: 'vehicle/new', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} },
     { path: 'driver/edit', component: AddUpdateDriver, data: { icon: 'groups', name: 'Motorista', display: false} },
     { path: 'driver/new', component: AddUpdateDriver, data: { icon: 'groups', name: 'Motorista', display: false} },
