@@ -61,47 +61,10 @@ export class Users {
   openAddUserDialog() {
     this.userStateService.setUser(null);
     this.router.navigate(['/users/new']);
-    return;
-    const dialogRef = this.dialog.open(FormAddUser, {
-      width: '500px',
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.userService.createUser(result).subscribe({
-          next: (user) => {
-            this.snackBar.open('Usuário cadastrado com sucesso', 'Fechar', { duration: 3000 });
-            this.getUsers();
-          },
-          error: (error) => {
-            console.error('Erro ao cadastrar usuário:', error);
-            this.snackBar.open('Erro ao cadastrar usuário', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
   updateUser(user: User) {
     this.userStateService.setUser(user);
     this.router.navigate(['/users/edit']);
-    return;
-    const dialogRef = this.dialog.open(FormAddUser, {
-      width: '500px',
-      data: user,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.userService.updateUser(user.id, result).subscribe({
-          next: () => {
-            this.snackBar.open('Usuário atualizado com sucesso', 'Fechar', { duration: 3000 });
-            this.getUsers();
-          },
-          error: (error) => {
-            console.error('Erro ao atualizar usuário:', error);
-            this.snackBar.open('Erro ao atualizar usuário', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
   deleteUser(user: User) {
     const dialogRef = this.dialog.open(ConfirmDialog, {

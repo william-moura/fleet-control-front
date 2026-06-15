@@ -66,26 +66,6 @@ export class SupplierComponent {
   async openAddSupplierDialog() {
     this.supplierStateService.setSupplier(null);
     this.router.navigate(['/supplier/new']);
-    return;
-    const dialogRef = this.dialog.open(FormAddSupplier, {
-      width: '600px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        result.supplierCnpj = result.supplierCnpj.replace(/[^a-zA-Z0-9]/g, "").toUpperCase();
-        this.supplierService.createSupplier(result).subscribe({
-          next: (supplier) => {
-            this.snackBar.open('Fornecedor cadastrado com sucesso', 'Fechar', { duration: 3000 });
-            this.getSuppliers();
-          },
-          error: (error) => {
-            console.error('Erro ao cadastrar fornecedor:', error);
-            this.snackBar.open('Erro ao cadastrar fornecedor', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -108,17 +88,6 @@ export class SupplierComponent {
   async updateSupplier(supplier: Supplier) {
     this.supplierStateService.setSupplier(supplier);
     this.router.navigate(['/supplier/edit']);
-    return;
-    const result = await firstValueFrom(this.dialog.open(FormAddSupplier, {
-      width: '500px',
-      data: supplier,
-    }).afterClosed());
-    if (result) {
-      this.supplierService.updateSupplier(supplier.id, result).subscribe(() => {
-        this.snackBar.open('Fornecedor atualizado com sucesso', 'Fechar', { duration: 3000 });
-        this.getSuppliers();
-      });
-    }
   }
   onPageChange(event: PageEvent) {
     this.indicePagina = event.pageIndex;

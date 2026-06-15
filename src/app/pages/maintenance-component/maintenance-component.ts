@@ -82,47 +82,10 @@ export class MaintenanceComponent {
   async openAddMaintenanceDialog() {
     this.vehicleStateService.setMaintenance(null);
     this.router.navigate(['/maintenance/new']);
-    return;
-    const dialogRef = this.dialog.open(FormAddMaintenance, {
-      width: '600px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        result.maintenancePreviousDateFinished = result.maintenancePreviousDateFinished.split('/').reverse().join('-');
-        result.maintenanceNextDate = result.maintenanceNextDate.split('/').reverse().join('-');
-        result.maintenanceDate = result.maintenanceDate.split('/').reverse().join('-');
-        this.maintenanceService.createMaintenance(result).subscribe({
-          next: (maintenance) => {
-            this.snackBar.open('Manutenção cadastrada com sucesso', 'Fechar', { duration: 3000 });
-            this.getAllMaintenances();
-          },
-          error: (error) => {
-            console.error('Erro ao cadastrar fornecedor:', error);
-            this.snackBar.open('Erro ao cadastrar fornecedor', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
   async updateMaintenance(maintenance: Maintenance) {
     this.vehicleStateService.setMaintenance(maintenance);
     this.router.navigate(['/maintenance/edit']);
-    return;
-    console.log(maintenance,'maintenance');
-    const result = await firstValueFrom(this.dialog.open(FormAddMaintenance, {
-      width: '600px',
-      data: maintenance,
-    }).afterClosed());
-    if (result) {
-      result.maintenancePreviousDateFinished = result.maintenancePreviousDateFinished.split('/').reverse().join('-');
-      result.maintenanceNextDate = result.maintenanceNextDate.split('/').reverse().join('-');
-      result.maintenanceDate = result.maintenanceDate.split('/').reverse().join('-');
-      this.maintenanceService.updateMaintenance(maintenance.id, result).subscribe(() => {
-        this.snackBar.open('Manutenção atualizada com sucesso', 'Fechar', { duration: 3000 });
-        this.getAllMaintenances();
-      });
-    }
   }
   async openAddMaintenanceServiceDialog() {
     const dialogRef = this.dialog.open(FormAddMaintenanceService, {
