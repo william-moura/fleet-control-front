@@ -7,7 +7,7 @@ $azul-primario: #0f172a; // Cor escura base do design moderno ou use a primária
 .container-pagina {
   background-color: $bg-fundo;
   min-height: 100vh;
-  padding: 24px;
+  // padding: 24px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   box-sizing: border-box;
 }
@@ -188,7 +188,7 @@ $azul-primario: #0f172a; // Cor escura base do design moderno ou use a primária
 }
 
 .secao-form {
-  margin-bottom: 32px;
+  margin-bottom: 5px;
 
   h3 {
     display: flex;
@@ -304,7 +304,7 @@ mat-form-field {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 16px 24px;
+  padding: 6px 10px;
   border-top: 1px solid $borda-cor;
   background: #ffffff;
 }

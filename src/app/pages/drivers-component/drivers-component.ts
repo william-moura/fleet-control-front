@@ -14,7 +14,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Driver } from '../../models/driver';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
-import { FormAddDriver } from '../../forms/form-add-driver/form-add-driver';
 import { Router } from '@angular/router';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 
@@ -99,52 +98,10 @@ export class DriversComponent implements AfterViewInit {
   }
   openAddDriverDialog() {
     this.router.navigate(['/driver/new']);
-    return;
-    const dialogRef = this.dialog.open(FormAddDriver, {
-      width: '800px',
-      disableClose: true,
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('result', result);
-        //result.vehiclePurchaseDate = result.vehiclePurchaseDate.toISOString().split('T')[0];
-        result.driverLicenseExpirationDate = result.driverLicenseExpirationDate.split('/').reverse().join('-');
-        result.driverBirthDate = result.driverBirthDate.split('/').reverse().join('-');        
-        this.driverService.createDriver(result).subscribe({
-          next: (driver) => {
-            this.snackBar.open('Motorista cadastrado com sucesso', 'Fechar', { duration: 3000 });
-            this.getDrivers();
-          },
-          error: (error) => {
-            console.error('Erro ao cadastrar motorista:', error);
-            this.snackBar.open('Erro ao cadastrar motorista', 'Fechar', { duration: 3000 });
-          }
-        });
-      }
-    });
   }
   async updateDriver(driver: Driver) {
     this.driverStateService.setDriver(driver);
     this.router.navigate(['/driver/edit']);
-    return;
-    const dialogRef = this.dialog.open(FormAddDriver, {
-      width: '600px',
-      disableClose: true,
-      data: driver,
-    });
-    const result = await firstValueFrom(dialogRef.afterClosed());
-    if (result) {
-      try {
-        result.driverLicenseExpirationDate = result.driverLicenseExpirationDate.split('/').reverse().join('-');
-        result.driverBirthDate = result.driverBirthDate.split('/').reverse().join('-');        
-        await firstValueFrom(this.driverService.updateDriver(driver.id, result));
-        this.snackBar.open('Motorista atualizado com sucesso', 'Fechar', { duration: 3000 });
-        this.getDrivers();
-      } catch (error) {
-        console.error('Erro ao atualizar motorista:', error);
-        this.snackBar.open('Erro ao atualizar motorista', 'Fechar', { duration: 3000 });
-      }
-    }
   }
   onPageChange(event: PageEvent) {
     this.indicePagina = event.pageIndex;
@@ -152,19 +109,3 @@ export class DriversComponent implements AfterViewInit {
     this.getDrivers();
   }
 }
-
-// Dados de exemplo
-const DADOS_MOCK: Motorista[] = [
-  { id: 1, nome: 'Ayrton Senna', cnh: '123456789', categoria: 'E', status: 'Ativo', ultimoAcesso: new Date() },
-  { id: 2, nome: 'Lewis Hamilton', cnh: '987654321', categoria: 'B', status: 'Ativo', ultimoAcesso: new Date() },
-  { id: 3, nome: 'Max Verstappen', cnh: '456123789', categoria: 'AB', status: 'Inativo', ultimoAcesso: new Date() },
-  { id: 3, nome: 'Lando Norris', cnh: '456123789', categoria: 'AB', status: 'Inativo', ultimoAcesso: new Date() },
-  { id: 3, nome: 'Charles Leclerc', cnh: '456123789', categoria: 'AB', status: 'Inativo', ultimoAcesso: new Date() },
-  { id: 3, nome: 'Carlos Sainz', cnh: '456123789', categoria: 'AB', status: 'Inativo', ultimoAcesso: new Date() },
-  { id: 3, nome: 'George Russell', cnh: '456123789', categoria: 'AB', status: 'Inativo', ultimoAcesso: new Date() },
-  { id: 3, nome: 'Fernando Alonso', cnh: '456123789', categoria: 'AB', status: 'Inativo', ultimoAcesso: new Date() },
-  { id: 3, nome: 'Pierre Gasly', cnh: '456123789', categoria: 'AB', status: 'Inativo', ultimoAcesso: new Date() },
-  { id: 3, nome: 'Esteban Ocon', cnh: '456123789', categoria: 'AB', status: 'Inativo', ultimoAcesso: new Date() },
-  { id: 3, nome: 'Lance Stroll', cnh: '456123789', categoria: 'AB', status: 'Inativo', ultimoAcesso: new Date() },
-];
-
