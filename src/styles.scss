@@ -7,7 +7,7 @@
 @use '@angular/material' as mat;
 /* Garante que todo campo de formulário tenha um espaço no topo para a label respirar */
 .mat-mdc-form-field {
-  margin-top: 8px !important;
+  margin-top: 0px !important;
 }
 
 .center-cell {
@@ -25,7 +25,7 @@ mat-dialog-content {
 }
 
 mat-form-field {
-  margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 .mat-sort-header-container {
