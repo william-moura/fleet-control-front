@@ -1,3 +1,5 @@
+import { Photo } from "./photo";
+
 export interface Driver {
   id: number;
   driverRegisteredNumber: string;
@@ -15,4 +17,7 @@ export interface Driver {
   driverBirthDate: string;
   driverPhone: string;
   driverStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
+  driverPhoto: string;
+  photosIds: number[];
+  photos: Photo[];
 }
