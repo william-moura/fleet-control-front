@@ -3,7 +3,7 @@ import { SupplierType } from "./supplier-type";
 export interface Supplier {
     id: number;
     supplierFantasyName: string;
-    supplierCompanyName: string;
+    supplierCorporateName: string;
     supplierCnpj: string;
     supplierAddress: string;
     supplierCity: string;

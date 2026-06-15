@@ -21,6 +21,7 @@ import { AddUpdateVehicleFine } from './pages/add-update-vehicle-fine/add-update
 import { AddUpdateKm } from './pages/add-update-km/add-update-km';
 import { AddUpdateMaintenance } from './pages/add-update-maintenance/add-update-maintenance';
 import { AddUpdateFuel } from './pages/add-update-fuel/add-update-fuel';
+import { AddUpdateSupplier } from './pages/add-update-supplier/add-update-supplier';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard]},
@@ -48,5 +49,7 @@ export const routes: Routes = [
     { path: 'maintenance/edit', component: AddUpdateMaintenance, data: { icon: 'build', name: 'Manutenção', display: false} },
     { path: 'maintenance/new', component: AddUpdateMaintenance, data: { icon: 'build', name: 'Manutenção', display: false} },
     { path: 'fuel/edit', component: AddUpdateFuel, data: { icon: 'local_gas_station', name: 'Abastecimento', display: false} },
-    { path: 'fuel/new', component: AddUpdateFuel, data: { icon: 'local_gas_station', name: 'Abastecimento', display: false} }
+    { path: 'fuel/new', component: AddUpdateFuel, data: { icon: 'local_gas_station', name: 'Abastecimento', display: false} },
+    { path: 'supplier/edit', component: AddUpdateSupplier, data: { icon: 'local_shipping', name: 'Fornecedor', display: false} },
+    { path: 'supplier/new', component: AddUpdateSupplier, data: { icon: 'local_shipping', name: 'Fornecedor', display: false} }
 ];

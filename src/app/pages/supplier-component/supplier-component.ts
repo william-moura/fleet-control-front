@@ -16,6 +16,8 @@ import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
 import { SupplierService } from '../../services/supplier-service';
 import { FormAddSupplier } from '../../forms/form-add-supplier/form-add-supplier';
+import { VehicleStateService } from '../../services/vehicle-state-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-supplier-component',
@@ -37,6 +39,8 @@ export class SupplierComponent {
   totalRegistros = 0;
   pageSize = 5;
   indicePagina = 0;
+  private supplierStateService = inject(VehicleStateService);
+  private router = inject(Router);
   ngAfterViewInit() {    
     this.dataSource.sort = this.sort();
   }
@@ -60,6 +64,9 @@ export class SupplierComponent {
     this.getSuppliers();
   }
   async openAddSupplierDialog() {
+    this.supplierStateService.setSupplier(null);
+    this.router.navigate(['/supplier/new']);
+    return;
     const dialogRef = this.dialog.open(FormAddSupplier, {
       width: '600px',
       disableClose: true,
@@ -99,6 +106,9 @@ export class SupplierComponent {
     }
   }
   async updateSupplier(supplier: Supplier) {
+    this.supplierStateService.setSupplier(supplier);
+    this.router.navigate(['/supplier/edit']);
+    return;
     const result = await firstValueFrom(this.dialog.open(FormAddSupplier, {
       width: '500px',
       data: supplier,
