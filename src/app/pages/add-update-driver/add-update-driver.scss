@@ -5,7 +5,7 @@ $texto-secundario: #64748b;
 .container-pagina {
   background-color: $bg-fundo;
   min-height: 100vh;
-  padding: 24px;
+  // padding: 24px;
   font-family: Roboto, sans-serif;
   box-sizing: border-box;
 }
@@ -157,7 +157,7 @@ $texto-secundario: #64748b;
 }
 
 .secao-form {
-  margin-bottom: 28px;
+  margin-bottom: 5px;
 
   h3 {
     display: flex;
@@ -215,7 +215,7 @@ mat-form-field { width: 100%; }
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 16px 24px;
+  padding: 6px 10px;
   border-top: 1px solid $borda-cor;
   background: #ffffff;
 }
