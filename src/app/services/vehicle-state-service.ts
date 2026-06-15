@@ -3,6 +3,7 @@ import { Vehicle } from '../models/vehicle';
 import { Driver } from '../models/driver';
 import { VehicleFine } from '../models/vehicle-fine';
 import { Kilometer } from '../models/kilometer';
+import { Maintenance } from '../models/maintenance';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +14,13 @@ export class VehicleStateService {
   private _selectedDriver = signal<Driver | null>(null);
   private _selectedVehicleFine = signal<VehicleFine | null>(null);
   private _selectedKilometer = signal<Kilometer | null>(null);
+  private _selectedMaintenance = signal<Maintenance | null>(null);
   // Exposição pública apenas para leitura
   readonly selectedVehicle = this._selectedVehicle.asReadonly();
   readonly selectedDriver = this._selectedDriver.asReadonly();
   readonly selectedVehicleFine = this._selectedVehicleFine.asReadonly();
   readonly selectedKilometer = this._selectedKilometer.asReadonly();
+  readonly selectedMaintenance = this._selectedMaintenance.asReadonly();
   setVehicle(veiculo: Vehicle | null) {
     this._selectedVehicle.set(veiculo);
   }
@@ -29,5 +32,8 @@ export class VehicleStateService {
   }
   setKilometer(kilometer: Kilometer | null) {
     this._selectedKilometer.set(kilometer);
+  }
+  setMaintenance(maintenance: Maintenance | null) {
+    this._selectedMaintenance.set(maintenance);
   }
 }

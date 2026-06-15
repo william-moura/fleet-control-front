@@ -5,14 +5,15 @@ export interface Maintenance {
   id: number;
   vehicleId: number;  
   description: string;
-  maintenanceDate: Date;
+  maintenanceDate: string;
   maintenanceCost: number;
   maintenanceStatus: string;
   services: MaintenanceServiceModel[];
   vehicle: Vehicle;
   servicesFormatted?: string;
-  maintenanceNextDate?: Date;
+  maintenanceNextDate?: string;
   maintenanceKilometers?: number;
-  previsionDateFinish?: Date;
+  previsionDateFinish?: string;
   maintenanceNextKilometers?: number;
+  maintenancePreviousDateFinished?: string;
 }

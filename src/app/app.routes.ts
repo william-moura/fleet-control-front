@@ -19,6 +19,7 @@ import { AddUpdateVehicle } from './pages/add-update-vehicle/add-update-vehicle'
 import { AddUpdateDriver } from './pages/add-update-driver/add-update-driver';
 import { AddUpdateVehicleFine } from './pages/add-update-vehicle-fine/add-update-vehicle-fine';
 import { AddUpdateKm } from './pages/add-update-km/add-update-km';
+import { AddUpdateMaintenance } from './pages/add-update-maintenance/add-update-maintenance';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard]},
@@ -42,5 +43,7 @@ export const routes: Routes = [
     { path: 'vehicle-fine/edit', component: AddUpdateVehicleFine, data: { icon: 'payment', name: 'Multa', display: false} },
     { path: 'vehicle-fine/new', component: AddUpdateVehicleFine, data: { icon: 'payment', name: 'Multa', display: false} },
     { path: 'kilometer/edit', component: AddUpdateKm, data: { icon: 'speed', name: 'Quilometragem', display: false} },
-    { path: 'kilometer/new', component: AddUpdateKm, data: { icon: 'speed', name: 'Quilometragem', display: false} }
+    { path: 'kilometer/new', component: AddUpdateKm, data: { icon: 'speed', name: 'Quilometragem', display: false} },
+    { path: 'maintenance/edit', component: AddUpdateMaintenance, data: { icon: 'build', name: 'Manutenção', display: false} },
+    { path: 'maintenance/new', component: AddUpdateMaintenance, data: { icon: 'build', name: 'Manutenção', display: false} }
 ];
