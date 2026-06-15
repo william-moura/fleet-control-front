@@ -28,9 +28,9 @@
           <mat-card-content class="resumo-info">
             <div class="nome-status">
               <h2>{{ form.get('driverName')?.value || 'Novo Motorista' }}</h2>
-              <span class="badge-status" [ngClass]="form.get('driverStatus')?.value?.toLowerCase()">
+              <!-- <span class="badge-status" [ngClass]="form.get('driverStatus')?.value?.toLowerCase()">
                 {{ form.get('driverStatus')?.value }}
-              </span>
+              </span> -->
             </div>
             
             @if (form.get('driverRegisteredNumber')?.value) {
