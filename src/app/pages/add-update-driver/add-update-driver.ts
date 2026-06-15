@@ -23,6 +23,7 @@ import { VehicleStateService } from '../../services/vehicle-state-service';
 import { VehicleFineService } from '../../services/vehicle-fine-service';
 import { VehicleFine } from '../../models/vehicle-fine';
 import { ListDriverFine } from '../../components/list-driver-fine/list-driver-fine';
+import { Photo } from '../../models/photo';
 
 @Component({
   selector: 'app-add-update-driver',
@@ -73,6 +74,9 @@ export class AddUpdateDriver {
       driverBirthDate: ['', Validators.required],
       driverPhone: ['', Validators.required],
       driverStatus: ['', Validators.required],
+      driverPhoto: [''],
+      driverNeighborhood: ['', Validators.required],
+      photosIds: [[]],
     });
   }
   private validateCpf(control: AbstractControl) {
@@ -129,6 +133,10 @@ export class AddUpdateDriver {
       if (dataForm.driverBirthDate) {
         dataForm.driverBirthDate = dataForm.driverBirthDate.split('-').reverse().join('/');
       }
+      if (dataForm.photos) {
+        dataForm.driverPhoto = dataForm.photos[0].path;
+        dataForm.photosIds = dataForm.photos.map((photo: Photo) => photo.id);
+      }
       this.form.patchValue({ ...dataForm });
     } else {
       this.update.set(false);
@@ -182,6 +190,25 @@ export class AddUpdateDriver {
         console.error('Erro ao atualizar motorista:', error);
         this.snackBar.open('Erro ao atualizar motorista', 'Fechar', { duration: 3000 });
       }
+    });
+  }
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    if (files) {
+      this.processFiles(files[0]);
+    }
+  }
+  processFiles(files: File) {
+    const reader = new FileReader();
+
+    reader.readAsDataURL(files);
+    const formData = new FormData();
+    formData.append('file', files);
+    this.driverService.uploadPhotos(formData).subscribe((photo) => {
+      this.form.patchValue({
+        driverPhoto: photo.path,
+        photosIds: [photo.id],
+      });
     });
   }
 }

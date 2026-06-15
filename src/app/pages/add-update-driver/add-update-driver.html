@@ -1,205 +1,146 @@
 <div class="container-pagina">
-    <header class="header-pag">
-      <div class="titulo-wrapper">
-        <button mat-icon-button (click)="cancelar()" aria-label="Voltar">
-          <mat-icon>chevron_left</mat-icon>
-        </button>
-        <div>
-          <span class="breadcrumbs">Motoristas >{{ update() ? 'Editar Motorista' : 'Novo Motorista' }}</span>
-          <h1>{{ update() ? 'Editar Motorista' : 'Novo Motorista' }}</h1>
-        </div>
-      </div>
-      <button mat-stroked-button color="primary" (click)="cancelar()">
-        <mat-icon>list</mat-icon> Ver Lista
+  <header class="header-pag">
+    <div class="titulo-wrapper">
+      <button mat-icon-button aria-label="Voltar">
+        <mat-icon>chevron_left</mat-icon>
       </button>
-    </header>
-  
-    <div class="conteudo-principal">
-      <aside class="sidebar-motorista">
-        <mat-card class="card-foto-resumo">
-        <!--
-          <div class="foto-container">
-            <img [src]="fotoUrl" alt="Foto do Motorista" class="foto-perfil">
-            <button mat-mini-fab color="primary" class="btn-trocar-foto">
-              <mat-icon>photo_camera</mat-icon>
+      <div>
+        <span class="breadcrumbs">Administração > Pessoas > Cadastro</span>
+        <h1>Cadastro de Pessoa</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="formulario-wrapper">
+    <form [formGroup]="form">
+      
+      <div class="layout-topo-foto">
+        <div class="inputs-principais">
+          
+          <div class="grid-3col-ajustado">
+            <mat-form-field appearance="outline">
+              <mat-label>Matrícula</mat-label>
+              <input matInput formControlName="driverRegisteredNumber" placeholder="Ex: 000123">
+              <mat-icon matSuffix>badge</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nome do Motorista</mat-label>
+              <input matInput formControlName="driverName" placeholder="Digite o nome completo">
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo Sanguíneo</mat-label>
+              <input matInput formControlName="driverBloodType" placeholder="Tipo Sanguíneo">
+              <mat-icon matSuffix>bloodtype</mat-icon>
+            </mat-form-field>
+          </div>
+
+          <div class="grid-3col-ajustado">
+            <mat-form-field appearance="outline">
+              <mat-label>Data de Nascimento</mat-label>
+              <input matInput formControlName="driverBirthDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
+              <mat-icon matSuffix>cake</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>CPF</mat-label>
+              <input matInput formControlName="driverCpf" placeholder="000.000.000-00" mask="999.999.999-99">
+              <mat-icon matSuffix>badge</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>RG</mat-label>
+              <input matInput formControlName="driverRg" placeholder="RG">
+              <mat-icon matSuffix>person</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="grid-3col-ajustado">
+            <mat-form-field appearance="outline">
+              <mat-label>CNH</mat-label>
+              <input matInput formControlName="driverLicenseNumber" placeholder="CNH">
+              <mat-icon matSuffix>badge</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Categoria</mat-label>
+              <mat-select formControlName="driverLicenseCategory">
+                <mat-option value="A">A</mat-option>
+                <mat-option value="B">B</mat-option>
+                <mat-option value="C">C</mat-option>
+                <mat-option value="D">D</mat-option>
+                <mat-option value="E">E</mat-option>
+                <mat-option value="AB">AB</mat-option>
+              </mat-select>
+              <mat-icon matSuffix>badge</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Data de Expiração da CNH</mat-label>
+              <input matInput formControlName="driverLicenseExpirationDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
+              <mat-icon matSuffix>date_range</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="grid-4col">
+            <mat-form-field appearance="outline">
+              <mat-label>CEP</mat-label>
+              <input matInput formControlName="driverZipCode" placeholder="CEP" mask="99999-999" (change)="getCep(form.value.driverZipCode)">
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Endereço</mat-label>
+              <input matInput formControlName="driverAddress" placeholder="Endereço">
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="driverNeighborhood" placeholder="Bairro">
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="driverCity" placeholder="Cidade">
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <input matInput formControlName="driverState" placeholder="Estado" appUppercase>
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Telefone</mat-label>
+              <input matInput formControlName="driverPhone" placeholder="Telefone" mask="(00) 0000-0000||(00) 00000-0000">
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="driverStatus">
+                <mat-option value="1">Ativo</mat-option>
+                <mat-option value="0">Inativo</mat-option>
+              </mat-select>
+              <mat-icon matSuffix>check_circle</mat-icon>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="sidebar-foto-pessoa">
+          <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none">
+          <div class="avatar-dropzone">
+            <img [src]="form.get('driverPhoto')?.value" alt="Foto de Perfil">
+            <span class="label-foto">(Imagem)</span>
+            <button type="button" mat-mini-fab color="primary" class="btn-upload" (click)="fileInput.click()">
+              <mat-icon>add_a_photo</mat-icon>
             </button>
           </div>
-        -->
-          <mat-card-content class="resumo-info">
-            <div class="nome-status">
-              <h2>{{ form.get('driverName')?.value || 'Novo Motorista' }}</h2>
-              <!-- <span class="badge-status" [ngClass]="form.get('driverStatus')?.value?.toLowerCase()">
-                {{ form.get('driverStatus')?.value }}
-              </span> -->
-            </div>
-            
-            @if (form.get('driverRegisteredNumber')?.value) {
-              <p class="matricula-tag">Matrícula: {{ form.get('driverRegisteredNumber')?.value }}</p>
-            }
-  
-            <hr class="divisor">
-  
-            <div class="detalhes-lista">
-              <div class="item-detalhe">
-                <mat-icon>credit_card</mat-icon>
-                <div>
-                  <p class="label">CPF</p>
-                  <p class="valor">{{ form.get('driverCpf')?.value || '---' }}</p>
-                </div>
-              </div>
-              <div class="item-detalhe">
-                <mat-icon>badge</mat-icon>
-                <div>
-                  <p class="label">CNH (Cat. {{ form.get('driverLicenseCategory')?.value || '-' }})</p>
-                  <p class="valor">{{ form.get('driverLicenseNumber')?.value || '---' }}</p>
-                </div>
-              </div>
-              <div class="item-detalhe">
-                <mat-icon>phone</mat-icon>
-                <div>
-                  <p class="label">Contato</p>
-                  <p class="valor">{{ form.get('driverPhone')?.value || '---' }}</p>
-                </div>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </aside>
-  
-      <main class="formulario-wrapper">
-        <mat-tab-group animationDuration="0ms" class="abas-navegacao">
-          
-          <mat-tab label="Dados Pessoais">
-            <form [formGroup]="form" class="form-container">
-              
-              <section class="secao-form">
-                <h3><mat-icon>person</mat-icon> Identificação</h3>
-                <div class="grid-form-3col">
-                  <mat-form-field appearance="outline" class="col-span-2">
-                    <mat-label>Nome Completo</mat-label>
-                    <input matInput formControlName="driverName">
-                  </mat-form-field>
-  
-                  <mat-form-field appearance="outline">
-                    <mat-label>Status</mat-label>
-                    <mat-select formControlName="driverStatus">
-                      <mat-option value="1">Ativo</mat-option>
-                      <mat-option value="0">Inativo</mat-option>                      
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-  
-                <div class="grid-form-3col">
-                  <mat-form-field appearance="outline">
-                    <mat-label>CPF</mat-label>
-                    <input matInput formControlName="driverCpf" placeholder="Apenas números"
-                    mask="999.999.999-99">
-                  </mat-form-field>
-  
-                  <mat-form-field appearance="outline">
-                    <mat-label>RG</mat-label>
-                    <input matInput formControlName="driverRg">
-                  </mat-form-field>
-  
-                  <mat-form-field appearance="outline">
-                    <mat-label>Data de Nascimento</mat-label>
-                    <input matInput formControlName="driverBirthDate" 
-                    mask="00/00/0000" 
-                    [dropSpecialCharacters]="false" 
-                    placeholder="DD/MM/AAAA">
-                    <mat-hint>/DD/MM/YYYY</mat-hint>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Tipo Sanguíneo</mat-label>
-                    <input matInput formControlName="driverBloodType" appUppercase/>
-                  </mat-form-field>
-                </div>
-              </section>
-  
-              <section class="secao-form">
-                <h3><mat-icon>contact_mail</mat-icon> Contato/Endereço</h3>
-                <div class="grid-form-2col">
-                    <!--
-                  <mat-form-field appearance="outline">
-                    <mat-label>E-mail</mat-label>
-                    <input matInput type="email" formControlName="driverEmail" placeholder="exemplo@email.com">
-                  </mat-form-field>
-                  -->
-  
-                  <mat-form-field appearance="outline">
-                    <mat-label>Telefone / WhatsApp</mat-label>
-                    <input matInput formControlName="driverPhone" mask="(00) 0000-0000||(00) 00000-0000" placeholder="(00) 00000-0000">
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>CEP</mat-label>
-                    <input matInput formControlName="driverZipCode" mask="99999-999" placeholder="99999-999" (change)="getCep(form.value.driverZipCode)">
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Endereço</mat-label>
-                    <input matInput formControlName="driverAddress" />
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Cidade</mat-label>
-                    <input matInput formControlName="driverCity" />
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Estado</mat-label>
-                    <input matInput formControlName="driverState" appUppercase/>
-                  </mat-form-field>
-                </div>
-              </section>
-  
-              <section class="secao-form">
-                <h3><mat-icon>assignment_ind</mat-icon> Documento de Habilitação (CNH)</h3>
-                <div class="grid-form-4col">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Número do Registro</mat-label>
-                    <input matInput formControlName="driverLicenseNumber">
-                  </mat-form-field>
-  
-                  <mat-form-field appearance="outline">
-                    <mat-label>Categoria</mat-label>
-                    <mat-select formControlName="driverLicenseCategory">
-                      <mat-option value="A">A</mat-option>
-                      <mat-option value="B">B</mat-option>
-                      <mat-option value="C">C</mat-option>
-                      <mat-option value="D">D</mat-option>
-                      <mat-option value="E">E</mat-option>
-                      <mat-option value="AB">AB</mat-option>
-                    </mat-select>
-                  </mat-form-field>                  
-                
-                  <mat-form-field appearance="outline">
-                    <mat-label>Matrícula</mat-label>
-                    <input matInput formControlName="driverRegisteredNumber">
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Data de Expiração</mat-label>
-                    <input matInput formControlName="driverLicenseExpirationDate" 
-                    mask="00/00/0000" 
-                    [dropSpecialCharacters]="false" 
-                    placeholder="DD/MM/AAAA">
-                    <mat-hint>/DD/MM/YYYY</mat-hint>
-                  </mat-form-field>
-                </div>
-              </section>
-  
-            </form>
-          </mat-tab>
-          @if (update()) {
-            <!-- <mat-tab label="Histórico de Viagens"><div class="tab-vazia">Nenhum registro de viagem encontrado.</div></mat-tab> -->
-            <mat-tab label="Infrações / Multas">
-              <app-list-driver-fine [driverFines]="driverFines"></app-list-driver-fine>
-            </mat-tab>            
-          }
-        </mat-tab-group>
-  
-        <footer class="acoes-footer">
-          <button mat-button (click)="cancelar()">Cancelar</button>
-          <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">
-            <mat-icon>save</mat-icon> Salvar Cadastro
-          </button>
-        </footer>
-      </main>
-    </div>
-  </div>
+        </div>
+      </div>
+      <footer class="acoes-footer">
+        <button type="button" mat-stroked-button (click)="cancelar()">
+          <mat-icon>delete_outline</mat-icon> Limpar
+        </button>
+        <button type="submit" mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">
+          <mat-icon>save</mat-icon> Salvar
+        </button>
+      </footer>
+
+    </form>
+  </main>
+</div>

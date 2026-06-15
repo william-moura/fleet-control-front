@@ -4,6 +4,7 @@ import { Driver } from '../models/driver';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Pagination } from '../models/pagination';
+import { Photo } from '../models/photo';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { Pagination } from '../models/pagination';
 export class DriverService {
   private http = inject(HttpClient);
   private readonly API_URL = environment.apiUrl + '/drivers';
+  private readonly API_URL_UPLOADS = environment.apiUrl + '/upload';
   getAllDrivers(page: number = 1, perPage: number = 10): Observable<Pagination<Driver>> {
     const params = new HttpParams()
     .set('page', (page + 1).toString()) // MatPaginator começa em 0, Laravel em 1
@@ -28,5 +30,8 @@ export class DriverService {
   }
   deleteDriver(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${id}`);
+  }
+  uploadPhotos(photos: FormData): Observable<Photo> {
+    return this.http.post<Photo>(`${this.API_URL_UPLOADS}`, photos);
   }
 }
