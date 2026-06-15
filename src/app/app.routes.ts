@@ -17,6 +17,8 @@ import { VehicleFines } from './pages/vehicle-fines/vehicle-fines';
 import { Roles } from './pages/roles/roles';
 import { AddUpdateVehicle } from './pages/add-update-vehicle/add-update-vehicle';
 import { AddUpdateDriver } from './pages/add-update-driver/add-update-driver';
+import { AddUpdateVehicleFine } from './pages/add-update-vehicle-fine/add-update-vehicle-fine';
+import { AddUpdateKm } from './pages/add-update-km/add-update-km';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard]},
@@ -36,5 +38,9 @@ export const routes: Routes = [
     { path: 'vehicle/editar', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} },
     { path: 'vehicle/new', component: AddUpdateVehicle, data: { icon: 'directions_car', name: 'Veículo', display: false} },
     { path: 'driver/edit', component: AddUpdateDriver, data: { icon: 'groups', name: 'Motorista', display: false} },
-    { path: 'driver/new', component: AddUpdateDriver, data: { icon: 'groups', name: 'Motorista', display: false} }
+    { path: 'driver/new', component: AddUpdateDriver, data: { icon: 'groups', name: 'Motorista', display: false} },
+    { path: 'vehicle-fine/edit', component: AddUpdateVehicleFine, data: { icon: 'payment', name: 'Multa', display: false} },
+    { path: 'vehicle-fine/new', component: AddUpdateVehicleFine, data: { icon: 'payment', name: 'Multa', display: false} },
+    { path: 'kilometer/edit', component: AddUpdateKm, data: { icon: 'speed', name: 'Quilometragem', display: false} },
+    { path: 'kilometer/new', component: AddUpdateKm, data: { icon: 'speed', name: 'Quilometragem', display: false} }
 ];

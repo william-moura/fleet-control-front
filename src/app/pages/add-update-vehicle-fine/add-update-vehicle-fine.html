@@ -1,0 +1,152 @@
+<div class="container-pagina">
+  <header class="header-pag">
+    <div class="titulo-wrapper">
+      <button mat-icon-button (click)="cancelar()" aria-label="Voltar">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <div>
+        <span class="breadcrumbs">Multas >{{ update() ? 'Editar Multa' : 'Nova Multa' }}</span>
+        <h1>{{ update() ? 'Editar Multa' : 'Nova Multa' }}</h1>
+      </div>
+    </div>
+    <button mat-stroked-button color="primary" (click)="cancelar()">
+      <mat-icon>list</mat-icon> Ver Lista
+    </button>
+  </header>
+
+  <div class="conteudo-principal">
+    <aside class="sidebar-veiculo">
+      <mat-card class="card-foto-resumo">
+        <mat-card-content class="resumo-info">
+          <div class="nome-status">
+            <h2>{{ vehicleFine()?.driver?.driverName || 'Nova Multa' }}</h2>
+            <span class="badge-status" [ngClass]="vehicleFine()?.fineStatus?.toLowerCase()">
+              {{ vehicleFine()?.fineStatus }}
+            </span>
+          </div>
+          
+          <hr class="divisor">
+
+          <div class="detalhes-lista">
+            <div class="item-detalhe">
+              <mat-icon>car_crash</mat-icon>
+              <div>
+                <p class="label">Placa</p>
+                <p class="valor">{{ vehicleFine()?.vehicle?.vehiclePlate || '---' }}</p>
+              </div>
+            </div>
+            <div class="item-detalhe">
+              <mat-icon>calendar_today</mat-icon>
+              <div>
+                <p class="label">Data da Multa</p>
+                <p class="valor">{{ vehicleFine()?.fineDate || '---' }}</p>
+              </div>
+            </div>
+            <div class="item-detalhe">
+              <mat-icon>credit_card</mat-icon>
+              <div>
+                <p class="label">Valor da Multa</p>
+                <p class="valor">{{ vehicleFine()?.fineAmount|| '---' }}</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </aside>
+
+    <main class="formulario-wrapper">
+      <mat-tab-group animationDuration="0ms" class="abas-navegacao">
+        
+        <mat-tab label="Dados Pessoais">
+          <form [formGroup]="form" class="form-container">
+            
+            <section class="secao-form">
+              <h3><mat-icon>car_crash</mat-icon> Dados da Multa</h3>
+              <div class="grid-form-3col">
+                <mat-form-field appearance="outline">
+                  <mat-label>Veículo</mat-label>
+                  <mat-select formControlName="vehicleId">
+                    <mat-option [value]="null">Selecione um veículo</mat-option>
+                    @for (vehicle of vehicles(); track vehicle.id) {
+                      <mat-option [value]="vehicle.id">{{vehicle.vehiclePlate }} - {{vehicle.vehicleModel}}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Motorista</mat-label>
+                  <mat-select formControlName="driverId">
+                    <mat-option [value]="null">Selecione um motorista</mat-option>
+                    @for (driver of drivers(); track driver.id) {
+                      <mat-option [value]="driver.id">{{driver.driverName}}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-span-2">
+                  <mat-label>Data da Multa</mat-label>
+                  <input matInput formControlName="fineDate" 
+                  mask="00/00/0000" 
+                  [dropSpecialCharacters]="false" 
+                  placeholder="DD/MM/AAAA">
+                  <mat-hint>/DD/MM/YYYY</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Status</mat-label>
+                  <mat-select formControlName="fineStatus">
+                    <mat-option value="pendente">Pendente</mat-option>
+                    <mat-option value="pago">Pago</mat-option>
+                    <mat-option value="cancelado">Cancelado</mat-option>
+                  </mat-select>                  
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Tipo de Multa</mat-label>
+                  <mat-select formControlName="fineLevel">
+                    <mat-option value="leve">Leve</mat-option>
+                    <mat-option value="media">Média</mat-option>
+                    <mat-option value="grave">Grave</mat-option>
+                    <mat-option value="gravissima">Gravissima</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Data de Vencimento</mat-label>
+                  <input matInput formControlName="finePaidDate" 
+                  mask="00/00/0000" 
+                  [dropSpecialCharacters]="false" 
+                  placeholder="DD/MM/AAAA">
+                  <mat-hint>/DD/MM/YYYY</mat-hint>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Valor da Multa</mat-label>
+                  <input matInput formControlName="fineAmount" mask="separator.2" placeholder="Ex: 100.00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Pontos</mat-label>
+                  <input matInput formControlName="finePoints" placeholder="Ex: 3" mask="separator.0" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                </mat-form-field>
+              </div>
+            </section>
+
+            <section class="secao-form">
+              <h3><mat-icon>assignment_ind</mat-icon> Observações</h3>
+              <div class="grid-form-2col">
+                <mat-form-field appearance="outline">
+                  <mat-label>Observações</mat-label>
+                  <input matInput formControlName="fineNotes">
+                </mat-form-field>
+              </div>
+            </section>
+
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+
+      <footer class="acoes-footer">
+        <button mat-button (click)="cancelar()">Cancelar</button>
+        <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">
+          <mat-icon>save</mat-icon> Salvar Cadastro
+        </button>
+      </footer>
+    </main>
+  </div>
+</div>

@@ -21,6 +21,8 @@ import { firstValueFrom } from 'rxjs';
 import { FormAddKmComponent } from '../../forms/form-add-km-component/form-add-km-component';
 import { VehicleService } from '../../services/vehicle-service';
 import { FormAddKmFull } from '../../forms/form-add-km-full/form-add-km-full';
+import { Router } from '@angular/router';
+import { VehicleStateService } from '../../services/vehicle-state-service';
 
 @Component({
   selector: 'app-km-component',
@@ -43,6 +45,8 @@ export class KmComponent {
   private kilometerService = inject(KilometerService);
   private vehicleService = inject(VehicleService);
   kilometers = signal<Kilometer[]>([]);
+  private vehicleStateService = inject(VehicleStateService);
+  private router = inject(Router);
   ngOnInit() {
     this.kilometerService.getKilometers(this.indicePagina, this.pageSize).subscribe((kilometers) => {
         this.dataSource.data = kilometers.data;
@@ -96,6 +100,9 @@ export class KmComponent {
     }
   }
   async updateKilometer(kilometer: Kilometer) {
+    this.vehicleStateService.setKilometer(kilometer);
+    this.router.navigate(['/kilometer/edit']);
+    return;
     const dialogRef = this.dialog.open(FormAddKmComponent, {
       width: '600px',
       data: kilometer,
@@ -116,6 +123,9 @@ export class KmComponent {
     }
   }
   openAddKmDialog() {
+    this.vehicleStateService.setKilometer(null);
+    this.router.navigate(['/kilometer/new']);
+    return;
     const dialogRef = this.dialog.open(FormAddKmFull, {
       width: '600px',
       data: null,
