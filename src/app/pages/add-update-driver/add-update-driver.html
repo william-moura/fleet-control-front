@@ -17,32 +17,26 @@
       <div class="layout-topo-foto">
         <div class="inputs-principais">
           
-          <div class="grid-3col-ajustado">
+          <div class="grid-3col-modificado">
             <mat-form-field appearance="outline">
               <mat-label>Matrícula</mat-label>
               <input matInput formControlName="driverRegisteredNumber" placeholder="Ex: 000123">
-              <mat-icon matSuffix>badge</mat-icon>
+              <mat-icon matSuffix color="primary">badge</mat-icon>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Nome do Motorista</mat-label>
               <input matInput formControlName="driverName" placeholder="Digite o nome completo">
-              <mat-icon matSuffix>person</mat-icon>
+              <mat-icon matSuffix color="primary">person</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Tipo Sanguíneo</mat-label>
               <input matInput formControlName="driverBloodType" placeholder="Tipo Sanguíneo">
-              <mat-icon matSuffix>bloodtype</mat-icon>
+              <mat-icon matSuffix color="primary">bloodtype</mat-icon>
             </mat-form-field>
           </div>
 
-          <div class="grid-3col-ajustado">
-            <mat-form-field appearance="outline">
-              <mat-label>Data de Nascimento</mat-label>
-              <input matInput formControlName="driverBirthDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
-              <mat-icon matSuffix>cake</mat-icon>
-            </mat-form-field>
-
+          <div class="grid-4col">
             <mat-form-field appearance="outline">
               <mat-label>CPF</mat-label>
               <input matInput formControlName="driverCpf" placeholder="000.000.000-00" mask="999.999.999-99">
@@ -53,6 +47,17 @@
               <input matInput formControlName="driverRg" placeholder="RG">
               <mat-icon matSuffix>person</mat-icon>
             </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Data de Nascimento</mat-label>
+              <input matInput formControlName="driverBirthDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
+              <mat-icon matSuffix>date_range</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Telefone</mat-label>
+              <input matInput formControlName="driverPhone" placeholder="Telefone" mask="(00) 0000-0000||(00) 00000-0000">
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+                        
           </div>
           <div class="grid-3col-ajustado">
             <mat-form-field appearance="outline">
@@ -70,7 +75,7 @@
                 <mat-option value="E">E</mat-option>
                 <mat-option value="AB">AB</mat-option>
               </mat-select>
-              <mat-icon matSuffix>badge</mat-icon>
+              <mat-icon matSuffix>drive_eta</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Data de Expiração da CNH</mat-label>
@@ -78,7 +83,7 @@
               <mat-icon matSuffix>date_range</mat-icon>
             </mat-form-field>
           </div>
-          <div class="grid-4col">
+          <div class="grid-2col-compacto">
             <mat-form-field appearance="outline">
               <mat-label>CEP</mat-label>
               <input matInput formControlName="driverZipCode" placeholder="CEP" mask="99999-999" (change)="getCep(form.value.driverZipCode)">
@@ -87,27 +92,24 @@
             <mat-form-field appearance="outline">
               <mat-label>Endereço</mat-label>
               <input matInput formControlName="driverAddress" placeholder="Endereço">
-              <mat-icon matSuffix>location_on</mat-icon>
+              <mat-icon matSuffix>map</mat-icon>
             </mat-form-field>
+          </div>
+          <div class="grid-3col-ajustado">
             <mat-form-field appearance="outline">
               <mat-label>Bairro</mat-label>
               <input matInput formControlName="driverNeighborhood" placeholder="Bairro">
-              <mat-icon matSuffix>location_on</mat-icon>
+              <mat-icon matSuffix>apartment</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Cidade</mat-label>
               <input matInput formControlName="driverCity" placeholder="Cidade">
-              <mat-icon matSuffix>location_on</mat-icon>
+              <mat-icon matSuffix>apartment</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Estado</mat-label>
               <input matInput formControlName="driverState" placeholder="Estado" appUppercase>
               <mat-icon matSuffix>location_on</mat-icon>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Telefone</mat-label>
-              <input matInput formControlName="driverPhone" placeholder="Telefone" mask="(00) 0000-0000||(00) 00000-0000">
-              <mat-icon matSuffix>phone</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Status</mat-label>

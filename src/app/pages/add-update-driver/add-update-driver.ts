@@ -134,7 +134,7 @@ export class AddUpdateDriver {
         dataForm.driverBirthDate = dataForm.driverBirthDate.split('-').reverse().join('/');
       }
       if (dataForm.photos) {
-        dataForm.driverPhoto = dataForm.photos[0].path;
+        dataForm.driverPhoto = dataForm.photos[0]?.path;
         dataForm.photosIds = dataForm.photos.map((photo: Photo) => photo.id);
       }
       this.form.patchValue({ ...dataForm });
