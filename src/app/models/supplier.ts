@@ -12,5 +12,5 @@ export interface Supplier {
     supplierPhone: string;
     supplierEmail: string;
     supplierStatus: 'Ativo' | 'Inativo' | 1 | 0 | '1' | '0';
-    supplierType: SupplierType;
+    supplierType: SupplierType | number;
 }

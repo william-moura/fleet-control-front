@@ -1,7 +1,7 @@
 <div class="container-pagina">
   <header class="header-pag">
     <div class="titulo-wrapper">
-      <button mat-icon-button aria-label="Voltar">
+      <button mat-icon-button aria-label="Voltar" (click)="voltar()">
         <mat-icon>chevron_left</mat-icon>
       </button>
       <div>
@@ -136,10 +136,10 @@
       </div>
       <footer class="acoes-footer">
         <button type="button" mat-stroked-button (click)="cancelar()">
-          <mat-icon>delete_outline</mat-icon> Limpar
+          <mat-icon>delete_outline</mat-icon> Cancelar
         </button>
         <button type="submit" mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">
-          <mat-icon>save</mat-icon> Salvar
+          <mat-icon>save</mat-icon> Salvar Cadastro
         </button>
       </footer>
 

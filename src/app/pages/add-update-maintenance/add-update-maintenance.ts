@@ -47,7 +47,7 @@ export class AddUpdateMaintenance {
   private supplierService = inject(SupplierService);
   form: FormGroup;
   vehicles = signal<Vehicle[]>([]);
-  maintenanceTypes = signal<MaintenanceServiceModel[]>([]);
+  services = signal<MaintenanceServiceModel[]>([]);
   suppliers = signal<Supplier[]>([]);
   maintenance = signal<Maintenance | null>(null);
   update = signal<boolean>(false);
@@ -77,7 +77,7 @@ export class AddUpdateMaintenance {
       this.suppliers.set(suppliers.data);
     });
     this.maintenanceTypeService.getAllMaintenanceTypes(0, 1000).subscribe((maintenanceServices) => {
-      this.maintenanceTypes.set(maintenanceServices.data);
+      this.services.set(maintenanceServices.data);
     });
   }
   ngOnInit() {
@@ -94,14 +94,13 @@ export class AddUpdateMaintenance {
       }
       if (dataForm.maintenancePreviousDateFinished) {
         dataForm.maintenancePreviousDateFinished = dataForm.maintenancePreviousDateFinished.split('-').reverse().join('/');
-      }
-      console.log(dataForm, 'dataForm antes');
-      const services = dataForm.services?.map((service: MaintenanceServiceModel) => service.id);
+      }      
+      const services = dataForm.services?.map((service: MaintenanceServiceModel) => service.id);      
+      this.form.patchValue({ ...dataForm });
       if (services) {
-        dataForm.services = this.maintenanceTypes().filter((service: MaintenanceServiceModel) => services.includes(service.id));
-      }
-      console.log(dataForm, 'dataForm');
-      this.form.patchValue(dataForm);
+        dataForm.services = [];
+        this.form.patchValue({ services: services });
+      }      
     }
   }
   cancelar() {
