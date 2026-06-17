@@ -46,7 +46,15 @@
                   <mat-form-field appearance="outline">
                     <mat-label>Serviços Realizados</mat-label>
                     <mat-select formControlName="services" multiple>
-                      @for (service of maintenanceTypes(); track service.id) {
+                      <mat-select-trigger>
+                        {{ form.get('services')?.value?.[0]?.maintenance_control_service_name || '' }}
+                        @if ((form.get('services')?.value?.length || 0) > 0) {
+                          <span class="exemplo-obs">
+                            (+{{ (form.get('services')?.value?.length || 0)}} {{ form.get('services')?.value?.length === 2 ? 'outro' : 'outros' }})
+                          </span>
+                        }
+                      </mat-select-trigger>
+                      @for (service of services(); track service.id) {
                         <mat-option [value]="service.id">{{service.maintenance_control_service_name}}</mat-option>
                       }
                     </mat-select>
