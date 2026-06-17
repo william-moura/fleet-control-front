@@ -14,36 +14,7 @@
       </button>
     </header>
   
-    <div class="conteudo-principal">
-      <aside class="sidebar-veiculo">
-        <mat-card class="card-foto-resumo">
-          <mat-card-content class="resumo-info">
-            <div class="nome-status">
-              <h2>{{ user()?.name || 'Novo Usuário' }}</h2>
-            </div>
-            
-            <hr class="divisor">
-  
-            <div class="detalhes-lista">
-              <div class="item-detalhe">
-                <mat-icon>car</mat-icon>
-                <div>
-                  <p class="label">Placa</p>
-                  <p class="valor">{{ user()?.email || '---' }}</p>
-                </div>
-              </div>
-              <div class="item-detalhe">
-                <mat-icon>credit_card</mat-icon>
-                <div>
-                  <p class="label">Cargo</p>
-                  <p class="valor">{{ user()?.role?.name || '---' }}</p>
-                </div>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </aside>
-  
+    <div class="conteudo-principal">      
       <main class="formulario-wrapper">
         <mat-tab-group animationDuration="0ms" class="abas-navegacao">
           
@@ -98,5 +69,33 @@
           </button>
         </footer>
       </main>
+      <aside class="sidebar-veiculo">
+        <mat-card class="card-foto-resumo">
+          <mat-card-content class="resumo-info">
+            <div class="nome-status">
+              <h2>{{ user()?.name || 'Novo Usuário' }}</h2>
+            </div>
+            
+            <hr class="divisor">
+  
+            <div class="detalhes-lista">
+              <div class="item-detalhe">
+                <mat-icon>car</mat-icon>
+                <div>
+                  <p class="label">Placa</p>
+                  <p class="valor">{{ user()?.email || '---' }}</p>
+                </div>
+              </div>
+              <div class="item-detalhe">
+                <mat-icon>credit_card</mat-icon>
+                <div>
+                  <p class="label">Cargo</p>
+                  <p class="valor">{{ user()?.role?.name || '---' }}</p>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </aside>
     </div>
   </div>

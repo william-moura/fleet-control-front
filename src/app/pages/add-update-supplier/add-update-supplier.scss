@@ -39,7 +39,7 @@ $azul-primario: #0f172a; // Cor escura base do design moderno ou use a primária
 
 .conteudo-principal {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 1fr 220px;
   gap: 24px;
   align-items: start;
 
@@ -227,6 +227,8 @@ $azul-primario: #0f172a; // Cor escura base do design moderno ou use a primária
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   @media(max-width: 800px) { grid-template-columns: 1fr; }
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 mat-form-field {
