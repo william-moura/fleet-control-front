@@ -81,9 +81,10 @@ export class AddUpdateSupplier {
     this.supplier.set(this.supplierStateService.selectedSupplier());
     if (this.supplier()) {
       this.update.set(true);
-      const dataForm = { ...this.supplier() };
-      console.log(dataForm,'dataForm');
+      const dataForm = { ...this.supplier() };      
       this.form.patchValue(dataForm);
+      this.form.patchValue({ supplierType: dataForm.supplierType === 1? '1' : '2' });
+      this.form.patchValue({ supplierStatus: dataForm.supplierStatus === 1? '1' : '0' });      
     } else {
       this.update.set(false);
     }
