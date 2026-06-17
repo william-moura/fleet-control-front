@@ -39,15 +39,32 @@ $azul-primario: #0f172a; // Cor escura base do design moderno ou use a primária
 
 .conteudo-principal {
   display: grid;
-  grid-template-columns: 320px 1fr;
+  // minmax(0, 1fr) garante que o formulário possa encolher e expandir sem quebrar o layout
+  // 320px trava a largura da sua barra lateral na direita
+  grid-template-columns: minmax(0, 1fr) 220px; 
   gap: 24px;
-  align-items: start;
+  width: 100%;
+  align-items: start; // Impede que a sidebar estique verticalmente de forma bizarra
 
-  @media(max-width: 960px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 960px) {
+    grid-template-columns: 1fr; // No mobile vira uma coluna só
   }
 }
 
+.grid-3col-modificado {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.grid-3col-modificados {
+  display: grid;
+  grid-template-columns: 0.4fr 120px 1fr;
+  gap: 16px;
+  width: 100%;
+}
 // Sidebar Esquerda
 .sidebar-veiculo {
   .card-foto-resumo {

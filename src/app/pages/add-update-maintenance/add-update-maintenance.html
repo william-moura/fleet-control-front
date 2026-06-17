@@ -15,6 +15,103 @@
     </header>
   
     <div class="conteudo-principal">
+  
+      <main class="formulario-wrapper">
+        <mat-tab-group animationDuration="0ms" class="abas-navegacao">
+          
+          <mat-tab label="Dados Pessoais">
+            <form [formGroup]="form" class="form-container">
+              
+              <section class="secao-form">
+                <h3><mat-icon>car</mat-icon> Dados da Manutenção</h3>
+                <div class="grid-3col-modificado">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Veículo</mat-label>
+                    <mat-select formControlName="vehicleId">
+                      <mat-option [value]="null">Selecione um veículo</mat-option>
+                      @for (vehicle of vehicles(); track vehicle.id) {
+                        <mat-option [value]="vehicle.id">{{vehicle.vehiclePlate }} - {{vehicle.vehicleModel}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Fornecedor</mat-label>
+                    <mat-select formControlName="supplierId">
+                      <mat-option [value]="null">Selecione um fornecedor</mat-option>
+                      @for (supplier of suppliers(); track supplier.id) {
+                        <mat-option [value]="supplier.id">{{supplier.supplierFantasyName}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Serviços Realizados</mat-label>
+                    <mat-select formControlName="services" multiple>
+                      @for (service of maintenanceTypes(); track service.id) {
+                        <mat-option [value]="service.id">{{service.maintenance_control_service_name}}</mat-option>
+                      }
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="grid-3col-modificado">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Data da Manutenção</mat-label>
+                    <input matInput formControlName="maintenanceDate" 
+                    mask="00/00/0000" 
+                    [dropSpecialCharacters]="false" 
+                    placeholder="DD/MM/AAAA">
+                    <mat-hint>/DD/MM/YYYY</mat-hint>
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline"> 
+                    <mat-label>Valor da Manutenção</mat-label>
+                    <input matInput formControlName="maintenanceCost" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Data da Próxima Manutenção</mat-label>
+                    <input matInput formControlName="maintenanceNextDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
+                    <mat-hint>/DD/MM/YYYY</mat-hint>
+                  </mat-form-field>
+                </div>
+                <div class="grid-3col-modificado">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Próxima Kilometragem</mat-label>
+                    <input matInput formControlName="maintenanceNextKilometers" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Previsão de Termino</mat-label>
+                    <input matInput formControlName="maintenancePreviousDateFinished" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
+                    <mat-hint>/DD/MM/YYYY</mat-hint>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Kilometragem Atual</mat-label>
+                    <input matInput formControlName="maintenanceKilometers" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                  </mat-form-field>
+                </div>
+                <div class="grid-1">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Observações</mat-label>
+                    <input matInput formControlName="maintenanceNotes">
+                  </mat-form-field>
+                </div>
+              </section>
+  
+              <!-- <section class="secao-form">
+                <h3><mat-icon>assignment_ind</mat-icon> Observações</h3>
+                <div class="grid-form-2col">
+                </div>
+              </section> -->
+  
+            </form>
+          </mat-tab>
+        </mat-tab-group>
+  
+        <footer class="acoes-footer">
+          <button mat-button (click)="cancelar()">Cancelar</button>
+          <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">
+            <mat-icon>save</mat-icon> Salvar Cadastro
+          </button>
+        </footer>
+      </main>
       <aside class="sidebar-veiculo">
         <mat-card class="card-foto-resumo">
           <mat-card-content class="resumo-info">
@@ -50,96 +147,5 @@
           </mat-card-content>
         </mat-card>
       </aside>
-  
-      <main class="formulario-wrapper">
-        <mat-tab-group animationDuration="0ms" class="abas-navegacao">
-          
-          <mat-tab label="Dados Pessoais">
-            <form [formGroup]="form" class="form-container">
-              
-              <section class="secao-form">
-                <h3><mat-icon>car</mat-icon> Dados da Manutenção</h3>
-                <div class="grid-form-3col">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Veículo</mat-label>
-                    <mat-select formControlName="vehicleId">
-                      <mat-option [value]="null">Selecione um veículo</mat-option>
-                      @for (vehicle of vehicles(); track vehicle.id) {
-                        <mat-option [value]="vehicle.id">{{vehicle.vehiclePlate }} - {{vehicle.vehicleModel}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Fornecedor</mat-label>
-                    <mat-select formControlName="supplierId">
-                      <mat-option [value]="null">Selecione um fornecedor</mat-option>
-                      @for (supplier of suppliers(); track supplier.id) {
-                        <mat-option [value]="supplier.id">{{supplier.supplierFantasyName}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Serviços Realizados</mat-label>
-                    <mat-select formControlName="services" multiple>
-                      @for (service of maintenanceTypes(); track service.id) {
-                        <mat-option [value]="service.id">{{service.maintenance_control_service_name}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline" class="col-span-2">
-                    <mat-label>Data da Manutenção</mat-label>
-                    <input matInput formControlName="maintenanceDate" 
-                    mask="00/00/0000" 
-                    [dropSpecialCharacters]="false" 
-                    placeholder="DD/MM/AAAA">
-                    <mat-hint>/DD/MM/YYYY</mat-hint>
-                  </mat-form-field>
-  
-                  <mat-form-field appearance="outline"> 
-                    <mat-label>Valor da Manutenção</mat-label>
-                    <input matInput formControlName="maintenanceCost" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Data da Próxima Manutenção</mat-label>
-                    <input matInput formControlName="maintenanceNextDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
-                    <mat-hint>/DD/MM/YYYY</mat-hint>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Próxima Kilometragem</mat-label>
-                    <input matInput formControlName="maintenanceNextKilometers" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Previsão de Termino</mat-label>
-                    <input matInput formControlName="maintenancePreviousDateFinished" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
-                    <mat-hint>/DD/MM/YYYY</mat-hint>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Kilometragem Atual</mat-label>
-                    <input matInput formControlName="maintenanceKilometers" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Observações</mat-label>
-                    <input matInput formControlName="maintenanceNotes">
-                  </mat-form-field>
-                </div>
-              </section>
-  
-              <!-- <section class="secao-form">
-                <h3><mat-icon>assignment_ind</mat-icon> Observações</h3>
-                <div class="grid-form-2col">
-                </div>
-              </section> -->
-  
-            </form>
-          </mat-tab>
-        </mat-tab-group>
-  
-        <footer class="acoes-footer">
-          <button mat-button (click)="cancelar()">Cancelar</button>
-          <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">
-            <mat-icon>save</mat-icon> Salvar Cadastro
-          </button>
-        </footer>
-      </main>
     </div>
   </div>

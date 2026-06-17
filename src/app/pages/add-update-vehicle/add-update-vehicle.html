@@ -16,46 +16,6 @@
     </header>
   
     <div class="conteudo-principal">
-      <aside class="sidebar-veiculo">
-        <mat-card class="card-foto-resumo">
-          <div class="foto-container">
-            <img [src]="selectedPhoto?.path || 'default.png'" [alt]="selectedPhoto?.name" class="foto-veiculo">
-            <!-- <button mat-mini-fab color="primary" class="btn-trocar-foto">
-              <mat-icon>photo_camera</mat-icon>
-            </button> -->
-          </div>
-          @if (isLoading()) {
-            <div class="loading-overlay">
-              <mat-spinner diameter="60" mode="indeterminate" color="primary"></mat-spinner>
-              <p class="loading-text">Carregando, por favor aguarde...</p>
-            </div>
-          }
-          <mat-card-content class="resumo-info">
-            <div class="placa-status">
-              <h2>{{ veiculoDados?.vehiclePlate }}</h2>
-              <span class="badge-status ativo">{{ veiculoDados?.vehicleStatus}}</span>
-            </div>
-            <h3>{{ veiculoDados?.brand }} {{ veiculoDados?.vehicleModel }}</h3>
-            
-            <div class="tags-rapidas">
-              <span><mat-icon>calendar_today</mat-icon> {{ veiculoDados?.vehicleYear }}/{{ veiculoDados?.vehicleModelYear }}</span>
-              <span><mat-icon>local_gas_station</mat-icon> {{ veiculoDados?.fuelType }}</span>
-              <span><mat-icon>tune</mat-icon> {{ veiculoDados?.vehicleTransmissionType }}</span>
-              <span><mat-icon>color_lens</mat-icon> {{ veiculoDados?.vehicleColor }}</span>
-            </div>
-  
-            <hr class="divisor">
-  
-            <div class="informacoes-gerais-box">
-              <h4>Informações Gerais</h4>
-              <p><strong>Renavam:</strong> {{ veiculoDados?.vehicleRenavamNumber || 'Não informado' }}</p>
-              <p><strong>Chassi:</strong> {{ veiculoDados?.vehicleChassisNumber || 'Não informado' }}</p>
-              <p><strong>Aquisição:</strong> {{ veiculoDados?.vehiclePurchaseDate}}</p>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </aside>
-  
       <main class="formulario-wrapper">
         <mat-tab-group animationDuration="0ms" class="abas-navegacao">
           <mat-tab label="Dados Principais">
@@ -63,7 +23,7 @@
               
               <section class="secao-form">
                 <h3><mat-icon>directions_car</mat-icon> Dados do Veículo</h3>
-                <div class="grid-form">
+                <div class="grid-4col">
                   <mat-form-field appearance="outline">
                     <mat-label>Placa</mat-label>
                     <input matInput formControlName="vehiclePlate">
@@ -90,7 +50,9 @@
                     <mat-label>Modelo</mat-label>
                     <input matInput formControlName="vehicleModel">
                   </mat-form-field>
-  
+
+                </div>
+                <div class="grid-4col">
                   <mat-form-field appearance="outline">
                     <mat-label>Ano Fabricação</mat-label>
                     <input matInput type="number" formControlName="vehicleYear">
@@ -117,6 +79,8 @@
                       <mat-option value="manual">Manual</mat-option>
                     </mat-select>
                   </mat-form-field>
+                </div>
+                <div class="grid-4col">
                   <mat-form-field appearance="outline">
                     <mat-label>Renavam</mat-label>
                     <input matInput formControlName="vehicleRenavamNumber">
@@ -125,19 +89,17 @@
                     <mat-label>Chassi</mat-label>
                     <input matInput formControlName="vehicleChassisNumber">
                   </mat-form-field>
-                </div>
-  
-                <div class="linha-full">
                   <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Cor</mat-label>
                     <input matInput formControlName="vehicleColor">
                   </mat-form-field>
                 </div>
+                  
               </section>
   
               <section class="secao-form">
                 <h3><mat-icon>info</mat-icon> Outras Informações</h3>
-                <div class="grid-form-3col">
+                <div class="grid-3col">
                   <mat-form-field appearance="outline">
                     <mat-label>Capacidade de Combustível</mat-label>
                     <input matInput type="number" formControlName="vehicleTankCapacity">
@@ -158,10 +120,12 @@
                     [leadZeroDateTime]="true">
                     <mat-hint>/DD/MM/YYYY</mat-hint>
                   </mat-form-field>
+                </div>
+                <div class="linha-full">
                   <mat-form-field appearance="outline">
                     <mat-label>Notas</mat-label>
                     <input matInput formControlName="vehicleNotes">
-                  </mat-form-field>
+                  </mat-form-field>                  
                 </div>
               </section>
   
@@ -250,6 +214,45 @@
           </button>
         </footer>
       </main>
+      <aside class="sidebar-veiculo">
+        <mat-card class="card-foto-resumo">
+          <div class="foto-container">
+            <img [src]="selectedPhoto?.path || 'default.png'" [alt]="selectedPhoto?.name" class="foto-veiculo">
+            <!-- <button mat-mini-fab color="primary" class="btn-trocar-foto">
+              <mat-icon>photo_camera</mat-icon>
+            </button> -->
+          </div>
+          @if (isLoading()) {
+            <div class="loading-overlay">
+              <mat-spinner diameter="60" mode="indeterminate" color="primary"></mat-spinner>
+              <p class="loading-text">Carregando, por favor aguarde...</p>
+            </div>
+          }
+          <mat-card-content class="resumo-info">
+            <div class="placa-status">
+              <h2>{{ veiculoDados?.vehiclePlate }}</h2>
+              <span class="badge-status ativo">{{ veiculoDados?.vehicleStatus}}</span>
+            </div>
+            <h3>{{ veiculoDados?.brand }} {{ veiculoDados?.vehicleModel }}</h3>
+            
+            <div class="tags-rapidas">
+              <span><mat-icon>calendar_today</mat-icon> {{ veiculoDados?.vehicleYear }}/{{ veiculoDados?.vehicleModelYear }}</span>
+              <span><mat-icon>local_gas_station</mat-icon> {{ veiculoDados?.fuelType }}</span>
+              <span><mat-icon>tune</mat-icon> {{ veiculoDados?.vehicleTransmissionType }}</span>
+              <span><mat-icon>color_lens</mat-icon> {{ veiculoDados?.vehicleColor }}</span>
+            </div>
+  
+            <hr class="divisor">
+  
+            <div class="informacoes-gerais-box">
+              <h4>Informações Gerais</h4>
+              <p><strong>Renavam:</strong> {{ veiculoDados?.vehicleRenavamNumber || 'Não informado' }}</p>
+              <p><strong>Chassi:</strong> {{ veiculoDados?.vehicleChassisNumber || 'Não informado' }}</p>
+              <p><strong>Aquisição:</strong> {{ veiculoDados?.vehiclePurchaseDate}}</p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </aside>
     </div>
   </div>
   

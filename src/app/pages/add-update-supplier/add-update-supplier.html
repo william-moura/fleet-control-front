@@ -14,43 +14,7 @@
       </button>
     </header>
   
-    <div class="conteudo-principal">
-      <aside class="sidebar-veiculo">
-        <mat-card class="card-foto-resumo">
-          <mat-card-content class="resumo-info">
-            <div class="nome-status">
-              <h2>{{ supplier()?.supplierFantasyName || 'Novo Fornecedor' }}</h2>
-            </div>
-            
-            <hr class="divisor">
-  
-            <div class="detalhes-lista">
-              <div class="item-detalhe">
-                <mat-icon>car</mat-icon>
-                <div>
-                  <p class="label">Nome Fantasia</p>
-                  <p class="valor">{{ supplier()?.supplierFantasyName || '---' }}</p>
-                </div>
-              </div>
-              <div class="item-detalhe">
-                <mat-icon>calendar_today</mat-icon>
-                <div>
-                  <p class="label">Razão Social</p>
-                  <p class="valor">{{ supplier()?.supplierCorporateName || '---' }}</p>
-                </div>
-              </div>
-              <div class="item-detalhe">
-                <mat-icon>credit_card</mat-icon>
-                <div>
-                  <p class="label">CNPJ</p>
-                  <p class="valor">{{ supplier()?.supplierCnpj || '---'}}</p>
-                </div>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </aside>
-  
+    <div class="conteudo-principal">      
       <main class="formulario-wrapper">
         <mat-tab-group animationDuration="0ms" class="abas-navegacao">
           
@@ -171,5 +135,40 @@
           </button>
         </footer>
       </main>
+      <aside class="sidebar-veiculo">
+        <mat-card class="card-foto-resumo">
+          <mat-card-content class="resumo-info">
+            <div class="nome-status">
+              <h2>{{ supplier()?.supplierFantasyName || 'Novo Fornecedor' }}</h2>
+            </div>
+            
+            <hr class="divisor">
+  
+            <div class="detalhes-lista">
+              <div class="item-detalhe">
+                <mat-icon>car</mat-icon>
+                <div>
+                  <p class="label">Nome Fantasia</p>
+                  <p class="valor">{{ supplier()?.supplierFantasyName || '---' }}</p>
+                </div>
+              </div>
+              <div class="item-detalhe">
+                <mat-icon>calendar_today</mat-icon>
+                <div>
+                  <p class="label">Razão Social</p>
+                  <p class="valor">{{ supplier()?.supplierCorporateName || '---' }}</p>
+                </div>
+              </div>
+              <div class="item-detalhe">
+                <mat-icon>credit_card</mat-icon>
+                <div>
+                  <p class="label">CNPJ</p>
+                  <p class="valor">{{ supplier()?.supplierCnpj || '---'}}</p>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </aside>
     </div>
   </div>
