@@ -72,27 +72,36 @@
                   </mat-form-field>
                   <mat-form-field appearance="outline"> 
                     <mat-label>Valor do Abastecimento</mat-label>
-                    <input matInput formControlName="fuelSupplierTotal" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                    <input matInput formControlName="fuelSupplierTotal" mask="separator.2" 
+                    placeholder="Ex: 1.000,00" 
+                    thousandSeparator="." decimalMarker="," decimalSeparator="," maxlength="8" />
                   </mat-form-field>
                 </div>
                 <div class="grid-3col">
                   <mat-form-field appearance="outline"> 
                     <mat-label>Valor por Litro</mat-label>
-                    <input matInput formControlName="fuelSupplierPrice" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                    <input matInput formControlName="fuelSupplierPrice" mask="separator.2" 
+                    placeholder="Ex: 1.000,00" 
+                    thousandSeparator="." decimalMarker="," decimalSeparator="," maxlength="8" />
                   </mat-form-field>
                   <mat-form-field appearance="outline"> 
                     <mat-label>Quantidade de Litros</mat-label>
-                    <input matInput formControlName="fuelSupplierQuantity" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                    <input matInput formControlName="fuelSupplierQuantity" mask="separator.2" 
+                    placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator=","
+                    maxlength="4"
+                    />
                   </mat-form-field>
                   <mat-form-field appearance="outline"> 
                     <mat-label>Kilometragem</mat-label>
-                    <input matInput formControlName="fuelSupplierKilometers" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                    <input matInput formControlName="fuelSupplierKilometers" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator=","
+                    maxlength="7" mask="999999,9"
+                    />
                   </mat-form-field>
                 </div>
                 <div class="grid-2col">
                   <mat-form-field appearance="outline"> 
                     <mat-label>Número do Comprovante</mat-label>
-                    <input matInput formControlName="fuelSupplierInvoiceNumber" />
+                    <input matInput formControlName="fuelSupplierInvoiceNumber" maxlength="10" />
                   </mat-form-field>
                   <mat-form-field appearance="outline">
                     <mat-label>Observações</mat-label>

@@ -83,11 +83,15 @@
               <div class="grid-3col-modificados">
                 <mat-form-field appearance="outline">
                   <mat-label>Valor da Multa</mat-label>
-                  <input matInput formControlName="fineAmount" mask="separator.2" placeholder="Ex: 100.00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                  <input matInput formControlName="fineAmount"
+                  maxlength="8"
+                  mask="separator.2" placeholder="Ex: 100.00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Pontos</mat-label>
-                  <input matInput formControlName="finePoints" placeholder="Ex: 3" mask="separator.0" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                  <input matInput formControlName="finePoints" placeholder="Ex: 3"
+                  maxlength="3"
+                  mask="separator.0" thousandSeparator="." decimalMarker="," decimalSeparator="," />
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Observações</mat-label>

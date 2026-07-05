@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgxMaskDirective } from 'ngx-mask';
@@ -31,6 +31,7 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    NgxMaskDirective
    ],
   templateUrl: './add-update-users.html',
   styleUrl: './add-update-users.scss',
@@ -53,6 +54,7 @@ export class AddUpdateUsers {
       password: ['' ],
       confirmPassword: [''],
       role_id: ['', Validators.required],
+      cpf: ['', [Validators.required, Validators.maxLength(14), this.validateCpf]],
     }, {
       validator: this.confirmPasswordValidator,
     });
@@ -131,5 +133,38 @@ export class AddUpdateUsers {
         this.snackBar.open('Erro ao atualizar usuário', 'Fechar', { duration: 3000 });
       }
     });
+  }
+  private validateCpf(control: AbstractControl) {
+    const cpf = control.value.replace(/[^\d]+/g, '');;
+
+    // Remove caracteres não numéricos
+    // CPF deve ter 11 dígitos
+    if (cpf.length !== 11) return { invalidCpf: true };
+  
+    // Descarta sequências inválidas conhecidas
+    if (/^(\d)\1{10}$/.test(cpf)) return { invalidCpf: true };
+  
+    // Validação do 1º dígito
+    let soma = 0;
+    let resto;
+    for (let i = 1; i <= 9; i++) {
+      soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    }
+    resto = (soma * 10) % 11;
+  
+    if ((resto === 10) || (resto === 11)) resto = 0;
+    if (resto !== parseInt(cpf.substring(9, 10))) return { invalidCpf: true };
+  
+    // Validação do 2º dígito
+    soma = 0;
+    for (let i = 1; i <= 10; i++) {
+      soma = soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    }
+    resto = (soma * 10) % 11;
+  
+    if ((resto === 10) || (resto === 11)) resto = 0;
+    if (resto !== parseInt(cpf.substring(10, 11))) return { invalidCpf: true };
+    
+    return null;
   }
 }

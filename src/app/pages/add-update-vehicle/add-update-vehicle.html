@@ -55,12 +55,12 @@
                 <div class="grid-4col">
                   <mat-form-field appearance="outline">
                     <mat-label>Ano Fabricação</mat-label>
-                    <input matInput type="number" formControlName="vehicleYear">
+                    <input matInput type="number" formControlName="vehicleYear" maxlength="4" mask="9999">
                   </mat-form-field>
   
                   <mat-form-field appearance="outline">
                     <mat-label>Ano Modelo</mat-label>
-                    <input matInput type="number" formControlName="vehicleModelYear">
+                    <input matInput type="number" formControlName="vehicleModelYear" maxlength="4" mask="9999">
                   </mat-form-field>
   
                   <mat-form-field appearance="outline">
@@ -102,13 +102,14 @@
                 <div class="grid-3col">
                   <mat-form-field appearance="outline">
                     <mat-label>Capacidade de Combustível</mat-label>
-                    <input matInput type="number" formControlName="vehicleTankCapacity">
+                    <input matInput type="text" formControlName="vehicleTankCapacity" maxlength="3" mask="999">
                     <span matSuffix class="sufixo-input">Litros</span>
                   </mat-form-field>
   
                   <mat-form-field appearance="outline">
                     <mat-label>Quilometragem Atual</mat-label>
-                    <input matInput type="number" formControlName="vehicleCurrentMileage">
+                    <input matInput type="text" formControlName="vehicleCurrentMileage" maxlength="7"
+                    mask="999999,9">
                     <span matSuffix class="sufixo-input">km</span>
                   </mat-form-field>
   

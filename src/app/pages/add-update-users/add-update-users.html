@@ -43,6 +43,13 @@
                       }
                     </mat-select>
                   </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>CPF</mat-label>
+                    <input matInput formControlName="cpf" mask="999.999.999-99" maxlength="14"
+                    placeholder="Ex: 000.000.000-00"
+                    />
+                    <mat-error *ngIf="form.get('driverCpf')">CPF inválido</mat-error>
+                  </mat-form-field>
                   @if (!update()) {
                     <mat-form-field appearance="outline">
                       <mat-label>Senha</mat-label>
@@ -80,9 +87,9 @@
   
             <div class="detalhes-lista">
               <div class="item-detalhe">
-                <mat-icon>car</mat-icon>
+                <mat-icon>person</mat-icon>
                 <div>
-                  <p class="label">Placa</p>
+                  <p class="label">Nome</p>
                   <p class="valor">{{ user()?.email || '---' }}</p>
                 </div>
               </div>
