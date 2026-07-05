@@ -83,11 +83,11 @@
                 <div class="grid-4col">
                   <mat-form-field appearance="outline">
                     <mat-label>Renavam</mat-label>
-                    <input matInput formControlName="vehicleRenavamNumber">
+                    <input matInput formControlName="vehicleRenavamNumber" maxlength="11" mask="99999999999">
                   </mat-form-field>
                   <mat-form-field appearance="outline">
                     <mat-label>Chassi</mat-label>
-                    <input matInput formControlName="vehicleChassisNumber">
+                    <input matInput formControlName="vehicleChassisNumber" maxlength="20" mask="AAA AAAAA AA AAAAAA" uppercase >
                   </mat-form-field>
                   <mat-form-field appearance="outline" class="w-full">
                     <mat-label>Cor</mat-label>
