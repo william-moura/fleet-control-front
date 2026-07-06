@@ -150,7 +150,6 @@ export class AddUpdateDriver {
       }
       this.update.set(true);
       this.vehicleFineService.getVehicleFinesByDriverId(driverId).subscribe((vehicleFines) => {
-        console.log(vehicleFines, 'vehicleFines');
         this.driverFines.set(vehicleFines);
       });
       const dataForm = { ...this.driver() };
@@ -167,6 +166,11 @@ export class AddUpdateDriver {
       this.form.patchValue({ ...dataForm });
     } else {
       this.update.set(false);
+      this.driverService.getNextRegistrationNumber().subscribe((nextRegistrationNumber) => {
+        this.form.patchValue({
+          driverRegisteredNumber: nextRegistrationNumber,
+        });
+      });
     }
   }
   private clearForm() {

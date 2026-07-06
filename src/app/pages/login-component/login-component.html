@@ -12,11 +12,11 @@
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>E-mail ou Usuário</mat-label>
-            <input matInput formControlName="email" type="email" placeholder="exemplo@frotasync.com">
+            <mat-label>E-mail ou CPF</mat-label>
+            <input matInput formControlName="login" placeholder="exemplo@frotasync.com ou 12345678901">
             <mat-icon matPrefix>person</mat-icon>
-            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-              Usuário é obrigatório
+            <mat-error *ngIf="loginForm.get('login')?.hasError('required')">
+              Login é obrigatório
             </mat-error>
           </mat-form-field>
   

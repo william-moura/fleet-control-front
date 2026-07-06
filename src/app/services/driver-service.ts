@@ -13,6 +13,7 @@ export class DriverService {
   private http = inject(HttpClient);
   private readonly API_URL = environment.apiUrl + '/drivers';
   private readonly API_URL_UPLOADS = environment.apiUrl + '/upload';
+  private readonly API_URL_BASE = environment.apiUrl;
   getAllDrivers(page: number = 1, perPage: number = 10): Observable<Pagination<Driver>> {
     const params = new HttpParams()
     .set('page', (page + 1).toString()) // MatPaginator começa em 0, Laravel em 1
@@ -33,5 +34,8 @@ export class DriverService {
   }
   uploadPhotos(photos: FormData): Observable<Photo> {
     return this.http.post<Photo>(`${this.API_URL_UPLOADS}`, photos);
+  }
+  getNextRegistrationNumber(): Observable<string> {
+    return this.http.get<string>(`${this.API_URL_BASE}/next-registration`);
   }
 }
