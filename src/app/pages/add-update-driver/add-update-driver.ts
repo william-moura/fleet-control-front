@@ -238,6 +238,16 @@ export class AddUpdateDriver {
     }
   }
   processFiles(files: File) {
+    const maxSize = 2 * 1024 * 1024; // 2MB
+    if (files.size > maxSize) {
+      this.snackBar.open('Tamanho do arquivo muito grande', 'Fechar', { duration: 3000 });
+      return;
+    }
+    const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+    if (!allowedTypes.includes(files.type)) {
+      this.snackBar.open('Formato de arquivo inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
     const reader = new FileReader();
 
     reader.readAsDataURL(files);

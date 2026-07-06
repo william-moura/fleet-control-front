@@ -133,6 +133,22 @@ mat-form-field { width: 100%; }
   align-items: flex-start;
   padding-top: 4px;
 
+  .avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    .info-foto {
+      font-size: 11px;
+      color: $texto-secundario;
+      text-align: center;
+      max-width: 160px;
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
+
   .avatar-dropzone {
     position: relative;
     width: 160px;
@@ -259,4 +275,24 @@ mat-form-field { width: 100%; }
   font-size: 16px !important;
   font-weight: 400 !important;
   color: #4B5563 !important;
+}
+.sidebar-foto-pessoa {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-top: 4px;
+  .avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    .info-foto {
+      font-size: 11px;
+      color: $texto-secundario;
+      text-align: center;
+      max-width: 160px;
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
 }
