@@ -5,8 +5,8 @@
         <mat-icon>chevron_left</mat-icon>
       </button>
       <div>
-        <span class="breadcrumbs">Administração > Pessoas > Cadastro</span>
-        <h1>Cadastro de Pessoa</h1>
+        <span class="breadcrumbs">Administração > Motoristas > Cadastro</span>
+        <h1>Cadastro de Motorista</h1>
       </div>
     </div>
   </header>
@@ -31,7 +31,16 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Tipo Sanguíneo</mat-label>
-              <input matInput formControlName="driverBloodType" placeholder="Tipo Sanguíneo">
+              <mat-select formControlName="driverBloodType">
+                <mat-option value="A+">A+</mat-option>
+                <mat-option value="A-">A-</mat-option>
+                <mat-option value="B+">B+</mat-option>
+                <mat-option value="B-">B-</mat-option>
+                <mat-option value="AB+">AB+</mat-option>
+                <mat-option value="AB-">AB-</mat-option>
+                <mat-option value="O+">O+</mat-option>
+                <mat-option value="O-">O-</mat-option>
+              </mat-select>
               <mat-icon matSuffix color="primary">bloodtype</mat-icon>
             </mat-form-field>
           </div>
@@ -41,10 +50,11 @@
               <mat-label>CPF</mat-label>
               <input matInput formControlName="driverCpf" placeholder="000.000.000-00" mask="999.999.999-99">
               <mat-icon matSuffix>badge</mat-icon>
+              <mat-error *ngIf="form.get('driverCpf')">CPF inválido</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>RG</mat-label>
-              <input matInput formControlName="driverRg" placeholder="RG">
+              <input matInput formControlName="driverRg" placeholder="RG" maxlength="9">
               <mat-icon matSuffix>person</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
@@ -62,7 +72,7 @@
           <div class="grid-3col-ajustado">
             <mat-form-field appearance="outline">
               <mat-label>CNH</mat-label>
-              <input matInput formControlName="driverLicenseNumber" placeholder="CNH">
+              <input matInput formControlName="driverLicenseNumber" placeholder="CNH" maxlength="11" mask="99999999999">
               <mat-icon matSuffix>badge</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
@@ -119,6 +129,11 @@
               </mat-select>
               <mat-icon matSuffix>check_circle</mat-icon>
             </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>E-mail</mat-label>
+              <input matInput formControlName="driverEmail" placeholder="E-mail" type="email">
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
           </div>
 
         </div>
@@ -128,9 +143,16 @@
           <div class="avatar-dropzone">
             <img [src]="form.get('driverPhoto')?.value" alt="Foto de Perfil">
             <span class="label-foto">(Imagem)</span>
+            @if(!form.get('driverPhoto')?.value) {
             <button type="button" mat-mini-fab color="primary" class="btn-upload" (click)="fileInput.click()">
               <mat-icon>add_a_photo</mat-icon>
             </button>
+            }
+            @if(form.get('driverPhoto')?.value) {
+              <button type="button" mat-mini-fab color="primary" class="btn-delete" (click)="deletePhoto()">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            }
           </div>
         </div>
       </div>

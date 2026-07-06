@@ -56,7 +56,10 @@
   
                   <mat-form-field appearance="outline"> 
                     <mat-label>Quilometragem</mat-label>
-                    <input matInput formControlName="kilometersValue" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator="," />
+                    <input matInput formControlName="kilometersValue" mask="999999,9" maxlength="7" placeholder="Ex: 1.000,0" 
+                    thousandSeparator="." decimalMarker="," decimalSeparator=","
+                    
+                    />
                   </mat-form-field>
                   <mat-form-field appearance="outline">
                     <mat-label>Observações</mat-label>

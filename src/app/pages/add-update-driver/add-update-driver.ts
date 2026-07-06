@@ -60,18 +60,19 @@ export class AddUpdateDriver {
   constructor() {
     this.form = this.fb.group({
       driverName: ['', Validators.required],
-      driverRegisteredNumber: ['', Validators.required],
+      driverRegisteredNumber: [{value: '', disabled: true}, Validators.required],
       driverAddress: ['', Validators.required],
       driverCity: ['', Validators.required],
       driverState: ['', Validators.required],
       driverZipCode: ['', Validators.required],
       driverBloodType: ['', Validators.required],
-      driverRg: ['', Validators.required],
+      driverRg: ['', [Validators.required, Validators.maxLength(9)]],
       driverCpf: ['', [Validators.required, this.validateCpf]],
       driverLicenseNumber: ['', Validators.required],
       driverLicenseExpirationDate: ['', Validators.required],
       driverLicenseCategory: ['', Validators.required],
       driverBirthDate: ['', Validators.required],
+      driverEmail: ['', [Validators.required, Validators.email]],
       driverPhone: ['', Validators.required],
       driverStatus: ['', Validators.required],
       driverPhoto: [''],
@@ -80,10 +81,36 @@ export class AddUpdateDriver {
     });
   }
   private validateCpf(control: AbstractControl) {
-    const cpf = control.value;
-    if (cpf.length !== 11) {
-      return { invalidCpf: true };
+    const cpf = control.value.replace(/[^\d]+/g, '');;
+
+    // Remove caracteres não numéricos
+    // CPF deve ter 11 dígitos
+    if (cpf.length !== 11) return { invalidCpf: true };
+  
+    // Descarta sequências inválidas conhecidas
+    if (/^(\d)\1{10}$/.test(cpf)) return { invalidCpf: true };
+  
+    // Validação do 1º dígito
+    let soma = 0;
+    let resto;
+    for (let i = 1; i <= 9; i++) {
+      soma = soma + parseInt(cpf.substring(i - 1, i)) * (11 - i);
     }
+    resto = (soma * 10) % 11;
+  
+    if ((resto === 10) || (resto === 11)) resto = 0;
+    if (resto !== parseInt(cpf.substring(9, 10))) return { invalidCpf: true };
+  
+    // Validação do 2º dígito
+    soma = 0;
+    for (let i = 1; i <= 10; i++) {
+      soma = soma + parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    }
+    resto = (soma * 10) % 11;
+  
+    if ((resto === 10) || (resto === 11)) resto = 0;
+    if (resto !== parseInt(cpf.substring(10, 11))) return { invalidCpf: true };
+    
     return null;
   }
   getCep(cep: string) {
@@ -123,7 +150,6 @@ export class AddUpdateDriver {
       }
       this.update.set(true);
       this.vehicleFineService.getVehicleFinesByDriverId(driverId).subscribe((vehicleFines) => {
-        console.log(vehicleFines, 'vehicleFines');
         this.driverFines.set(vehicleFines);
       });
       const dataForm = { ...this.driver() };
@@ -140,6 +166,11 @@ export class AddUpdateDriver {
       this.form.patchValue({ ...dataForm });
     } else {
       this.update.set(false);
+      this.driverService.getNextRegistrationNumber().subscribe((nextRegistrationNumber) => {
+        this.form.patchValue({
+          driverRegisteredNumber: nextRegistrationNumber,
+        });
+      });
     }
   }
   private clearForm() {
@@ -209,6 +240,12 @@ export class AddUpdateDriver {
         driverPhoto: photo.path,
         photosIds: [photo.id],
       });
+    });
+  }
+  deletePhoto() {
+    this.form.patchValue({
+      driverPhoto: '',
+      photosIds: [],
     });
   }
 }
