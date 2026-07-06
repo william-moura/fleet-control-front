@@ -54,6 +54,8 @@ export class DriversComponent implements AfterViewInit {
   pageSize = 5;
   indicePagina = 0;
 
+  constructor() {}
+
   ngAfterViewInit() {
     //this.dataSource.paginator = this.paginator();
     this.dataSource.sort = this.sort();
@@ -97,6 +99,7 @@ export class DriversComponent implements AfterViewInit {
     this.getDrivers();
   }
   openAddDriverDialog() {
+    this.driverStateService.setDriver(null);
     this.router.navigate(['/driver/new']);
   }
   async updateDriver(driver: Driver) {
