@@ -111,4 +111,14 @@ export class DriversComponent implements AfterViewInit {
     this.pageSize = event.pageSize;
     this.getDrivers();
   }
+
+  abrirNovaInstancia() {
+    // this.clearForm();
+    // this.router.navigate(['/vehicles/new']);
+    const urlDaSpa = window.location.origin; 
+    const urlDaApi = 'http://localhost:8081';
+    const url = `${urlDaSpa}/vehicle-fines`;
+    const configuracoesJanela = 'width=1200,height=800,menubar=no,toolbar=no,location=no,status=no';
+    window.open(url, '_blank', configuracoesJanela);
+  }
 }
