@@ -273,5 +273,5 @@ export class AddUpdateVehicle {
     this.update.set(false);
     this.isLoading.set(false);
     this.vehicleStateService.setVehicle(null);
-  }
+  }  
 }
