@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 
 // Angular Material Imports
 import { MatTabsModule } from '@angular/material/tabs';
@@ -24,6 +24,7 @@ import { VehicleFineService } from '../../services/vehicle-fine-service';
 import { VehicleFine } from '../../models/vehicle-fine';
 import { ListDriverFine } from '../../components/list-driver-fine/list-driver-fine';
 import { Photo } from '../../models/photo';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-update-driver',
@@ -57,6 +58,7 @@ export class AddUpdateDriver {
   private driverStateService = inject(VehicleStateService);
   private vehicleFineService = inject(VehicleFineService);
   driverFines = signal<VehicleFine[]>([]);
+  private routerSubscription: Subscription | undefined;
   constructor() {
     this.form = this.fb.group({
       driverName: ['', Validators.required],
@@ -141,6 +143,12 @@ export class AddUpdateDriver {
     this.router.navigate(['/drivers']);
   }
   ngOnInit() {
+    this.routerSubscription = this.router.events.subscribe(event => {
+      // Verifica se a navegação está começando e se foi acionada pelo botão voltar
+      if (event instanceof NavigationStart && event.navigationTrigger === 'popstate') {
+        this.clearForm();
+      }
+    })
     this.driver.set(this.driverStateService.selectedDriver());
     console.log(this.driver(), 'driver');
     if (this.driver()) {
