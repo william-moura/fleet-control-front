@@ -59,7 +59,7 @@ export class AddUpdateDriver {
   private vehicleFineService = inject(VehicleFineService);
   driverFines = signal<VehicleFine[]>([]);
   private routerSubscription: Subscription | undefined;
-  constructor() {
+  constructor() {    
     this.form = this.fb.group({
       driverName: ['', Validators.required],
       driverRegisteredNumber: [{value: '', disabled: true}, Validators.required],
@@ -80,7 +80,7 @@ export class AddUpdateDriver {
       driverPhoto: [''],
       driverNeighborhood: ['', Validators.required],
       photosIds: [[]],
-    });
+    });    
   }
   private validateCpf(control: AbstractControl) {
     const cpf = control.value.replace(/[^\d]+/g, '');;
