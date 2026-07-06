@@ -139,20 +139,23 @@
         </div>
 
         <div class="sidebar-foto-pessoa">
-          <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none">
-          <div class="avatar-dropzone">
-            <img [src]="form.get('driverPhoto')?.value" alt="Foto de Perfil">
-            <span class="label-foto">(Imagem)</span>
-            @if(!form.get('driverPhoto')?.value) {
-            <button type="button" mat-mini-fab color="primary" class="btn-upload" (click)="fileInput.click()">
-              <mat-icon>add_a_photo</mat-icon>
-            </button>
-            }
-            @if(form.get('driverPhoto')?.value) {
-              <button type="button" mat-mini-fab color="primary" class="btn-delete" (click)="deletePhoto()">
-                <mat-icon>delete_outline</mat-icon>
+          <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none" accept=".png, .jpg, .jpeg">
+          <div class="avatar-container">
+            <div class="avatar-dropzone">
+              <img [src]="form.get('driverPhoto')?.value" alt="Foto de Perfil">
+              <span class="label-foto">(Imagem)</span>
+              @if(!form.get('driverPhoto')?.value) {
+              <button type="button" mat-mini-fab color="primary" class="btn-upload" (click)="fileInput.click()">
+                <mat-icon>add_a_photo</mat-icon>
               </button>
-            }
+              }
+              @if(form.get('driverPhoto')?.value) {
+                <button type="button" mat-mini-fab color="primary" class="btn-delete" (click)="deletePhoto()">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              }
+            </div>
+            <p class="info-foto">Tamanho máximo: 2MB. Formatos aceitos: JPEG, JPG e PNG.</p>
           </div>
         </div>
       </div>
