@@ -58,7 +58,7 @@ export class AddUpdateSupplier {
       supplierEmail: ['', [Validators.required, Validators.email]],
       supplierStatus: ['', Validators.required],
       supplierType: ['', Validators.required],
-      
+      supplierNeighborhood: ['', Validators.required],      
     });
   }
   private validateCnpj(control: AbstractControl) {
@@ -74,7 +74,12 @@ export class AddUpdateSupplier {
   }
   getCep(cep: string) {
     this.cepService.getCep(cep).subscribe((cep) => {
-      this.form.patchValue(cep);
+      this.form.patchValue({
+        supplierAddress: cep.street,
+        supplierCity: cep.city,
+        supplierState: cep.state,        
+        supplierNeighborhood: cep.neighborhood,
+      });
     });
   }
   ngOnInit() {

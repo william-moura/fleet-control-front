@@ -44,29 +44,7 @@
                     <mat-error *ngIf="form.get('supplierCnpj')?.hasError('required')">
                       O campo <strong>CNPJ</strong> é obrigatório.
                     </mat-error>
-                  </mat-form-field>
-                  
-                  <mat-form-field appearance="outline">
-                    <mat-label>Endereço</mat-label>
-                  <input matInput formControlName="supplierAddress" />
-                  <mat-error *ngIf="form.get('supplierAddress')?.hasError('required')">
-                    O campo <strong>Endereço</strong> é obrigatório.
-                  </mat-error>
-                </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Cidade</mat-label>
-                    <input matInput formControlName="supplierCity" />
-                    <mat-error *ngIf="form.get('supplierCity')?.hasError('required')">
-                      O campo <strong>Cidade</strong> é obrigatório.
-                    </mat-error>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Estado</mat-label>
-                    <input matInput formControlName="supplierState" />
-                    <mat-error *ngIf="form.get('supplierState')?.hasError('required')">
-                      O campo <strong>Estado</strong> é obrigatório.
-                    </mat-error>
-                  </mat-form-field>
+                  </mat-form-field>                  
                   <mat-form-field appearance="outline" class="col-span-2">
                     <mat-label>CEP</mat-label>
                     <input matInput formControlName="supplierZipCode" 
@@ -82,6 +60,13 @@
                     <input matInput formControlName="supplierAddress" />
                     <mat-error *ngIf="form.get('supplierAddress')?.hasError('required')">
                       O campo <strong>Endereço</strong> é obrigatório.
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline"> 
+                    <mat-label>Bairro</mat-label>
+                    <input matInput formControlName="supplierNeighborhood" />
+                    <mat-error *ngIf="form.get('supplierNeighborhood')?.hasError('required')">
+                      O campo <strong>Bairro</strong> é obrigatório.
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field appearance="outline"> 
@@ -114,10 +99,10 @@
                     </mat-select>
                   </mat-form-field>
                   <mat-form-field appearance="outline"> 
-                    <mat-label>Tipo</mat-label>
+                    <mat-label>Tipo de Fornecedor</mat-label>
                     <mat-select formControlName="supplierType">
-                      <mat-option value="1">Pessoa Física</mat-option>
-                      <mat-option value="2">Pessoa Jurídica</mat-option>
+                      <mat-option value="1">Posto de Gasolina</mat-option>
+                      <mat-option value="2">Oficina Mecânica</mat-option>
                     </mat-select>
                   </mat-form-field>
                   
