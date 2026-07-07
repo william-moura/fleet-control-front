@@ -16,8 +16,6 @@ export class App {
   constructor(public layoutService: LayoutService, protected authService: AuthService) {
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
-    } else {
-      this.router.navigate(['/welcome']);
     }
   }
 }
