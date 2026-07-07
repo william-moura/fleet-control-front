@@ -55,5 +55,5 @@ export const routes: Routes = [
     { path: 'supplier/new', component: AddUpdateSupplier, data: { icon: 'local_shipping', name: 'Fornecedor', display: false} },
     { path: 'users/edit', component: AddUpdateUsers, data: { icon: 'groups', name: 'Usuário', display: false} },
     { path: 'users/new', component: AddUpdateUsers, data: { icon: 'groups', name: 'Usuário', display: false} },
-    { path: '***', redirectTo: 'welcome', pathMatch: 'full' }
+    { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
 ];
