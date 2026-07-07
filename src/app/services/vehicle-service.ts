@@ -72,4 +72,7 @@ export class VehicleService {
   listKilometers(): Observable<Kilometer[]> {
     return this.http.get<Kilometer[]>(`${this.API_URL}/kilometers`);
   }
+  createNotification(vehicleId: number, notification: Notification): Observable<Notification> {
+    return this.http.post<Notification>(`${this.API_URL}/${vehicleId}/notifications`, notification);
+  }
 }
