@@ -25,7 +25,7 @@ import { AddUpdateSupplier } from './pages/add-update-supplier/add-update-suppli
 import { AddUpdateUsers } from './pages/add-update-users/add-update-users';
 
 export const routes: Routes = [
-    { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard]},
+    { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard], pathMatch: 'full' },
     { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard',  permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard] },
     { path: 'drivers', component: DriversComponent, data: { icon: 'groups', name: 'Motoristas', permission: 'listar_motoristas'}, canActivate: [authGuard, roleGuard] },
     { path: 'vehicles', component: Vehicles, data: { icon: 'local_shipping', name: 'Veículos', permission: 'listar_veiculos'}, canActivate: [authGuard, roleGuard] },
@@ -54,5 +54,6 @@ export const routes: Routes = [
     { path: 'supplier/edit', component: AddUpdateSupplier, data: { icon: 'local_shipping', name: 'Fornecedor', display: false} },
     { path: 'supplier/new', component: AddUpdateSupplier, data: { icon: 'local_shipping', name: 'Fornecedor', display: false} },
     { path: 'users/edit', component: AddUpdateUsers, data: { icon: 'groups', name: 'Usuário', display: false} },
-    { path: 'users/new', component: AddUpdateUsers, data: { icon: 'groups', name: 'Usuário', display: false} }
+    { path: 'users/new', component: AddUpdateUsers, data: { icon: 'groups', name: 'Usuário', display: false} },
+    { path: '***', redirectTo: 'welcome', pathMatch: 'full' }
 ];
