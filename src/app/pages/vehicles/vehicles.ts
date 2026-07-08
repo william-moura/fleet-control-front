@@ -23,6 +23,7 @@ import { VehicleHistoryComponent } from '../../components/vehicle-history-compon
 import { FormAddBrand } from '../../forms/form-add-brand/form-add-brand';
 import { Router } from '@angular/router';
 import { VehicleStateService } from '../../services/vehicle-state-service';
+import { NewNotification } from '../../forms/new-notification/new-notification';
 
 @Component({
   selector: 'app-vehicles',
@@ -183,6 +184,28 @@ export class Vehicles {
         this.snackBar.open('Erro ao cadastrar marca', 'Fechar', { duration: 3000 });
       } finally {
         this.isLoading.set(false);        
+      }
+    }
+  }
+
+  async newNoticationn(vehicle: Vehicle) {
+    const dialogRef = this.dialog.open(NewNotification, {
+      width: '800px',
+      data: vehicle,
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result !== null) {      
+      try {
+        this.isLoading.set(true);
+        await firstValueFrom(this.vehicleService.createNotification(vehicle.id, result));
+        this.snackBar.open('Notificação cadastrada com sucesso', 'Fechar', { duration: 3000 });
+        this.getVehicles();
+      } catch (error) {
+        console.error('Erro ao cadastrar notificação:', error);
+        this.snackBar.open('Erro ao cadastrar notificação', 'Fechar', { duration: 3000 });
+      }
+      finally {
+        this.isLoading.set(false);
       }
     }
   }

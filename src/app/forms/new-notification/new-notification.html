@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Cadastro de Notificação</h2>
+<mat-dialog-content class="conteudo-modal">
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Descrição da notificação</mat-label>
+      <input matInput formControlName="notificationDescription" />
+      <mat-error *ngIf="form.get('notificationDescription')?.hasError('required')">
+        O campo <strong>Descrição da notificação</strong> é obrigatório.
+      </mat-error>
+    </mat-form-field>
+  
+    <mat-form-field appearance="outline">
+      <mat-label>Vencimento da notificação</mat-label>
+      <input matInput formControlName="notificationExpirationDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
+      <mat-icon matSuffix>date_range</mat-icon>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions class="rodape-modal">
+  <button mat-button (click)="onCancel()">Cancelar</button>
+  <button mat-button (click)="onSubmit()">Salvar</button>
+</mat-dialog-actions>

@@ -68,8 +68,8 @@ table {
 }
 
 .mat-column-acoes {
-  width: 250px;       // Largura fixa desejada
-  min-width: 250px;   // Garante que não vai diminuir
+  width: 350px;       // Largura fixa desejada
+  min-width: 350px;   // Garante que não vai diminuir
   text-align: center; // Centraliza os ícones
   padding-left: 8px !important;
   padding-right: 8px !important;
@@ -78,7 +78,7 @@ table {
   .button-group {
     display: flex;
     justify-content: center;
-    gap: 3px; // Espaçamento entre os botões
+    gap: 2px; // Espaçamento entre os botões
   }
 }
 .center-cell {
