@@ -8,18 +8,11 @@
         O campo <strong>Descrição da notificação</strong> é obrigatório.
       </mat-error>
     </mat-form-field>
+  
     <mat-form-field appearance="outline">
-        <mat-label>Data de vencimento da notificação</mat-label>                
-        <input matInput [matDatepicker]="picker" formControlName="notificationExpirationDate"
-        mask="00/00/0000" 
-        [dropSpecialCharacters]="false"
-        placeholder="DD/MM/AAAA">
-        <mat-hint>/DD/MM/YYYY</mat-hint>
-        <mat-datepicker-toggle matIconSuffix [for]="picker" ></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="form.get('notificationExpirationDate')?.hasError('required')">
-          O campo <strong>Data de vencimento da notificação</strong> é obrigatório.
-        </mat-error>
+      <mat-label>Data de vencimento da notificação</mat-label>
+      <input matInput formControlName="notificationExpirationDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
+      <mat-icon matSuffix>date_range</mat-icon>
     </mat-form-field>
   </form>
 </mat-dialog-content>

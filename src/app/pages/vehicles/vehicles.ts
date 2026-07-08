@@ -188,9 +188,9 @@ export class Vehicles {
     }
   }
 
-  async newNotication(vehicle: Vehicle) {
+  async newNoticationn(vehicle: Vehicle) {
     const dialogRef = this.dialog.open(NewNotification, {
-      width: '600px',
+      width: '800px',
       data: vehicle,
     });
     const result = await firstValueFrom(dialogRef.afterClosed());

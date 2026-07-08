@@ -8,11 +8,12 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-new-notification',
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, 
-    MatButtonModule, MatFormFieldModule, MatInputModule, NgxMaskDirective, MatDatepickerModule],
+    MatButtonModule, MatFormFieldModule, MatInputModule, NgxMaskDirective, MatDatepickerModule, MatIconModule],
   templateUrl: './new-notification.html',
   styleUrl: './new-notification.scss',
 })
