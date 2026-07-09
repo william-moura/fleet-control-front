@@ -51,7 +51,7 @@ export class AddUpdateUsers {
   constructor() {
     this.form = this.fb.group({
       name: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['' ],
       confirmPassword: [''],
       role_id: ['', Validators.required],
@@ -98,6 +98,7 @@ export class AddUpdateUsers {
   }
   salvar() {
     if (!this.form.valid) {
+      this.vaidateForm();
       return;
     }
     if (this.update()) {
@@ -177,5 +178,43 @@ export class AddUpdateUsers {
     if (resto !== parseInt(cpf.substring(10, 11))) return { invalidCpf: true };
     
     return null;
+  }
+  private vaidateForm() {
+    if (this.form.get('name')?.errors?.['required']) {
+      this.snackBar.open('O campo Nome é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('email')?.errors?.['required']) {
+      this.snackBar.open('O campo Email é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('email')?.errors?.['email']) {
+      this.snackBar.open('O campo Email é inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('role_id')?.errors?.['required']) {
+      this.snackBar.open('O campo Cargo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('cpf')?.errors?.['required']) {
+      this.snackBar.open('O campo CPF é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('cpf')?.errors?.['invalidCpf']) {
+      this.snackBar.open('O campo CPF é inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('password')?.errors?.['required']) {
+      this.snackBar.open('O campo Senha é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('confirmPassword')?.errors?.['required']) {
+      this.snackBar.open('O campo Confirmar Senha é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('confirmPassword')?.errors?.['passwordMismatch']) {
+      this.snackBar.open('As senhas não conferem', 'Fechar', { duration: 3000 });
+      return;
+    }
   }
 }
