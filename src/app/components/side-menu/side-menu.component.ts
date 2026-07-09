@@ -39,4 +39,10 @@ export class SideMenuComponent {
       this.authService.logout();
     }
   }
+  newWindow(url: string) {
+    const largura = Math.round(screen.width * 0.9);
+    const altura = Math.round(screen.height * 0.9);
+    const configuracoesJanela = `width=${largura},height=${altura},menubar=yes,toolbar=yes,location=yes,status=yes`;
+    window.open(url, '_blank', configuracoesJanela);
+  }
 }

@@ -12,7 +12,7 @@
     <ul class="nav-list">
       @for (route of menuItems(); track route.path) {
         <li class="nav-item" routerLinkActive="active">
-          <a routerLink="{{ route.path }}">
+          <a (click)="newWindow(route.path||'')">
             <span class="material-icons">{{ route.data?.['icon'] }}</span>
             <span class="link-name">{{ route.data?.['name'] }}</span>
           </a>
