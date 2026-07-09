@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { LayoutService } from './services/layout-service';
@@ -17,5 +17,14 @@ export class App {
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
     }
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeUnloadHandler(event: Event) {
+    // IMPORTANTE: O navegador não garante tempo para chamadas assíncronas normais aqui.
+    // É recomendado usar uma requisição síncrona (ex: sendBeacon ou AJAX síncrono).
+    //this.authService.logout;
+    //localStorage.clear();
+    //event.preventDefault();
   }
 }

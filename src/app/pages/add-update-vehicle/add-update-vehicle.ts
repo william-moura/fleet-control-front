@@ -1,6 +1,6 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -156,26 +156,110 @@ export class AddUpdateVehicle {
   }
 
   constructor(private fb: FormBuilder) {
+    const currentYear = new Date().getFullYear() +1;
+    console.log(currentYear, 'currentYear');
     this.veiculoForm = this.fb.group({
       vehiclePlate: ['', Validators.required],
       vehicleStatus: ['', Validators.required],
       brandId: ['', Validators.required],
-      vehicleModel: ['', Validators.required],
-      vehicleYear: ['', Validators.required],
+      vehicleModel: ['', [Validators.required]],
+      vehicleYear: ['', [Validators.required, Validators.max(new Date().getFullYear())]],
       fuelTypeId: ['', Validators.required],
       vehicleCurrentMileage: ['', [Validators.required, Validators.maxLength(7)]],
-      vehiclePurchaseDate: ['', Validators.required],
+      vehiclePurchaseDate: ['', [Validators.required, this.validatePurchaseDate()]],
       vehicleNotes: [''],
       vehicleTankCapacity: ['', [Validators.required, Validators.maxLength(3)]],
       vehicleTransmissionType: ['', Validators.required],
       vehicleColor: ['', Validators.required],
-      vehicleModelYear: ['', Validators.required],
+      vehicleModelYear: ['', [Validators.required, Validators.max(currentYear)]],
       vehicleRenavamNumber: ['', Validators.required],
       vehicleChassisNumber: ['', Validators.required],
     });
   }
 
   salvar() {
+    if (this.veiculoForm.get('vehiclePlate')?.errors?.['required']) {
+      this.snackBar.open('Placa do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleStatus')?.errors?.['required']) {
+      this.snackBar.open('Status do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('brandId')?.errors?.['required']) {
+      this.snackBar.open('Marca do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleModel')?.errors?.['required']) {
+      this.snackBar.open('Modelo do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleYear')?.errors?.['max']) {
+      this.snackBar.open('Ano do veículo não deve ser maior que o ano atual', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleYear')?.errors?.['required']) {
+      this.snackBar.open('Ano do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleModelYear')?.errors?.['required']) {
+      this.snackBar.open('Ano do modelo do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleModelYear')?.errors?.['max']) {
+      this.snackBar.open('Ano do modelo do veículo não deve ser maior que o ano atual + 1', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('fuelTypeId')?.errors?.['required']) {
+      this.snackBar.open('Tipo de combustível do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleTransmissionType')?.errors?.['required']) {
+      this.snackBar.open('Tipo de transmissão do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleRenavamNumber')?.errors?.['required']) {
+      this.snackBar.open('Número do Renavam do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleChassisNumber')?.errors?.['required']) {
+      this.snackBar.open('Número do chassi do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+
+    if (this.veiculoForm.get('vehicleColor')?.errors?.['required']) {
+      this.snackBar.open('Cor do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleTankCapacity')?.errors?.['required']) {
+      this.snackBar.open('Capacidade de combustível do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+   
+    if (this.veiculoForm.get('vehicleCurrentMileage')?.errors?.['required']) {
+      this.snackBar.open('Quilometragem atual do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehiclePurchaseDate')?.errors?.['required']) {
+      this.snackBar.open('Data de aquisição do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehiclePurchaseDate')?.errors?.['invalidPurchaseDate']) {
+      this.snackBar.open('Data de aquisição do veículo deve ser menor que a data atual', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+
+ 
     if (this.veiculoForm.valid) {
       this.isLoading.set(true);      
       this.veiculoForm.value.vehicleStatus = this.veiculoForm.value.vehicleStatus == 'ativo' ? '1' : '2';
@@ -291,4 +375,25 @@ export class AddUpdateVehicle {
     this.isLoading.set(false);
     this.vehicleStateService.setVehicle(null);
   }  
+  private validatePurchaseDate() {
+    return (control: AbstractControl) => {
+      const purchaseDate = control.value;
+      const purchaseDateDate = new Date(purchaseDate);
+      const today = new Date();
+      if (purchaseDateDate.getFullYear() > today.getFullYear() || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() > today.getMonth()) || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() === today.getMonth() && purchaseDateDate.getDate() > today.getDate() )) {
+        return { invalidPurchaseDate: true };
+      }
+      return null;
+    };
+  }
+
+  validatePurchaseDateInput(purchaseDate: string) {
+    const purchaseDateDate = new Date(purchaseDate);
+    const today = new Date();
+    if (purchaseDateDate.getFullYear() > today.getFullYear() || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() > today.getMonth()) || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() === today.getMonth() && purchaseDateDate.getDate() > today.getDate() )) {
+      this.snackBar.open('Data de aquisição deve ser menor que a data atual', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    return true;
+  }
 }
