@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
@@ -25,6 +25,7 @@ import { VehicleFine } from '../../models/vehicle-fine';
 import { ListDriverFine } from '../../components/list-driver-fine/list-driver-fine';
 import { Photo } from '../../models/photo';
 import { Subscription } from 'rxjs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-add-update-driver',
@@ -41,7 +42,8 @@ import { Subscription } from 'rxjs';
     MatNativeDateModule,
     NgxMaskDirective,
     UppercaseDirective,
-    ListDriverFine],
+    ListDriverFine,
+    MatProgressSpinnerModule],
   templateUrl: './add-update-driver.html',
   styleUrl: './add-update-driver.scss',
 })
@@ -55,11 +57,12 @@ export class AddUpdateDriver {
   update = signal<boolean>(false);
   private cepService = inject(CepService);
   form: FormGroup;
+  loading = signal<boolean>(false);
   private driverStateService = inject(VehicleStateService);
   private vehicleFineService = inject(VehicleFineService);
   driverFines = signal<VehicleFine[]>([]);
   private routerSubscription: Subscription | undefined;
-  constructor() {    
+  constructor(private cdr: ChangeDetectorRef) {    
     this.form = this.fb.group({
       driverName: ['', Validators.required],
       driverRegisteredNumber: [{value: '', disabled: true}, Validators.required],
@@ -71,9 +74,9 @@ export class AddUpdateDriver {
       driverRg: ['', [Validators.required, Validators.maxLength(9)]],
       driverCpf: ['', [Validators.required, this.validateCpf]],
       driverLicenseNumber: ['', Validators.required],
-      driverLicenseExpirationDate: ['', Validators.required],
+      driverLicenseExpirationDate: ['', [Validators.required, this.validateLicenseExpirationDate()]],
       driverLicenseCategory: ['', Validators.required],
-      driverBirthDate: ['', Validators.required],
+      driverBirthDate: ['', [Validators.required, this.validateBirthDate()]],
       driverEmail: ['', [Validators.required, Validators.email]],
       driverPhone: ['', Validators.required],
       driverStatus: ['', Validators.required],
@@ -116,6 +119,7 @@ export class AddUpdateDriver {
     return null;
   }
   getCep(cep: string) {
+    this.loading.set(true);
     this.cepService.getCep(cep).subscribe((cep) => {
       this.form.patchValue({
         driverAddress: cep.street,
@@ -123,10 +127,92 @@ export class AddUpdateDriver {
         driverState: cep.state,        
         driverNeighborhood: cep.neighborhood,
       });
+      this.loading.set(false);
     });
   }
   salvar() {
+    if (this.form.get('driverName')?.errors?.['required']) {
+      this.snackBar.open('Nome do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverBloodType')?.errors?.['required']) {
+      this.snackBar.open('Tipo sanguíneo do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    
+    }
+    if (this.form.get('driverCpf')?.errors?.['required']) {
+      this.snackBar.open('CPF do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverRg')?.errors?.['required']) {
+      this.snackBar.open('RG do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.get('driverBirthDate')?.errors?.['required']) {
+      this.snackBar.open('Data de nascimento do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverBirthDate')?.errors?.['invalidBirthDate']) {
+      this.snackBar.open('Idade mínima para cadastro de motorista é 18 anos', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverPhone')?.errors?.['required']) {
+      this.snackBar.open('Telefone do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.get('driverLicenseNumber')?.errors?.['required']) {
+      this.snackBar.open('Número da CNH do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverLicenseCategory')?.errors?.['required']) {
+      this.snackBar.open('Categoria da CNH do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverLicenseExpirationDate')?.errors?.['required']) {
+      this.snackBar.open('Data de expiração da CNH do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverLicenseExpirationDate')?.errors?.['invalidLicenseExpirationDate']) {
+      this.snackBar.open('Data de expiração da CNH deve ser maior que a data atual', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.get('driverZipCode')?.errors?.['required']) {
+      this.snackBar.open('CEP do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    
+    if (this.form.get('driverAddress')?.errors?.['required']) {
+      this.snackBar.open('Endereço do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.get('driverNeighborhood')?.errors?.['required']) {
+      this.snackBar.open('Bairro do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverCity')?.errors?.['required']) {
+      this.snackBar.open('Cidade do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverState')?.errors?.['required']) {
+      this.snackBar.open('Estado do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    
+    if (this.form.get('driverStatus')?.errors?.['required']) {
+      this.snackBar.open('Status do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverEmail')?.errors?.['email']) {
+      this.snackBar.open('Email do motorista é inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.valid) {
+
       if (this.update()) {
         this.updateDriver();
       } else {
@@ -274,6 +360,7 @@ export class AddUpdateDriver {
         driverPhoto: photo.path,
         photosIds: [photo.id],
       });
+      this.cdr.detectChanges();
     });
   }
   deletePhoto() {
@@ -281,5 +368,76 @@ export class AddUpdateDriver {
       driverPhoto: '',
       photosIds: [],
     });
+    this.cdr.detectChanges();
+  }
+  private validateBirthDate() {
+    return (control: AbstractControl) => {
+      const birthDate = control.value;
+      const today = new Date();
+      const birthDateDate = new Date(birthDate);
+      //return birthDateDate < today ? null : { invalidBirthDate: true };
+
+      const hoje = new Date();
+  
+      let idade = hoje.getFullYear() - birthDateDate.getFullYear();
+      const mesAtual = hoje.getMonth();
+      const mesNascimento = birthDateDate.getMonth();
+    
+      // Se ainda não chegou o mês do aniversário, ou se é o mês mas não chegou o dia, subtrai 1 ano
+      if (mesAtual < mesNascimento || (mesAtual === mesNascimento && hoje.getDate() < birthDateDate.getDate())) {
+        idade--;
+      }
+      if (idade < 18) {
+        //this.snackBar.open('Idade mínima para cadastro de motorista é 18 anos', 'Fechar', { duration: 3000 });
+        return { invalidBirthDate: true };
+      }
+      return null;
+    }
+  }
+
+  validateBirthDateInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    const date = new Date(value);
+    const birthDateDate = new Date(date);
+    const hoje = new Date();
+    let idade = hoje.getFullYear() - birthDateDate.getFullYear();
+    const mesAtual = hoje.getMonth();
+    const mesNascimento = birthDateDate.getMonth();
+    if (mesAtual < mesNascimento || (mesAtual === mesNascimento && hoje.getDate() < birthDateDate.getDate())) {
+      idade--;
+    }
+    if (idade < 18) {
+      console.log('Idade mínima para cadastro de motorista é 18 anos');
+      this.snackBar.open('Idade mínima para cadastro de motorista é 18 anos', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    return null;
+  }
+
+  private validateLicenseExpirationDate() {
+    return (control: AbstractControl) => {
+      const licenseExpirationDate = control.value;
+      const today = new Date();
+      const licenseExpirationDateDate = new Date(licenseExpirationDate);
+      if (licenseExpirationDateDate.getFullYear() < today.getFullYear() || (licenseExpirationDateDate.getFullYear() === today.getFullYear() && licenseExpirationDateDate.getMonth() < today.getMonth()) || (licenseExpirationDateDate.getFullYear() === today.getFullYear() && licenseExpirationDateDate.getMonth() === today.getMonth() && licenseExpirationDateDate.getDate() < today.getDate() )) {
+
+        return { invalidLicenseExpirationDate: true };
+      }
+      return null;
+    }
+  }
+
+  validateLicenseExpirationDateInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    const date = new Date(value);
+    const licenseExpirationDateDate = new Date(date);
+    const hoje = new Date();
+    if (licenseExpirationDateDate.getFullYear() < hoje.getFullYear() || (licenseExpirationDateDate.getFullYear() === hoje.getFullYear() && licenseExpirationDateDate.getMonth() < hoje.getMonth()) || (licenseExpirationDateDate.getFullYear() === hoje.getFullYear() && licenseExpirationDateDate.getMonth() === hoje.getMonth() && licenseExpirationDateDate.getDate() < hoje.getDate() )) {     
+      this.snackBar.open('Data de expiração da CNH deve ser maior que a data atual', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    return null;
   }
 }

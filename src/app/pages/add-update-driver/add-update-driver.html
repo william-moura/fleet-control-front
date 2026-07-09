@@ -10,6 +10,13 @@
       </div>
     </div>
   </header>
+  <!-- Spinner do Angular Material -->
+<div *ngIf="loading()" class="spinner-container">
+  <mat-progress-spinner 
+    mode="indeterminate" 
+    color="primary">
+  </mat-progress-spinner>
+</div>
 
   <main class="formulario-wrapper">
     <form [formGroup]="form">
@@ -59,7 +66,7 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Data de Nascimento</mat-label>
-              <input matInput formControlName="driverBirthDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
+              <input matInput formControlName="driverBirthDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA" (change)="validateBirthDateInput($event)">
               <mat-icon matSuffix>date_range</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
@@ -89,7 +96,7 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Data de Expiração da CNH</mat-label>
-              <input matInput formControlName="driverLicenseExpirationDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA">
+              <input matInput formControlName="driverLicenseExpirationDate" mask="00/00/0000" [dropSpecialCharacters]="false" placeholder="DD/MM/AAAA" (change)="validateLicenseExpirationDateInput($event)">
               <mat-icon matSuffix>date_range</mat-icon>
             </mat-form-field>
           </div>
@@ -163,7 +170,7 @@
         <button type="button" mat-stroked-button (click)="cancelar()">
           <mat-icon>delete_outline</mat-icon> Cancelar
         </button>
-        <button type="submit" mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">
+        <button type="submit" mat-flat-button color="primary" (click)="salvar()">
           <mat-icon>save</mat-icon> Salvar Cadastro
         </button>
       </footer>
