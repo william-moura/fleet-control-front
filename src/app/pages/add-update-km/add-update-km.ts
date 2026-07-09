@@ -127,6 +127,25 @@ export class AddUpdateKm {
     });
   }
   salvar() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      if (this.form.get('vehicleId')?.errors?.['required']) {
+        this.snackBar.open('Veículo é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('driverId')?.errors?.['required']) {
+        this.snackBar.open('Motorista é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('kilometersValue')?.errors?.['required']) {
+        this.snackBar.open('Quilometragem é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('kilometersDate')?.errors?.['required']) {
+        this.snackBar.open('Data da quilometragem é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+    }
     if (this.update()) {
       this.updateKilometer();
     } else {

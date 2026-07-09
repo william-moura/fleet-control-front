@@ -105,6 +105,38 @@ export class AddUpdateVehicleFine {
   salvar() {
     if (!this.form.valid) {
       this.form.markAllAsTouched();
+      if (this.form.get('vehicleId')?.errors?.['required']) {
+        this.snackBar.open('Veículo é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('driverId')?.errors?.['required']) {
+        this.snackBar.open('Motorista é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('fineDate')?.errors?.['required']) {
+        this.snackBar.open('Data da multa é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('fineLevel')?.errors?.['required']) {
+        this.snackBar.open('Tipo de multa é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('finePaidDate')?.errors?.['required']) {
+        this.snackBar.open('Data de vencimento é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('fineAmount')?.errors?.['required']) {
+        this.snackBar.open('Valor da multa é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('finePoints')?.errors?.['required']) {
+        this.snackBar.open('Pontos da multa é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('finePoints')?.errors?.['min']) {
+        this.snackBar.open('Pontos da multa deve ser maior que 0', 'Fechar', { duration: 3000 });
+        return;
+      }
       return;
     }
     if (this.update()) {

@@ -23,6 +23,7 @@ import { VehicleStateService } from '../../services/vehicle-state-service';
 import { SupplierType } from '../../models/supplier-type';
 import { MaintenanceTypeService } from '../../services/maintenance-type-service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { minDateValidator } from '../../rules/min-date-validator';
 @Component({
   selector: 'app-add-update-maintenance',
   imports: [CommonModule,
@@ -63,9 +64,9 @@ export class AddUpdateMaintenance {
       maintenanceDate: ['', Validators.required],
       services: ['', Validators.required],
       maintenanceCost: ['', Validators.required],
-      maintenanceNextDate: ['', Validators.required],
+      maintenanceNextDate: ['', [Validators.required, minDateValidator()]],
       maintenanceKilometers: ['', Validators.required],
-      maintenancePreviousDateFinished: ['', Validators.required],
+      maintenancePreviousDateFinished: ['', [Validators.required, minDateValidator()]],
       maintenanceNotes: [''],
       vehicleId: ['', Validators.required],
       supplierId: ['', Validators.required],
@@ -197,10 +198,75 @@ export class AddUpdateMaintenance {
     });
   }
   salvar() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      
+      this.validateForm();
+      return;
+    }
     if (this.update()) {
       this.updateMaintenance();
     } else {
       this.createMaintenance();
+    }
+  }
+
+  private validateForm() {
+    if (!this.form.valid) {
+      this.form.markAllAsTouched();
+      if (this.form.get('vehicleId')?.errors?.['required']) {
+        this.snackBar.open('Veículo é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('supplierId')?.errors?.['required']) {
+        this.snackBar.open('Fornecedor é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('services')?.errors?.['required']) {
+        this.snackBar.open('Serviço é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenanceDate')?.errors?.['required']) {
+        this.snackBar.open('Data da manutenção é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenanceCost')?.errors?.['required']) {
+        this.snackBar.open('Custo da manutenção é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenanceNextDate')?.errors?.['required']) {
+        this.snackBar.open('Data da próxima manutenção é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenanceNextDate')?.errors?.['minDate']) {
+        this.snackBar.open('Data da próxima manutenção deve ser maior que a data atual', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenanceNextKilometers')?.errors?.['min']) {
+        this.snackBar.open('Quilometragem da próxima manutenção deve ser maior que 0', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenanceNextKilometers')?.errors?.['min']) {
+        this.snackBar.open('Quilometragem da próxima manutenção deve ser maior que 0', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenancePreviousDateFinished')?.errors?.['required']) {
+        this.snackBar.open('Data da próxima manutenção é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenancePreviousDateFinished')?.errors?.['minDate']) {
+        this.snackBar.open('Data da próxima manutenção deve ser maior que a data atual', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenanceKilometers')?.errors?.['required']) {
+        this.snackBar.open('Quilometragem da manutenção é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('maintenanceKilometers')?.errors?.['min']) {
+        this.snackBar.open('Quilometragem da manutenção deve ser maior que 0', 'Fechar', { duration: 3000 });
+        return;
+      }
+      
     }
   }
 }
