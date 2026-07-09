@@ -18,6 +18,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Supplier } from '../../models/supplier';
 import { VehicleStateService } from '../../services/vehicle-state-service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-add-update-supplier',
   imports: [CommonModule,
@@ -31,7 +32,8 @@ import { VehicleStateService } from '../../services/vehicle-state-service';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaskDirective],
+    NgxMaskDirective,
+    MatProgressSpinnerModule],
   templateUrl: './add-update-supplier.html',
   styleUrl: './add-update-supplier.scss',
 })
@@ -46,11 +48,12 @@ export class AddUpdateSupplier {
   update = signal<boolean>(false);
   private supplierStateService = inject(VehicleStateService);
   private route = inject(ActivatedRoute);
+  loading = signal<boolean>(false);
   constructor() {
     this.form = this.fb.group({
       supplierFantasyName: ['', Validators.required],
       supplierCorporateName: ['', Validators.required],
-      supplierCnpj: ['', Validators.required],
+      supplierCnpj: ['', [Validators.required, this.validateCnpj]],
       supplierAddress: ['', Validators.required],
       supplierCity: ['', Validators.required],
       supplierState: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(2)]],
@@ -64,16 +67,47 @@ export class AddUpdateSupplier {
   }
   private validateCnpj(control: AbstractControl) {
     const cnpj = control.value;
-    console.log(cnpj.length,'cnpj length');
-    if (cnpj.length !== 14) {
-      return { invalidCnpj: true };
+    // 1. Remove caracteres não numéricos
+    const numeros = cnpj.replace(/[^\d]/g, '');
+
+    // 2. CNPJ deve ter exatamente 14 dígitos
+    if (numeros.length !== 14) return { invalidCnpj: true };
+
+    // 3. Elimina sequências inválidas conhecidas (ex: 00000000000000)
+    if (/^(\d)\1+$/.test(numeros)) return { invalidCnpj: true };
+
+    // 4. Validação dos 2 dígitos verificadores
+    const tamanho = numeros.length - 2;
+    const numerosSemDigitos = numeros.substring(0, tamanho);
+    const digitosVerificadores = numeros.substring(tamanho);
+
+    let soma = 0;
+    let peso = tamanho - 7;
+
+    for (let i = tamanho; i >= 1; i--) {
+      soma += parseInt(numerosSemDigitos.charAt(tamanho - i)) * peso--;
+      if (peso < 2) peso = 9;
     }
+
+    let resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado !== parseInt(digitosVerificadores.charAt(0))) return { invalidCnpj: true };
+
+    soma = 0;
+    peso = tamanho - 6;
+
+    for (let i = tamanho + 1; i >= 1; i--) {
+      soma += parseInt(numeros.charAt(tamanho + 1 - i)) * peso--;
+      if (peso < 2) peso = 9;
+    }
+
+    resultado = soma % 11 < 2 ? 0 : 11 - (soma % 11);
+    if (resultado !== parseInt(digitosVerificadores.charAt(1))) return { invalidCnpj: true };
+
     return null;
   }
-  private toUpperCase(control: AbstractControl) {
-    return control.value.toUpperCase();
-  }
+
   getCep(cep: string) {
+    this.loading.set(true);
     this.cepService.getCep(cep).subscribe((cep) => {
       this.form.patchValue({
         supplierAddress: cep.street,
@@ -81,6 +115,7 @@ export class AddUpdateSupplier {
         supplierState: cep.state,        
         supplierNeighborhood: cep.neighborhood,
       });
+      this.loading.set(false);
     });
   }
   ngOnInit() {
@@ -116,7 +151,7 @@ export class AddUpdateSupplier {
   salvar() {
     if (!this.form.valid) {
       this.form.markAllAsTouched();
-      this.snackBar.open('Por favor, preencha todos os campos obrigatórios', 'Fechar', { duration: 3000 });
+      this.functionValidateForm();
       return;
     }
     if (this.form.valid) {
@@ -172,5 +207,65 @@ export class AddUpdateSupplier {
     this.supplier.set(null);
     this.supplierStateService.setSupplier(null);
     this.update.set(false);
+  }
+
+  private functionValidateForm() {
+    if (this.form.get('supplierFantasyName')?.errors?.['required']) {
+      this.snackBar.open('O campo Nome Fantasia é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierCorporateName')?.errors?.['required']) {
+      this.snackBar.open('O campo Razão Social é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierCnpj')?.errors?.['required']) {
+      this.snackBar.open('O campo CNPJ é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierCnpj')?.errors?.['invalidCnpj']) {
+      this.snackBar.open('O campo CNPJ é inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierZipCode')?.errors?.['required']) {
+      this.snackBar.open('O campo CEP é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierAddress')?.errors?.['required']) {
+      this.snackBar.open('O campo Endereço é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierNeighborhood')?.errors?.['required']) {
+      this.snackBar.open('O campo Bairro é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierCity')?.errors?.['required']) {
+      this.snackBar.open('O campo Cidade é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierState')?.errors?.['required']) {
+      this.snackBar.open('O campo Estado é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierPhone')?.errors?.['required']) {
+      this.snackBar.open('O campo Telefone é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierEmail')?.errors?.['required']) {
+      this.snackBar.open('O campo Email é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierEmail')?.errors?.['email']) {
+      this.snackBar.open('O campo Email é inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierStatus')?.errors?.['required']) {
+      this.snackBar.open('O campo Status é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('supplierType')?.errors?.['required']) {
+      this.snackBar.open('O campo Tipo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    return;
   }
 }

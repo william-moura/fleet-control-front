@@ -7,12 +7,15 @@ export function minDateValidator(): ValidatorFn {
     if (!value) {
       return null; // Se estiver vazio, a validação de "obrigatório" cuida disso
     }
+
+   const dateReversed = value.split('/').reverse().join('-');
     const today = new Date();
-    if (new Date(value) < today) {
+    if (new Date(dateReversed) < today) {
       return { minDate: true };
     }
 
     // Verifica formato AAAA-MM-DD (padrão do <input type="date">)
+    /*
     const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!dateRegex.test(value)) {
       return { invalidDateFormat: true };
@@ -28,6 +31,27 @@ export function minDateValidator(): ValidatorFn {
     
     if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) {
       return { invalidDate: true };
+    }
+
+    */
+
+    return null;
+  };
+}
+
+
+export function maxDateValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    const dateReversed = value.split('/').reverse().join('-');
+    const today = new Date();
+    if (new Date(dateReversed) > today) {
+      return { maxDate: true };
     }
 
     return null;

@@ -24,6 +24,7 @@ import { FuelSupplyService } from '../../services/fuel-supply-service';
 import { DriverService } from '../../services/driver-service';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { SupplierType } from '../../models/supplier-type';
+import { maxDateValidator } from '../../rules/min-date-validator';
 
 @Component({
   selector: 'app-add-update-fuel',
@@ -61,7 +62,7 @@ export class AddUpdateFuel {
   private route = inject(ActivatedRoute);
   constructor() {
     this.form = this.fb.group({
-      fuelSupplierDate: ['', Validators.required],
+      fuelSupplierDate: ['', [Validators.required, maxDateValidator()]],
       fuelSupplierQuantity: ['', [Validators.required, Validators.min(0)]],
       fuelSupplierTotal: ['', [Validators.required, Validators.min(0)]],
       supplierId: ['', Validators.required],
@@ -183,10 +184,74 @@ export class AddUpdateFuel {
     });
   }
   salvar() {
+
+    if (!this.form.valid) {
+      this.validateForms();
+      return;
+    }
+
     if (this.update()) {
       this.updateFuelSupply();
     } else {
       this.createFuelSupply();
     }
+  }
+
+  private validateForms() {
+
+    if (this.form.controls['supplierId'].errors?.['required']) {
+      this.snackBar.open('O campo Fornecedor é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.controls['fuelTypeId'].errors?.['required']) {
+      this.snackBar.open('O campo Tipo de Combustível é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.controls['vehicleId'].errors?.['required']) {
+      this.snackBar.open('O campo Veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    
+    if (this.form.controls['driverId'].errors?.['required']) {
+      this.snackBar.open('O campo Motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierDate'].errors?.['required']) {
+      this.snackBar.open('O campo Data de Abastecimento é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierDate'].errors?.['maxDate']) {
+      this.snackBar.open('A data de abastecimento não pode ser maior que a data atual', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierTotal'].errors?.['required']) {
+      this.snackBar.open('O campo Valor do Abastecimento é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierPrice'].errors?.['required']) {
+      this.snackBar.open('O campo Valor por Litro é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierQuantity'].errors?.['required']) {
+      this.snackBar.open('O campo Quantidade de Litros é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierKilometers'].errors?.['required']) {
+      this.snackBar.open('A quilometragem é obrigatória', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierInvoiceNumber'].errors?.['required']) {
+      this.snackBar.open('O campo Número do Comprovante é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    
   }
 }
