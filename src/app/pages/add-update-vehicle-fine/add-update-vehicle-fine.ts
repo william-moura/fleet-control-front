@@ -18,7 +18,7 @@ import { VehicleService } from '../../services/vehicle-service';
 import { DriverService } from '../../services/driver-service';
 import { VehicleFine } from '../../models/vehicle-fine';
 import { VehicleStateService } from '../../services/vehicle-state-service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -51,6 +51,7 @@ export class AddUpdateVehicleFine {
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
   update = signal<boolean>(false);
+  private route = inject(ActivatedRoute);
   constructor() {
     this.form = this.fb.group({
       vehicleId: ['', Validators.required],
@@ -71,6 +72,22 @@ export class AddUpdateVehicleFine {
     });
   }
   ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.vehicleFineService.getVehicleFineById(Number(id)).subscribe((vehicleFine) => {
+        this.vehicleFine.set(vehicleFine);
+        this.update.set(true);
+        if (vehicleFine.finePaidDate) {
+          const paidDate = vehicleFine.finePaidDate as string;
+          vehicleFine.finePaidDate = paidDate.split('-').reverse().join('/');
+        }
+        if (vehicleFine.fineDate) {
+          const date = vehicleFine.fineDate as string;
+          vehicleFine.fineDate = date.split('-').reverse().join('/');
+        }
+        this.form.patchValue(vehicleFine);
+      });
+    }
     this.update.set(false);
     this.vehicleFine.set(this.vehicleFineStateService.selectedVehicleFine());
     if (this.vehicleFine()) {

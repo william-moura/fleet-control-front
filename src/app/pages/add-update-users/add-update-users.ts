@@ -17,7 +17,7 @@ import { RolesServices } from '../../services/roles-services';
 import { Role } from '../../models/role';
 import { User } from '../../models/user';
 import { VehicleStateService } from '../../services/vehicle-state-service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-add-update-users',
   imports: [CommonModule,
@@ -47,6 +47,7 @@ export class AddUpdateUsers {
   user = signal<User | null>(null);
   private userStateService = inject(VehicleStateService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   constructor() {
     this.form = this.fb.group({
       name: ['', Validators.required],
@@ -63,6 +64,16 @@ export class AddUpdateUsers {
     });
   }
   ngOnInit() {
+    this.update.set(false);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.update.set(true);
+      this.userService.getUserById(Number(id)).subscribe((user) => {
+        this.user.set(user);
+        this.form.patchValue(user);
+        this.form.patchValue({ role_id: user.role.id });
+      });
+    }
     this.user.set(this.userStateService.selectedUser());
     if (this.user()) {
       this.update.set(true);

@@ -16,6 +16,7 @@ import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
 import { VehicleStateService } from '../../services/vehicle-state-service';
+import { NewWindow } from '../../directives/new-window';
 
 export interface Motorista {
   id: number;
@@ -31,7 +32,7 @@ export interface Motorista {
   imports: [
     CommonModule, MatTableModule, MatPaginatorModule, 
     MatSortModule, MatInputModule, MatFormFieldModule, 
-    MatButtonModule, MatIconModule, MatChipsModule
+    MatButtonModule, MatIconModule, MatChipsModule, NewWindow
   ],
   standalone: true,
   templateUrl: './drivers-component.html',
@@ -110,16 +111,5 @@ export class DriversComponent implements AfterViewInit {
     this.indicePagina = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getDrivers();
-  }
-
-  abrirNovaInstancia() {
-    // this.clearForm();
-    // this.router.navigate(['/vehicles/new']);
-    const largura = Math.round(screen.width * 0.9);
-    const altura = Math.round(screen.height * 0.9);
-    const urlDaSpa = window.location.origin; 
-    const configuracoesJanela = `width=${largura},height=${altura},menubar=yes,toolbar=yes,location=yes,status=yes`;
-    const url = `${urlDaSpa}/vehicle-fines`;    
-    window.open(url, '_blank', configuracoesJanela);
   }
 }

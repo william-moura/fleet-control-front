@@ -22,7 +22,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { SupplierType } from '../../models/supplier-type';
 import { MaintenanceTypeService } from '../../services/maintenance-type-service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-add-update-maintenance',
   imports: [CommonModule,
@@ -55,6 +55,7 @@ export class AddUpdateMaintenance {
   private vehicleStateService = inject(VehicleStateService);
   private maintenanceTypeService = inject(MaintenanceTypeService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   isLoading = signal<boolean>(true);
   
   constructor() {
@@ -81,7 +82,29 @@ export class AddUpdateMaintenance {
     });
   }
   ngOnInit() {
-    this.update.set(false);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.maintenanceService.getMaintenanceById(Number(id)).subscribe((maintenance) => {
+        this.maintenance.set(maintenance);
+        this.update.set(true);
+        if (maintenance.maintenanceDate) {
+          const date = maintenance.maintenanceDate as string;
+          maintenance.maintenanceDate = date.split('-').reverse().join('/');
+        }
+        if (maintenance.maintenanceNextDate) {
+          const date = maintenance.maintenanceNextDate as string;
+          maintenance.maintenanceNextDate = date.split('-').reverse().join('/');
+        }
+        if (maintenance.maintenancePreviousDateFinished) {
+          const date = maintenance.maintenancePreviousDateFinished as string;
+          maintenance.maintenancePreviousDateFinished = date.split('-').reverse().join('/');
+        }
+        this.form.patchValue(maintenance);
+      });
+    } else {
+      this.update.set(false);
+    }
+    
     this.maintenance.set(this.vehicleStateService.selectedMaintenance());
     if (this.maintenance()) {
       this.update.set(true);

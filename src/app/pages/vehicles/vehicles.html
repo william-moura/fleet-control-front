@@ -4,7 +4,7 @@
       <button mat-raised-button color="primary" (click)="addBrand()">
         <mat-icon>add</mat-icon> Nova Marca
       </button>
-      <button mat-raised-button color="primary" (click)="openAddVehicleDialog()">
+      <button mat-raised-button color="primary" appNewWindow="/vehicle/new">
         <mat-icon>add</mat-icon> Novo Veículo
       </button>
     </div>
@@ -71,7 +71,7 @@
             <button mat-icon-button color="accent" (click)="syncDrivers(row)" matTooltip="Associar Motorista">
               <mat-icon>person_add</mat-icon>
             </button>
-            <button mat-icon-button color="accent" title="Editar" (click)="updateVehicle(row)">
+            <button mat-icon-button color="accent" title="Editar" appNewWindow="/vehicle/edit/{{row.id}}">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" title="Excluir" (click)="deleteVehicle(row)">

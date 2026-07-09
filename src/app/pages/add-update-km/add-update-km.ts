@@ -17,7 +17,7 @@ import { Vehicle } from '../../models/vehicle';
 import { Driver } from '../../models/driver';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { Kilometer } from '../../models/kilometer';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { KilometerService } from '../../services/kilometer-service';
 
@@ -52,6 +52,7 @@ export class AddUpdateKm {
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
   private kilometerService = inject(KilometerService);
+  private route = inject(ActivatedRoute);
   constructor() {
     this.form = this.fb.group({
       vehicleId: ['', Validators.required],
@@ -65,6 +66,18 @@ export class AddUpdateKm {
     });
   }
   ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.kilometerService.getKilometerById(Number(id)).subscribe((kilometer) => {
+        this.kilometer.set(kilometer);
+        this.update.set(true);
+        if (kilometer.kilometersDate) {
+          const date = kilometer.kilometersDate as string;
+          kilometer.kilometersDate = date.split('-').reverse().join('/');
+        }
+        this.form.patchValue(kilometer);
+      });
+    }
     this.update.set(false);    
     this.kilometer.set(this.vehicleStateService.selectedKilometer());
     if (this.kilometer()) {

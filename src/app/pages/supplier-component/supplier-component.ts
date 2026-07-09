@@ -18,12 +18,13 @@ import { SupplierService } from '../../services/supplier-service';
 import { FormAddSupplier } from '../../forms/form-add-supplier/form-add-supplier';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { Router } from '@angular/router';
+import { NewWindow } from '../../directives/new-window';
 
 @Component({
   selector: 'app-supplier-component',
   imports: [CommonModule, MatTableModule, MatPaginatorModule, 
     MatSortModule, MatInputModule, MatFormFieldModule, 
-    MatButtonModule, MatIconModule, MatChipsModule],
+    MatButtonModule, MatIconModule, MatChipsModule, NewWindow],
   templateUrl: './supplier-component.html',
   styleUrl: './supplier-component.scss',
 })

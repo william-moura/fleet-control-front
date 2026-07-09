@@ -4,11 +4,12 @@ import { routes } from '../../app.routes';
 import { Route, RouterModule } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
+import { NewWindow } from '../../directives/new-window';
 
 @Component({
   selector: 'app-side-menu',
   standalone: true,
-  imports: [RouterModule, RouterLink, CommonModule],
+  imports: [RouterModule, RouterLink, CommonModule, NewWindow],
   templateUrl: './side-menu.component.html',
   styleUrl: './side-menu.component.scss'
 })

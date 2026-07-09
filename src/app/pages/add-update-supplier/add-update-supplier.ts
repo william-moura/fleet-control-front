@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CepService } from '../../services/cep-service';
 import { SupplierService } from '../../services/supplier-service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Supplier } from '../../models/supplier';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 @Component({
@@ -45,6 +45,7 @@ export class AddUpdateSupplier {
   supplier = signal<Supplier | null>(null);
   update = signal<boolean>(false);
   private supplierStateService = inject(VehicleStateService);
+  private route = inject(ActivatedRoute);
   constructor() {
     this.form = this.fb.group({
       supplierFantasyName: ['', Validators.required],
@@ -83,6 +84,21 @@ export class AddUpdateSupplier {
     });
   }
   ngOnInit() {
+    this.update.set(false);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.supplierService.getSupplierById(Number(id)).subscribe((supplier) => {
+        this.supplier.set(supplier);
+        this.update.set(true);
+        if (supplier.supplierCnpj) {
+          supplier.supplierCnpj = supplier.supplierCnpj.replace(/[^0-9]/g, '');
+        }
+        supplier.supplierStatus = supplier.supplierStatus === 1? '1' : '0';
+        const supplierType = supplier.supplierType === 1? '1' : '2';
+        this.form.patchValue(supplier);
+        this.form.patchValue({ supplierType: supplierType });
+      });
+    }
     this.supplier.set(this.supplierStateService.selectedSupplier());
     if (this.supplier()) {
       this.update.set(true);

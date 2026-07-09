@@ -83,7 +83,24 @@ export class AddUpdateVehicle {
   selectedFiles:File[] = [];
   photosIds:number[] = [];
   selectedPhoto:Photo | null = null;
+  private route = inject(ActivatedRoute);
   ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.vehicleService.getVehicleById(Number(id)).subscribe((vehicle) => {
+        this.veiculoDados = vehicle;
+        this.update.set(true);
+        if (vehicle.vehiclePurchaseDate) {
+          const purchaseDate = vehicle.vehiclePurchaseDate as string;
+          vehicle.vehiclePurchaseDate = purchaseDate.split('-').reverse().join('/');
+        }
+        this.previews = vehicle.photos.map((photo: Photo) => photo);
+        this.photosIds = vehicle.photos.map((photo: Photo) => photo.id);
+        this.selectedPhoto = vehicle.photos[0];
+        this.veiculoForm.patchValue(vehicle);
+        this.isLoading.set(false);
+      });
+    }
     const veiculoDadoss = this.vehicleStateService.selectedVehicle();    
     this.vehicleService.getBrands().subscribe((brands) => {
       this.brands.set(brands);

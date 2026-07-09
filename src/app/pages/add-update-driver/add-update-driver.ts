@@ -143,6 +143,22 @@ export class AddUpdateDriver {
     this.router.navigate(['/drivers']);
   }
   ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.driverService.getDriverById(Number(id)).subscribe((driver) => {
+        this.driver.set(driver);
+        this.update.set(true);
+        if (driver.driverLicenseExpirationDate) {
+          const licenseExpirationDate = driver.driverLicenseExpirationDate as string;
+          driver.driverLicenseExpirationDate = licenseExpirationDate.split('-').reverse().join('/');
+        }
+        if (driver.driverBirthDate) {
+          const birthDate = driver.driverBirthDate as string;
+          driver.driverBirthDate = birthDate.split('-').reverse().join('/');
+        }
+        this.form.patchValue(driver);
+      });
+    }
     this.routerSubscription = this.router.events.subscribe(event => {
       // Verifica se a navegação está começando e se foi acionada pelo botão voltar
       if (event instanceof NavigationStart && event.navigationTrigger === 'popstate') {

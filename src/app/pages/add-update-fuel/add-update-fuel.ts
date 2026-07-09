@@ -19,7 +19,7 @@ import { Vehicle } from '../../models/vehicle';
 import { Supplier } from '../../models/supplier';
 import { FuelType } from '../../models/fuel-type';
 import { FuelSupply } from '../../models/fuel-supply';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FuelSupplyService } from '../../services/fuel-supply-service';
 import { DriverService } from '../../services/driver-service';
 import { VehicleStateService } from '../../services/vehicle-state-service';
@@ -58,6 +58,7 @@ export class AddUpdateFuel {
   private fuelSupplyService = inject(FuelSupplyService);
   private driverService = inject(DriverService);
   private fuelSupplyStateService = inject(VehicleStateService);
+  private route = inject(ActivatedRoute);
   constructor() {
     this.form = this.fb.group({
       fuelSupplierDate: ['', Validators.required],
@@ -74,6 +75,19 @@ export class AddUpdateFuel {
     });
   }
   ngOnInit() {
+    this.update.set(false);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.fuelSupplyService.getFuelSupplyById(Number(id)).subscribe((fuelSupply) => {
+        this.fuel.set(fuelSupply);
+        this.update.set(true);
+        if (fuelSupply.fuelSupplierDate) {
+          const date = fuelSupply.fuelSupplierDate as string;
+          fuelSupply.fuelSupplierDate = date.split('-').reverse().join('/');
+        }
+        this.form.patchValue(fuelSupply);
+      });
+    }
     this.fuel.set(this.fuelSupplyStateService.selectedFuelSupply());
     if (this.fuel()) {
       this.update.set(true);
