@@ -144,6 +144,10 @@ export class AddUpdateDriver {
       this.snackBar.open('CPF do motorista é obrigatório', 'Fechar', { duration: 3000 });
       return;
     }
+    if (this.form.get('driverCpf')?.errors?.['invalidCpf']) {
+      this.snackBar.open('CPF do motorista é inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
     if (this.form.get('driverRg')?.errors?.['required']) {
       this.snackBar.open('RG do motorista é obrigatório', 'Fechar', { duration: 3000 });
       return;
@@ -305,7 +309,7 @@ export class AddUpdateDriver {
       },
       error: (error) => {
         console.error('Erro ao cadastrar motorista:', error);
-        this.snackBar.open('Erro ao cadastrar motorista', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar motorista ' + error.error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
