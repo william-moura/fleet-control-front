@@ -98,10 +98,41 @@ export class AddUpdateVehicle {
         this.photosIds = vehicle.photos.map((photo: Photo) => photo.id);
         this.selectedPhoto = vehicle.photos[0];
         this.veiculoForm.patchValue(vehicle);
+        this.fuelSupplies.set(vehicle.fuelSupply || []);
+        this.maintenances.set(vehicle.maintenances || []);
         this.isLoading.set(false);
+        this.fuelSupplyService.getFuelSuppliesByVehicleId(this.veiculoDados?.id).subscribe({
+          next: (fuelSupplies: FuelSupply[]) => {
+            this.fuelSupplies.set(fuelSupplies);
+            this.isLoading.set(false);
+          },
+          error: (error) => {
+            console.error('Erro ao buscar abastecimentos do veículo:', error);
+            this.isLoading.set(false);
+          }
+        });
+        this.vehicleService.getVehicleHistory(this.veiculoDados?.id).subscribe({
+          next: (history: VehicleHistory[]) => {
+            this.historico.set(history);
+          },
+          error: (error) => {
+            console.error('Erro ao buscar histórico do veículo:', error);
+            this.isLoading.set(false);
+          }
+        });
+        this.maintenanceService.getMaintenancesByVehicleId(this.veiculoDados?.id).subscribe({
+          next: (maintenances: Maintenance[]) => {
+            this.maintenances.set(maintenances);          
+            this.isLoading.set(false);
+          },
+          error: (error) => {
+            console.error('Erro ao buscar manutenções do veículo:', error);
+            this.isLoading.set(false);
+          }
+        });
       });
     }
-    const veiculoDadoss = this.vehicleStateService.selectedVehicle();    
+    const veiculoDadoss = this.veiculoDados;
     this.vehicleService.getBrands().subscribe((brands) => {
       this.brands.set(brands);
     });
@@ -120,35 +151,8 @@ export class AddUpdateVehicle {
       this.selectedPhoto = veiculoDadoss.photos[0];
       this.veiculoDados = veiculoDadoss;
       this.veiculoForm.patchValue(veiculoDadoss);
-      this.vehicleService.getVehicleHistory(this.veiculoDados?.id).subscribe({
-        next: (history: VehicleHistory[]) => {
-          this.historico.set(history);
-        },
-        error: (error) => {
-          console.error('Erro ao buscar histórico do veículo:', error);
-          this.isLoading.set(false);
-        }
-      });
-      this.maintenanceService.getMaintenancesByVehicleId(this.veiculoDados?.id).subscribe({
-        next: (maintenances: Maintenance[]) => {
-          this.maintenances.set(maintenances);          
-          this.isLoading.set(false);
-        },
-        error: (error) => {
-          console.error('Erro ao buscar manutenções do veículo:', error);
-          this.isLoading.set(false);
-        }
-      });
-      this.fuelSupplyService.getFuelSuppliesByVehicleId(this.veiculoDados?.id).subscribe({
-        next: (fuelSupplies: FuelSupply[]) => {
-          this.fuelSupplies.set(fuelSupplies);
-          this.isLoading.set(false);
-        },
-        error: (error) => {
-          console.error('Erro ao buscar abastecimentos do veículo:', error);
-          this.isLoading.set(false);
-        }
-      });
+
+
     } else {
       this.update.set(false);
       this.isLoading.set(false);
