@@ -121,7 +121,7 @@ export class AddUpdateUsers {
       },
       error: (error) => {
         console.error('Erro ao cadastrar usuário:', error);
-        this.snackBar.open('Erro ao cadastrar usuário', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar usuário ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -142,7 +142,7 @@ export class AddUpdateUsers {
       },
       error: (error) => {
         console.error('Erro ao atualizar usuário:', error);
-        this.snackBar.open('Erro ao atualizar usuário', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao atualizar usuário ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }

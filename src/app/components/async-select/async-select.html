@@ -1,0 +1,26 @@
+<mat-form-field appearance="outline" class="w-100">
+    <mat-label>{{ label() }}</mat-label>
+    
+    <mat-select 
+      [formControl]="control" 
+      [multiple]="multiple()"
+      [placeholder]="placeholder()">
+      
+      <!-- Nova sintaxe de controle de fluxo nativa do Angular -->
+      @if (options$() | async; as items) {
+        @for (item of items; track item[valueKey()]) {
+          <mat-option [value]="item[valueKey()]">
+            {{ item[displayKey()] }}
+          </mat-option>
+        } @empty {
+          <mat-option disabled>Nenhum registro encontrado</mat-option>
+        }
+      } @else {
+        <mat-option disabled class="loading-option">
+          <mat-spinner diameter="20"></mat-spinner> Carregando...
+        </mat-option>
+      }
+  
+    </mat-select>
+  </mat-form-field>
+  

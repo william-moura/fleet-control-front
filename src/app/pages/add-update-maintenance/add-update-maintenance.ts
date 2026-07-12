@@ -160,7 +160,7 @@ export class AddUpdateMaintenance {
       },
       error: (error) => {
         console.error('Erro ao cadastrar manutenção:', error);
-        this.snackBar.open('Erro ao cadastrar manutenção', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar manutenção ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -193,7 +193,7 @@ export class AddUpdateMaintenance {
       },
       error: (error) => {
         console.error('Erro ao atualizar manutenção:', error);
-        this.snackBar.open('Erro ao atualizar manutenção', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao atualizar manutenção ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }

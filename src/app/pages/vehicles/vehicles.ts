@@ -123,6 +123,7 @@ export class Vehicles {
       data: vehicle,
     });
     const result = await firstValueFrom(dialogRef.afterClosed());
+    console.log(result, 'resultado');
     if (result !== null) {      
       try {
         this.isLoading.set(true);

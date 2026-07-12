@@ -333,7 +333,7 @@ export class AddUpdateDriver {
       },
       error: (error) => {
         console.error('Erro ao atualizar motorista:', error);
-        this.snackBar.open('Erro ao atualizar motorista', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao atualizar motorista ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }

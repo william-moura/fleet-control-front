@@ -27,5 +27,5 @@ export interface Vehicle {
   fuelTypeId: number;
   maintenances: Maintenance[] | null;
   fines: VehicleFine[] | null;
-  fuelSupply: FuelSupply[] | null;
+  fuelSuppliers: FuelSupply[] | null;
 }

@@ -184,7 +184,7 @@ export class AddUpdateVehicleFine {
       },
       error: (error) => {
         console.error('Erro ao cadastrar multa:', error);
-        this.snackBar.open('Erro ao cadastrar multa', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar multa ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -212,7 +212,7 @@ export class AddUpdateVehicleFine {
       },
       error: (error) => {
         console.error('Erro ao atualizar multa:', error);
-        this.snackBar.open('Erro ao atualizar multa', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao atualizar multa ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }

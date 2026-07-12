@@ -33,6 +33,14 @@ import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { MY_DATE_FORMATS, MY_LUXON_FORMATS } from '../../app.config';
 import { Photo } from '../../models/photo';
 import { DragDropDirective } from '../../drag-drop-directive';
+import { AsyncSelect } from '../../components/async-select/async-select';
+import { firstValueFrom, map, Observable, of } from 'rxjs';
+import { FormAddBrand } from '../../forms/form-add-brand/form-add-brand';
+import { MatDialog } from '@angular/material/dialog';
+import { SyncDriver } from '../../components/sync-driver/sync-driver';
+import { Driver } from '../../models/driver';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { DriverService } from '../../services/driver-service';
 
 @Component({
   selector: 'app-add-update-vehicle',
@@ -55,7 +63,9 @@ import { DragDropDirective } from '../../drag-drop-directive';
     ListMaintenance,
     MatProgressSpinnerModule,
     NgxMaskDirective,
-    DragDropDirective
+    DragDropDirective,
+    AsyncSelect,
+    SyncDriver
   ],
   providers:[
   ],
@@ -84,53 +94,18 @@ export class AddUpdateVehicle {
   photosIds:number[] = [];
   selectedPhoto:Photo | null = null;
   private route = inject(ActivatedRoute);
+  brands$ = signal<Observable<Brand[]>>(of([]));
+  private dialog = inject(MatDialog);
+  drivers = signal<Driver[]>([]);
+  drivers$ = signal<Observable<Driver[]>>(of([]));
+  private driverService = inject(DriverService);
+  driverForm: FormGroup;
+  //driverId = input<number | null>(null);
   ngOnInit() {
+    this.getBrands();    
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.vehicleService.getVehicleById(Number(id)).subscribe((vehicle) => {
-        this.veiculoDados = vehicle;
-        this.update.set(true);
-        if (vehicle.vehiclePurchaseDate) {
-          const purchaseDate = vehicle.vehiclePurchaseDate as string;
-          vehicle.vehiclePurchaseDate = purchaseDate.split('-').reverse().join('/');
-        }
-        this.previews = vehicle.photos.map((photo: Photo) => photo);
-        this.photosIds = vehicle.photos.map((photo: Photo) => photo.id);
-        this.selectedPhoto = vehicle.photos[0];
-        this.veiculoForm.patchValue(vehicle);
-        this.fuelSupplies.set(vehicle.fuelSupply || []);
-        this.maintenances.set(vehicle.maintenances || []);
-        this.isLoading.set(false);
-        this.fuelSupplyService.getFuelSuppliesByVehicleId(this.veiculoDados?.id).subscribe({
-          next: (fuelSupplies: FuelSupply[]) => {
-            this.fuelSupplies.set(fuelSupplies);
-            this.isLoading.set(false);
-          },
-          error: (error) => {
-            console.error('Erro ao buscar abastecimentos do veículo:', error);
-            this.isLoading.set(false);
-          }
-        });
-        this.vehicleService.getVehicleHistory(this.veiculoDados?.id).subscribe({
-          next: (history: VehicleHistory[]) => {
-            this.historico.set(history);
-          },
-          error: (error) => {
-            console.error('Erro ao buscar histórico do veículo:', error);
-            this.isLoading.set(false);
-          }
-        });
-        this.maintenanceService.getMaintenancesByVehicleId(this.veiculoDados?.id).subscribe({
-          next: (maintenances: Maintenance[]) => {
-            this.maintenances.set(maintenances);          
-            this.isLoading.set(false);
-          },
-          error: (error) => {
-            console.error('Erro ao buscar manutenções do veículo:', error);
-            this.isLoading.set(false);
-          }
-        });
-      });
+      this.getVehicleById(Number(id));
     }
     const veiculoDadoss = this.veiculoDados;
     this.vehicleService.getBrands().subscribe((brands) => {
@@ -139,7 +114,6 @@ export class AddUpdateVehicle {
     this.vehicleService.getFuelTypes().subscribe((fuelTypes) => {
       this.fuelTypes.set(fuelTypes);
     });
-    console.log(veiculoDadoss, 'veiculoDadoss');
     if (veiculoDadoss) {
       this.update.set(true);
       if (veiculoDadoss.vehiclePurchaseDate) {
@@ -177,7 +151,10 @@ export class AddUpdateVehicle {
       vehicleColor: ['', Validators.required],
       vehicleModelYear: ['', [Validators.required, Validators.max(currentYear)]],
       vehicleRenavamNumber: ['', Validators.required],
-      vehicleChassisNumber: ['', Validators.required],
+      vehicleChassisNumber: ['', Validators.required],      
+    });
+    this.driverForm = this.fb.group({
+      driverId: ['', Validators.required],
     });
   }
 
@@ -303,7 +280,7 @@ export class AddUpdateVehicle {
       error: (error) => {
         console.error('Erro ao atualizar veículo:', error);
         this.isLoading.set(false);
-        this.snackBar.open('Erro ao atualizar veículo', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao atualizar veículo ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -319,7 +296,7 @@ export class AddUpdateVehicle {
       error: (error) => {
         console.error('Erro ao cadastrar veículo:', error);
         this.isLoading.set(false);
-        this.snackBar.open('Erro ao cadastrar veículo', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar veículo ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -399,5 +376,95 @@ export class AddUpdateVehicle {
       return false;
     }
     return true;
+  }
+  async getBrands() {
+    this.brands$.set(this.vehicleService.getBrands().pipe(map((brands) => brands as Brand[])));
+  }
+  async addBrand() {
+    const dialogRef = this.dialog.open(FormAddBrand, {
+      width: '600px',
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      try {
+        this.isLoading.set(true);
+        await firstValueFrom(this.vehicleService.createBrand(result));
+        this.snackBar.open('Marca cadastrada com sucesso', 'Fechar', { duration: 3000 });      
+      } catch (error) {
+        console.error('Erro ao cadastrar marca:', error);
+        this.snackBar.open('Erro ao cadastrar marca', 'Fechar', { duration: 3000 });
+      } finally {
+        this.isLoading.set(false);        
+      }
+    }
+  }
+  async deleteDriver(driver: Driver) {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      width: '600px',
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      // this.drivers = this.drivers.filter((d) => d.id !== driver.id);
+    }
+  }
+  async getDrivers() {
+    const idsDrivers = this.drivers().map((driver) => driver.id);
+    const drivers = await firstValueFrom(this.driverService.getAllDrivers(0, 1000));
+    const driversData = drivers.data.filter((driver) => !idsDrivers.includes(driver.id));
+    this.drivers$.set(of(driversData as Driver[]));
+  }
+  async associateDrivers() {
+    const driverId = this.driverForm.value.driverId;
+    if (!driverId) {
+      this.snackBar.open('Motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    const vehicleId = this.veiculoDados?.id;
+    if (!vehicleId) {
+      return;
+    }
+    try {
+      this.isLoading.set(true);
+      await firstValueFrom(this.vehicleService.addSyncDriver(Number(vehicleId), driverId));
+      this.snackBar.open('Motorista associado com sucesso', 'Fechar', { duration: 3000 });
+      this.getVehicleById(vehicleId);
+      this.veiculoForm.patchValue({ driverId: null });
+    } catch (error) {
+      console.error('Erro ao associar motorista:', error);
+      this.snackBar.open('Erro ao associar motorista', 'Fechar', { duration: 3000 });
+    }
+    finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  private getVehicleById(id: number) {
+    this.vehicleService.getVehicleById(Number(id)).subscribe((vehicle) => {
+      this.veiculoDados = vehicle;
+      this.update.set(true);
+      if (vehicle.vehiclePurchaseDate) {
+        const purchaseDate = vehicle.vehiclePurchaseDate as string;
+        vehicle.vehiclePurchaseDate = purchaseDate.split('-').reverse().join('/');
+      }
+      this.previews = vehicle.photos.map((photo: Photo) => photo);
+      this.photosIds = vehicle.photos.map((photo: Photo) => photo.id);
+      this.selectedPhoto = vehicle.photos[0];
+      this.veiculoForm.patchValue(vehicle);
+      this.fuelSupplies.set(vehicle.fuelSuppliers || []);
+      this.maintenances.set(vehicle.maintenances || []);
+      this.isLoading.set(false);
+      this.fuelSupplies.set(vehicle.fuelSuppliers || []);
+      this.vehicleService.getVehicleHistory(this.veiculoDados?.id).subscribe({
+        next: (history: VehicleHistory[]) => {
+          this.historico.set(history);
+        },
+        error: (error) => {
+          console.error('Erro ao buscar histórico do veículo:', error);
+          this.snackBar.open('Erro ao buscar histórico do veículo ' + error.message, 'Fechar', { duration: 3000 });
+          this.isLoading.set(false);
+        }
+      });
+      this.drivers.set(vehicle.drivers || []);      
+    });
   }
 }
