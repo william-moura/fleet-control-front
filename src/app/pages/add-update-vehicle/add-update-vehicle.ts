@@ -399,13 +399,16 @@ export class AddUpdateVehicle {
     }
   }
   async deleteDriver(driver: Driver) {
-    const dialogRef = this.dialog.open(ConfirmDialog, {
-      width: '600px',
+    this.vehicleService.removeSyncDriver(Number(this.veiculoDados?.id), driver.id).subscribe({
+      next: () => {
+        this.snackBar.open('Motorista removido com sucesso', 'Fechar', { duration: 3000 });
+        this.getVehicleById(Number(this.veiculoDados?.id));
+      },
+      error: (error) => {
+        console.error('Erro ao remover motorista:', error);
+        this.snackBar.open('Erro ao remover motorista', 'Fechar', { duration: 3000 });
+      }
     });
-    const result = await firstValueFrom(dialogRef.afterClosed());
-    if (result) {
-      // this.drivers = this.drivers.filter((d) => d.id !== driver.id);
-    }
   }
   async getDrivers() {
     const idsDrivers = this.drivers().map((driver) => driver.id);

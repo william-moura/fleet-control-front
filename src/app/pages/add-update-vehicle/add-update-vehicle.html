@@ -207,7 +207,7 @@
             </mat-tab>
             <mat-tab label="Motoristas">
               <div class="p-4">                
-                <app-sync-driver [drivers]="drivers"></app-sync-driver>
+                <app-sync-driver [drivers]="drivers" (deleteDriverEmit)="deleteDriver($event)"></app-sync-driver>
               </div>
               <div class="grid-form-2col p-4 mt-4">
                 <form [formGroup]="driverForm">
