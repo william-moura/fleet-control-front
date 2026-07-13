@@ -246,6 +246,10 @@ export class AddUpdateDriver {
           const birthDate = driver.driverBirthDate as string;
           driver.driverBirthDate = birthDate.split('-').reverse().join('/');
         }
+        if (driver.photos) {
+          driver.driverPhoto = driver.photos[0]?.path;
+          driver.photosIds = driver.photos.map((photo: Photo) => photo.id);
+        }
         this.form.patchValue(driver);
       });
     }
