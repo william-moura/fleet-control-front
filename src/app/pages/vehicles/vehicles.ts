@@ -108,7 +108,7 @@ export class Vehicles {
         this.isLoading.set(false);
       } catch (error) {
         console.error('Erro ao excluir veículo:', error);
-        this.snackBar.open('Erro ao excluir veículo,' + error.message, 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao excluir veículo,' + error.error.message, 'Fechar', { duration: 3000 });
         this.isLoading.set(false);
       }
     }
