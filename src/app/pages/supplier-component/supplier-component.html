@@ -1,7 +1,7 @@
 <div class="container-pagina">
     <div class="header-acoes">
       <h2>Gestão de Fornecedores</h2>
-      <button mat-raised-button color="primary" (click)="openAddSupplierDialog()">
+      <button mat-raised-button color="primary" appNewWindow="/supplier/new">
         <mat-icon>add</mat-icon> Novo Fornecedor
       </button>
     </div>
@@ -54,7 +54,7 @@
         <ng-container matColumnDef="acoes" stickyEnd>
           <th mat-header-cell *matHeaderCellDef class="center-cell"> Ações </th>
           <td mat-cell *matCellDef="let row" class="center-cell">
-            <button mat-icon-button color="accent" title="Editar" (click)="updateSupplier(row)">
+            <button mat-icon-button color="accent" title="Editar" appNewWindow="/supplier/edit/{{row.id}}">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" title="Excluir" (click)="deleteSupplier(row)">

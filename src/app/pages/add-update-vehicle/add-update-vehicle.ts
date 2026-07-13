@@ -1,7 +1,7 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatTabsModule } from '@angular/material/tabs';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -33,6 +33,14 @@ import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
 import { MY_DATE_FORMATS, MY_LUXON_FORMATS } from '../../app.config';
 import { Photo } from '../../models/photo';
 import { DragDropDirective } from '../../drag-drop-directive';
+import { AsyncSelect } from '../../components/async-select/async-select';
+import { firstValueFrom, map, Observable, of } from 'rxjs';
+import { FormAddBrand } from '../../forms/form-add-brand/form-add-brand';
+import { MatDialog } from '@angular/material/dialog';
+import { SyncDriver } from '../../components/sync-driver/sync-driver';
+import { Driver } from '../../models/driver';
+import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
+import { DriverService } from '../../services/driver-service';
 
 @Component({
   selector: 'app-add-update-vehicle',
@@ -55,7 +63,9 @@ import { DragDropDirective } from '../../drag-drop-directive';
     ListMaintenance,
     MatProgressSpinnerModule,
     NgxMaskDirective,
-    DragDropDirective
+    DragDropDirective,
+    AsyncSelect,
+    SyncDriver
   ],
   providers:[
   ],
@@ -83,15 +93,28 @@ export class AddUpdateVehicle {
   selectedFiles:File[] = [];
   photosIds:number[] = [];
   selectedPhoto:Photo | null = null;
+  private route = inject(ActivatedRoute);
+  brands$ = signal<Observable<Brand[]>>(of([]));
+  private dialog = inject(MatDialog);
+  drivers = signal<Driver[]>([]);
+  drivers$ = signal<Observable<Driver[]>>(of([]));
+  private driverService = inject(DriverService);
+  driverForm: FormGroup;
+  //driverId = input<number | null>(null);
+  isAba2Active = true;
   ngOnInit() {
-    const veiculoDadoss = this.vehicleStateService.selectedVehicle();    
+    this.getBrands();    
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.getVehicleById(Number(id));
+    }
+    const veiculoDadoss = this.veiculoDados;
     this.vehicleService.getBrands().subscribe((brands) => {
       this.brands.set(brands);
     });
     this.vehicleService.getFuelTypes().subscribe((fuelTypes) => {
       this.fuelTypes.set(fuelTypes);
     });
-    console.log(veiculoDadoss, 'veiculoDadoss');
     if (veiculoDadoss) {
       this.update.set(true);
       if (veiculoDadoss.vehiclePurchaseDate) {
@@ -103,35 +126,8 @@ export class AddUpdateVehicle {
       this.selectedPhoto = veiculoDadoss.photos[0];
       this.veiculoDados = veiculoDadoss;
       this.veiculoForm.patchValue(veiculoDadoss);
-      this.vehicleService.getVehicleHistory(this.veiculoDados?.id).subscribe({
-        next: (history: VehicleHistory[]) => {
-          this.historico.set(history);
-        },
-        error: (error) => {
-          console.error('Erro ao buscar histórico do veículo:', error);
-          this.isLoading.set(false);
-        }
-      });
-      this.maintenanceService.getMaintenancesByVehicleId(this.veiculoDados?.id).subscribe({
-        next: (maintenances: Maintenance[]) => {
-          this.maintenances.set(maintenances);          
-          this.isLoading.set(false);
-        },
-        error: (error) => {
-          console.error('Erro ao buscar manutenções do veículo:', error);
-          this.isLoading.set(false);
-        }
-      });
-      this.fuelSupplyService.getFuelSuppliesByVehicleId(this.veiculoDados?.id).subscribe({
-        next: (fuelSupplies: FuelSupply[]) => {
-          this.fuelSupplies.set(fuelSupplies);
-          this.isLoading.set(false);
-        },
-        error: (error) => {
-          console.error('Erro ao buscar abastecimentos do veículo:', error);
-          this.isLoading.set(false);
-        }
-      });
+
+
     } else {
       this.update.set(false);
       this.isLoading.set(false);
@@ -139,26 +135,113 @@ export class AddUpdateVehicle {
   }
 
   constructor(private fb: FormBuilder) {
+    const currentYear = new Date().getFullYear() +1;
+    console.log(currentYear, 'currentYear');
     this.veiculoForm = this.fb.group({
       vehiclePlate: ['', Validators.required],
       vehicleStatus: ['', Validators.required],
       brandId: ['', Validators.required],
-      vehicleModel: ['', Validators.required],
-      vehicleYear: ['', Validators.required],
+      vehicleModel: ['', [Validators.required]],
+      vehicleYear: ['', [Validators.required, Validators.max(new Date().getFullYear())]],
       fuelTypeId: ['', Validators.required],
       vehicleCurrentMileage: ['', [Validators.required, Validators.maxLength(7)]],
-      vehiclePurchaseDate: ['', Validators.required],
+      vehiclePurchaseDate: ['', [Validators.required, this.validatePurchaseDate()]],
       vehicleNotes: [''],
       vehicleTankCapacity: ['', [Validators.required, Validators.maxLength(3)]],
       vehicleTransmissionType: ['', Validators.required],
       vehicleColor: ['', Validators.required],
-      vehicleModelYear: ['', Validators.required],
+      vehicleModelYear: ['', [Validators.required, Validators.max(currentYear)]],
       vehicleRenavamNumber: ['', Validators.required],
-      vehicleChassisNumber: ['', Validators.required],
+      vehicleChassisNumber: ['', Validators.required],      
+    });
+    this.driverForm = this.fb.group({
+      driverId: ['', Validators.required],
     });
   }
 
   salvar() {
+    if (this.veiculoForm.get('vehiclePlate')?.errors?.['required']) {
+      this.snackBar.open('Placa do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleStatus')?.errors?.['required']) {
+      this.snackBar.open('Status do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('brandId')?.errors?.['required']) {
+      this.snackBar.open('Marca do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleModel')?.errors?.['required']) {
+      this.snackBar.open('Modelo do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleYear')?.errors?.['max']) {
+      this.snackBar.open('Ano do veículo não deve ser maior que o ano atual', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleYear')?.errors?.['required']) {
+      this.snackBar.open('Ano do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleModelYear')?.errors?.['required']) {
+      this.snackBar.open('Ano do modelo do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleModelYear')?.errors?.['max']) {
+      this.snackBar.open('Ano do modelo do veículo não deve ser maior que o ano atual + 1', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('fuelTypeId')?.errors?.['required']) {
+      this.snackBar.open('Tipo de combustível do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleTransmissionType')?.errors?.['required']) {
+      this.snackBar.open('Tipo de transmissão do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleRenavamNumber')?.errors?.['required']) {
+      this.snackBar.open('Número do Renavam do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleChassisNumber')?.errors?.['required']) {
+      this.snackBar.open('Número do chassi do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+
+    if (this.veiculoForm.get('vehicleColor')?.errors?.['required']) {
+      this.snackBar.open('Cor do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.veiculoForm.get('vehicleTankCapacity')?.errors?.['required']) {
+      this.snackBar.open('Capacidade de combustível do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+   
+    if (this.veiculoForm.get('vehicleCurrentMileage')?.errors?.['required']) {
+      this.snackBar.open('Quilometragem atual do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehiclePurchaseDate')?.errors?.['required']) {
+      this.snackBar.open('Data de aquisição do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehiclePurchaseDate')?.errors?.['invalidPurchaseDate']) {
+      this.snackBar.open('Data de aquisição do veículo deve ser menor que a data atual', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+
+ 
     if (this.veiculoForm.valid) {
       this.isLoading.set(true);      
       this.veiculoForm.value.vehicleStatus = this.veiculoForm.value.vehicleStatus == 'ativo' ? '1' : '2';
@@ -198,7 +281,7 @@ export class AddUpdateVehicle {
       error: (error) => {
         console.error('Erro ao atualizar veículo:', error);
         this.isLoading.set(false);
-        this.snackBar.open('Erro ao atualizar veículo', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao atualizar veículo ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -214,7 +297,7 @@ export class AddUpdateVehicle {
       error: (error) => {
         console.error('Erro ao cadastrar veículo:', error);
         this.isLoading.set(false);
-        this.snackBar.open('Erro ao cadastrar veículo', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar veículo ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -274,4 +357,123 @@ export class AddUpdateVehicle {
     this.isLoading.set(false);
     this.vehicleStateService.setVehicle(null);
   }  
+  private validatePurchaseDate() {
+    return (control: AbstractControl) => {
+      const purchaseDate = control.value;
+      const purchaseDateDate = new Date(purchaseDate);
+      const today = new Date();
+      if (purchaseDateDate.getFullYear() > today.getFullYear() || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() > today.getMonth()) || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() === today.getMonth() && purchaseDateDate.getDate() > today.getDate() )) {
+        return { invalidPurchaseDate: true };
+      }
+      return null;
+    };
+  }
+
+  validatePurchaseDateInput(purchaseDate: string) {
+    const purchaseDateDate = new Date(purchaseDate);
+    const today = new Date();
+    if (purchaseDateDate.getFullYear() > today.getFullYear() || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() > today.getMonth()) || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() === today.getMonth() && purchaseDateDate.getDate() > today.getDate() )) {
+      this.snackBar.open('Data de aquisição deve ser menor que a data atual', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    return true;
+  }
+  async getBrands() {
+    this.brands$.set(this.vehicleService.getBrands().pipe(map((brands) => brands as Brand[])));
+  }
+  async addBrand() {
+    const dialogRef = this.dialog.open(FormAddBrand, {
+      width: '600px',
+    });
+    const result = await firstValueFrom(dialogRef.afterClosed());
+    if (result) {
+      try {
+        this.isLoading.set(true);
+        await firstValueFrom(this.vehicleService.createBrand(result));
+        this.snackBar.open('Marca cadastrada com sucesso', 'Fechar', { duration: 3000 });      
+      } catch (error) {
+        console.error('Erro ao cadastrar marca:', error);
+        this.snackBar.open('Erro ao cadastrar marca', 'Fechar', { duration: 3000 });
+      } finally {
+        this.isLoading.set(false);        
+      }
+    }
+  }
+  async deleteDriver(driver: Driver) {
+    this.vehicleService.removeSyncDriver(Number(this.veiculoDados?.id), driver.id).subscribe({
+      next: () => {
+        this.snackBar.open('Motorista removido com sucesso', 'Fechar', { duration: 3000 });
+        this.getVehicleById(Number(this.veiculoDados?.id));
+      },
+      error: (error) => {
+        console.error('Erro ao remover motorista:', error);
+        this.snackBar.open('Erro ao remover motorista', 'Fechar', { duration: 3000 });
+      }
+    });
+  }
+  async getDrivers() {
+    const idsDrivers = this.drivers().map((driver) => driver.id);
+    const drivers = await firstValueFrom(this.driverService.getAllDrivers(0, 1000));
+    const driversData = drivers.data.filter((driver) => !idsDrivers.includes(driver.id));
+    this.drivers$.set(of(driversData as Driver[]));
+  }
+  async associateDrivers() {
+    const driverId = this.driverForm.value.driverId;
+    if (!driverId) {
+      this.snackBar.open('Motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    const vehicleId = this.veiculoDados?.id;
+    if (!vehicleId) {
+      return;
+    }
+    try {
+      this.isLoading.set(true);
+      await firstValueFrom(this.vehicleService.addSyncDriver(Number(vehicleId), driverId));
+      this.snackBar.open('Motorista associado com sucesso', 'Fechar', { duration: 3000 });
+      this.getVehicleById(vehicleId);
+      this.veiculoForm.patchValue({ driverId: null });
+    } catch (error) {
+      console.error('Erro ao associar motorista:', error);
+      this.snackBar.open('Erro ao associar motorista', 'Fechar', { duration: 3000 });
+    }
+    finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  private getVehicleById(id: number) {
+    this.vehicleService.getVehicleById(Number(id)).subscribe((vehicle) => {
+      this.veiculoDados = vehicle;
+      this.update.set(true);
+      if (vehicle.vehiclePurchaseDate) {
+        const purchaseDate = vehicle.vehiclePurchaseDate as string;
+        vehicle.vehiclePurchaseDate = purchaseDate.split('-').reverse().join('/');
+      }
+      this.previews = vehicle.photos.map((photo: Photo) => photo);
+      this.photosIds = vehicle.photos.map((photo: Photo) => photo.id);
+      this.selectedPhoto = vehicle.photos[0];
+      this.veiculoForm.patchValue(vehicle);
+      this.fuelSupplies.set(vehicle.fuelSuppliers || []);
+      this.maintenances.set(vehicle.maintenances || []);
+      this.isLoading.set(false);
+      this.fuelSupplies.set(vehicle.fuelSuppliers || []);
+      this.vehicleService.getVehicleHistory(this.veiculoDados?.id).subscribe({
+        next: (history: VehicleHistory[]) => {
+          this.historico.set(history);
+        },
+        error: (error) => {
+          console.error('Erro ao buscar histórico do veículo:', error);
+          this.snackBar.open('Erro ao buscar histórico do veículo ' + error.message, 'Fechar', { duration: 3000 });
+          this.isLoading.set(false);
+        }
+      });
+      this.drivers.set(vehicle.drivers || []);      
+    });
+  }
+
+  tabChanged(event: MatTabChangeEvent): void {
+    // A propriedade 'index' começa em 0. Aba 2 é o índice 1
+    this.isAba2Active = event.index === 0;
+  }
 }

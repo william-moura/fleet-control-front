@@ -24,11 +24,12 @@ import { FormAddBrand } from '../../forms/form-add-brand/form-add-brand';
 import { Router } from '@angular/router';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { NewNotification } from '../../forms/new-notification/new-notification';
+import { NewWindow } from '../../directives/new-window';
 
 @Component({
   selector: 'app-vehicles',
   imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule, MatFormFieldModule, MatButtonModule, 
-    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule],
+    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule, NewWindow],
   templateUrl: './vehicles.html',
   styleUrl: './vehicles.scss',
 })
@@ -83,7 +84,11 @@ export class Vehicles {
   }
   openAddVehicleDialog() {
     this.vehicleStateService.setVehicle(null);
-    this.router.navigate(['/vehicle/new']);
+    const largura = Math.round(screen.width * 0.9);
+    const altura = Math.round(screen.height * 0.9);
+    const configuracoesJanela = `width=${largura},height=${altura},menubar=yes,toolbar=yes,location=yes,status=yes`;
+    window.open('/vehicle/new', '_blank', configuracoesJanela);
+    // this.router.navigate(['/vehicle/new']);
   }
   async deleteVehicle(vehicle: Vehicle) {
     const dialogRef = this.dialog.open(ConfirmDialog, {
@@ -118,6 +123,7 @@ export class Vehicles {
       data: vehicle,
     });
     const result = await firstValueFrom(dialogRef.afterClosed());
+    console.log(result, 'resultado');
     if (result !== null) {      
       try {
         this.isLoading.set(true);

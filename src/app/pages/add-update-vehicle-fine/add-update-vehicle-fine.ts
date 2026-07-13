@@ -18,9 +18,10 @@ import { VehicleService } from '../../services/vehicle-service';
 import { DriverService } from '../../services/driver-service';
 import { VehicleFine } from '../../models/vehicle-fine';
 import { VehicleStateService } from '../../services/vehicle-state-service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { AsyncSelect } from '../../components/async-select/async-select';
+import { map, Observable, of } from 'rxjs';
 @Component({
   selector: 'app-add-update-vehicle-fine',
   imports: [CommonModule,
@@ -34,7 +35,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaskDirective],
+    NgxMaskDirective,AsyncSelect],
   templateUrl: './add-update-vehicle-fine.html',
   styleUrl: './add-update-vehicle-fine.scss',
 })
@@ -51,6 +52,9 @@ export class AddUpdateVehicleFine {
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
   update = signal<boolean>(false);
+  private route = inject(ActivatedRoute);
+  vehicles$ = signal<Observable<Vehicle[]>>(of([]));
+  drivers$ = signal<Observable<Driver[]>>(of([]));
   constructor() {
     this.form = this.fb.group({
       vehicleId: ['', Validators.required],
@@ -71,6 +75,24 @@ export class AddUpdateVehicleFine {
     });
   }
   ngOnInit() {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.getVehicles();
+      this.vehicleFineService.getVehicleFineById(Number(id)).subscribe((vehicleFine) => {
+        this.vehicleFine.set(vehicleFine);
+        this.update.set(true);
+        this.getDrivers(Number(vehicleFine.vehicle?.id));
+        if (vehicleFine.finePaidDate) {
+          const paidDate = vehicleFine.finePaidDate as string;
+          vehicleFine.finePaidDate = paidDate.split('-').reverse().join('/');
+        }
+        if (vehicleFine.fineDate) {
+          const date = vehicleFine.fineDate as string;
+          vehicleFine.fineDate = date.split('-').reverse().join('/');
+        }
+        this.form.patchValue(vehicleFine);
+      });
+    }
     this.update.set(false);
     this.vehicleFine.set(this.vehicleFineStateService.selectedVehicleFine());
     if (this.vehicleFine()) {
@@ -88,6 +110,38 @@ export class AddUpdateVehicleFine {
   salvar() {
     if (!this.form.valid) {
       this.form.markAllAsTouched();
+      if (this.form.get('vehicleId')?.errors?.['required']) {
+        this.snackBar.open('Veículo é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('driverId')?.errors?.['required']) {
+        this.snackBar.open('Motorista é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('fineDate')?.errors?.['required']) {
+        this.snackBar.open('Data da multa é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('fineLevel')?.errors?.['required']) {
+        this.snackBar.open('Tipo de multa é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('finePaidDate')?.errors?.['required']) {
+        this.snackBar.open('Data de vencimento é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('fineAmount')?.errors?.['required']) {
+        this.snackBar.open('Valor da multa é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('finePoints')?.errors?.['required']) {
+        this.snackBar.open('Pontos da multa é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('finePoints')?.errors?.['min']) {
+        this.snackBar.open('Pontos da multa deve ser maior que 0', 'Fechar', { duration: 3000 });
+        return;
+      }
       return;
     }
     if (this.update()) {
@@ -135,7 +189,7 @@ export class AddUpdateVehicleFine {
       },
       error: (error) => {
         console.error('Erro ao cadastrar multa:', error);
-        this.snackBar.open('Erro ao cadastrar multa', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar multa ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -163,8 +217,14 @@ export class AddUpdateVehicleFine {
       },
       error: (error) => {
         console.error('Erro ao atualizar multa:', error);
-        this.snackBar.open('Erro ao atualizar multa', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao atualizar multa ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
+  }
+  async getVehicles() {
+    this.vehicles$.set(this.vehicleService.getAllVehicles(0, 10000).pipe(map((vehicles) => vehicles.data as Vehicle[])));
+  }
+  async getDrivers(vehicleId: number) {
+    this.drivers$.set(this.vehicleService.getDriversByVehicleId(vehicleId).pipe(map((drivers) => drivers as Driver[])));
   }
 }

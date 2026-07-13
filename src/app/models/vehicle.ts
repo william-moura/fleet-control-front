@@ -1,5 +1,8 @@
 import { Driver } from "./driver";
+import { FuelSupply } from "./fuel-supply";
+import { Maintenance } from "./maintenance";
 import { Photo } from "./photo";
+import { VehicleFine } from "./vehicle-fine";
 
 export interface Vehicle {
   id: number;
@@ -22,4 +25,7 @@ export interface Vehicle {
   vehicleChassisNumber: string;
   vehicleRenavamNumber: string;
   fuelTypeId: number;
+  maintenances: Maintenance[] | null;
+  fines: VehicleFine[] | null;
+  fuelSuppliers: FuelSupply[] | null;
 }

@@ -25,31 +25,30 @@
               <section class="secao-form">
                 <h3><mat-icon>car</mat-icon> Dados da Km</h3>
                 <div class="grid-3col-modificado">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Veículo</mat-label>
-                    <mat-select formControlName="vehicleId" (selectionChange)="getDriversByVehicleId(form.value.vehicleId)">
-                      <mat-option [value]="null">Selecione um veículo</mat-option>
-                      @for (vehicle of vehicles(); track vehicle.id) {
-                        <mat-option [value]="vehicle.id">{{vehicle.vehiclePlate }} - {{vehicle.vehicleModel}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Motorista</mat-label>
-                    <mat-select formControlName="driverId">
-                      <mat-option [value]="null">Selecione um motorista</mat-option>
-                      @for (driver of drivers(); track driver.id) {
-                        <mat-option [value]="driver.id">{{driver.driverName}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
+                  <app-async-select 
+                  [options$]="vehicles$()" 
+                  [label]="'Veículo'" 
+                  [valueKey]="'id'" 
+                  [displayKey]="'vehicleModel'" 
+                  (click)="getVehicles()" 
+                  formControlName="vehicleId"
+                  >
+                  </app-async-select>                
+                  <app-async-select
+                    [disabled]="!form.value.vehicleId || form.value.vehicleId === null"
+                    [options$]="drivers$()" 
+                    [label]="'Motorista'" 
+                    [valueKey]="'id'" 
+                    [displayKey]="'driverName'" 
+                    (click)="getDrivers(form.value.vehicleId)" 
+                    formControlName="driverId">
+                  </app-async-select>
                   <mat-form-field appearance="outline">
                     <mat-label>Data da Km</mat-label>
                     <input matInput formControlName="kilometersDate" 
                     mask="00/00/0000" 
                     [dropSpecialCharacters]="false" 
                     placeholder="DD/MM/AAAA">
-                    <mat-hint>/DD/MM/YYYY</mat-hint>
                   </mat-form-field>
                 </div>
                 <div class="grid-2col">
@@ -74,7 +73,7 @@
   
         <footer class="acoes-footer">
           <button mat-button (click)="cancelar()">Cancelar</button>
-          <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="salvar()">
+          <button mat-flat-button color="primary" (click)="salvar()">
             <mat-icon>save</mat-icon> Salvar Cadastro
           </button>
         </footer>

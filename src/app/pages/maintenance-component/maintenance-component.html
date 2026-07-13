@@ -1,7 +1,7 @@
 <div class="container-pagina">
     <div class="header-acoes">
       <h2>Gestão de Manutenções</h2>
-      <button mat-raised-button color="primary" (click)="openAddMaintenanceDialog()">
+      <button mat-raised-button color="primary" appNewWindow="/maintenance/new">
         <mat-icon>add</mat-icon> Novo Manutenção
       </button>
       <button mat-raised-button color="primary" (click)="openAddMaintenanceServiceDialog()">
@@ -52,7 +52,7 @@
         <ng-container matColumnDef="acoes" stickyEnd>
           <th mat-header-cell *matHeaderCellDef class="center-cell"> Ações </th>
           <td mat-cell *matCellDef="let row" class="center-cell">
-            <button mat-icon-button color="accent" title="Editar" (click)="updateMaintenance(row)">
+            <button mat-icon-button color="accent" title="Editar" appNewWindow="/maintenance/edit/{{row.id}}">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" title="Excluir" (click)="deleteMaintenance(row)">

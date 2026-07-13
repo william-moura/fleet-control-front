@@ -19,12 +19,13 @@ import { FormAddMaintenanceService } from '../../forms/form-add-maintenance-serv
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { VehicleStateService } from '../../services/vehicle-state-service';
+import { NewWindow } from '../../directives/new-window';
 
 @Component({
   selector: 'app-maintenance-component',
   imports: [CommonModule, MatTableModule, MatPaginatorModule, 
     MatSortModule, MatInputModule, MatFormFieldModule, 
-    MatButtonModule, MatIconModule, MatChipsModule, MatProgressSpinnerModule],
+    MatButtonModule, MatIconModule, MatChipsModule, MatProgressSpinnerModule, NewWindow],
   templateUrl: './maintenance-component.html',
   styleUrl: './maintenance-component.scss',
 })

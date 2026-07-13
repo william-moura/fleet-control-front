@@ -75,4 +75,10 @@ export class VehicleService {
   createNotification(vehicleId: number, notification: Notification): Observable<Notification> {
     return this.http.post<Notification>(`${this.API_URL}/${vehicleId}/notification`, notification);
   }
+  addSyncDriver(vehicleId: number, driverId: number): Observable<void> {
+    return this.http.post<void>(`${this.API_URL}/${vehicleId}/add-sync-driver`, { driver_id: Number(driverId) });
+  }
+  removeSyncDriver(vehicleId: number, driverId: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${vehicleId}/remove-sync-driver/${driverId}`);
+  }
 }

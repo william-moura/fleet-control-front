@@ -17,7 +17,7 @@ import { RolesServices } from '../../services/roles-services';
 import { Role } from '../../models/role';
 import { User } from '../../models/user';
 import { VehicleStateService } from '../../services/vehicle-state-service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-add-update-users',
   imports: [CommonModule,
@@ -47,10 +47,11 @@ export class AddUpdateUsers {
   user = signal<User | null>(null);
   private userStateService = inject(VehicleStateService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   constructor() {
     this.form = this.fb.group({
       name: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['' ],
       confirmPassword: [''],
       role_id: ['', Validators.required],
@@ -63,6 +64,16 @@ export class AddUpdateUsers {
     });
   }
   ngOnInit() {
+    this.update.set(false);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.update.set(true);
+      this.userService.getUserById(Number(id)).subscribe((user) => {
+        this.user.set(user);
+        this.form.patchValue(user);
+        this.form.patchValue({ role_id: user.role.id });
+      });
+    }
     this.user.set(this.userStateService.selectedUser());
     if (this.user()) {
       this.update.set(true);
@@ -87,6 +98,7 @@ export class AddUpdateUsers {
   }
   salvar() {
     if (!this.form.valid) {
+      this.vaidateForm();
       return;
     }
     if (this.update()) {
@@ -109,7 +121,7 @@ export class AddUpdateUsers {
       },
       error: (error) => {
         console.error('Erro ao cadastrar usuário:', error);
-        this.snackBar.open('Erro ao cadastrar usuário', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar usuário ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -130,7 +142,7 @@ export class AddUpdateUsers {
       },
       error: (error) => {
         console.error('Erro ao atualizar usuário:', error);
-        this.snackBar.open('Erro ao atualizar usuário', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao atualizar usuário ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -166,5 +178,43 @@ export class AddUpdateUsers {
     if (resto !== parseInt(cpf.substring(10, 11))) return { invalidCpf: true };
     
     return null;
+  }
+  private vaidateForm() {
+    if (this.form.get('name')?.errors?.['required']) {
+      this.snackBar.open('O campo Nome é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('email')?.errors?.['required']) {
+      this.snackBar.open('O campo Email é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('email')?.errors?.['email']) {
+      this.snackBar.open('O campo Email é inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('role_id')?.errors?.['required']) {
+      this.snackBar.open('O campo Cargo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('cpf')?.errors?.['required']) {
+      this.snackBar.open('O campo CPF é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('cpf')?.errors?.['invalidCpf']) {
+      this.snackBar.open('O campo CPF é inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('password')?.errors?.['required']) {
+      this.snackBar.open('O campo Senha é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('confirmPassword')?.errors?.['required']) {
+      this.snackBar.open('O campo Confirmar Senha é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('confirmPassword')?.errors?.['passwordMismatch']) {
+      this.snackBar.open('As senhas não conferem', 'Fechar', { duration: 3000 });
+      return;
+    }
   }
 }

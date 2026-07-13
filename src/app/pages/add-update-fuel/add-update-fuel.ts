@@ -19,11 +19,15 @@ import { Vehicle } from '../../models/vehicle';
 import { Supplier } from '../../models/supplier';
 import { FuelType } from '../../models/fuel-type';
 import { FuelSupply } from '../../models/fuel-supply';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FuelSupplyService } from '../../services/fuel-supply-service';
 import { DriverService } from '../../services/driver-service';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { SupplierType } from '../../models/supplier-type';
+import { maxDateValidator } from '../../rules/min-date-validator';
+import { map, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { AsyncSelect } from '../../components/async-select/async-select';
 
 @Component({
   selector: 'app-add-update-fuel',
@@ -38,7 +42,8 @@ import { SupplierType } from '../../models/supplier-type';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaskDirective],
+    NgxMaskDirective,
+    AsyncSelect],
   templateUrl: './add-update-fuel.html',
   styleUrl: './add-update-fuel.scss',
 })
@@ -58,9 +63,13 @@ export class AddUpdateFuel {
   private fuelSupplyService = inject(FuelSupplyService);
   private driverService = inject(DriverService);
   private fuelSupplyStateService = inject(VehicleStateService);
+  private route = inject(ActivatedRoute);
+  vehicles$ = signal<Observable<Vehicle[]>>(of([]));
+  suppliers$ = signal<Observable<Supplier[]>>(of([]));
+  drivers$ = signal<Observable<Driver[]>>(of([]));
   constructor() {
     this.form = this.fb.group({
-      fuelSupplierDate: ['', Validators.required],
+      fuelSupplierDate: ['', [Validators.required, maxDateValidator()]],
       fuelSupplierQuantity: ['', [Validators.required, Validators.min(0)]],
       fuelSupplierTotal: ['', [Validators.required, Validators.min(0)]],
       supplierId: ['', Validators.required],
@@ -74,6 +83,23 @@ export class AddUpdateFuel {
     });
   }
   ngOnInit() {
+    this.update.set(false);
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.getSuppliers();
+      this.getVehicles();      
+      this.getFuelTypes();
+      this.fuelSupplyService.getFuelSupplyById(Number(id)).subscribe((fuelSupply) => {
+        this.fuel.set(fuelSupply);
+        this.update.set(true);
+        if (fuelSupply.fuelSupplierDate) {
+          const date = fuelSupply.fuelSupplierDate as string;
+          fuelSupply.fuelSupplierDate = date.split('-').reverse().join('/');
+        }
+        this.form.patchValue(fuelSupply);
+        this.getDrivers();
+      });
+    }
     this.fuel.set(this.fuelSupplyStateService.selectedFuelSupply());
     if (this.fuel()) {
       this.update.set(true);
@@ -85,10 +111,7 @@ export class AddUpdateFuel {
     } else {
       this.update.set(false);
     }
-    this.getSuppliers();
-    this.getVehicles();
-    this.getDrivers();
-    this.getFuelTypes();
+    
   }
   cancelar() {
     this.clearForm();
@@ -146,21 +169,15 @@ export class AddUpdateFuel {
       }
     });
   }
-  private getSuppliers() {
-    this.supplierService.getAllSuppliers(SupplierType.GAS_STATION, 0, 10000).subscribe((suppliers) => {
-      this.suppliers.set(suppliers.data);
-    });
+  async getSuppliers() {
+    this.suppliers$.set(this.supplierService.getAllSuppliers(SupplierType.GAS_STATION, 0, 10000).pipe(map((suppliers) => suppliers.data as Supplier[])));
   }
-  private getVehicles() {
-    this.vehicleService.getAllVehicles(0, 1000).subscribe((vehicles) => {
-      this.vehicles.set(vehicles.data);
-    });
+  async getVehicles() {
+    this.vehicles$.set(this.vehicleService.getAllVehicles(0, 10000).pipe(map((vehicles) => vehicles.data as Vehicle[])));
   }
-  getDrivers() {
+  async getDrivers() {
     if (this.form.value.vehicleId) {
-      this.vehicleService.getDriversByVehicleId(this.form.value.vehicleId).subscribe((drivers) => {
-        this.drivers.set(drivers);
-      });
+      this.drivers$.set(this.vehicleService.getDriversByVehicleId(this.form.value.vehicleId).pipe(map((drivers) => drivers as Driver[])));
     }
   }
   private getFuelTypes() {
@@ -169,10 +186,73 @@ export class AddUpdateFuel {
     });
   }
   salvar() {
+
+    if (!this.form.valid) {
+      this.validateForms();
+      return;
+    }
+
     if (this.update()) {
       this.updateFuelSupply();
     } else {
       this.createFuelSupply();
     }
   }
+
+  private validateForms() {
+
+    if (this.form.controls['supplierId'].errors?.['required']) {
+      this.snackBar.open('O campo Fornecedor é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.controls['fuelTypeId'].errors?.['required']) {
+      this.snackBar.open('O campo Tipo de Combustível é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.controls['vehicleId'].errors?.['required']) {
+      this.snackBar.open('O campo Veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    
+    if (this.form.controls['driverId'].errors?.['required']) {
+      this.snackBar.open('O campo Motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierDate'].errors?.['required']) {
+      this.snackBar.open('O campo Data de Abastecimento é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierDate'].errors?.['maxDate']) {
+      this.snackBar.open('A data de abastecimento não pode ser maior que a data atual', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierTotal'].errors?.['required']) {
+      this.snackBar.open('O campo Valor do Abastecimento é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierPrice'].errors?.['required']) {
+      this.snackBar.open('O campo Valor por Litro é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierQuantity'].errors?.['required']) {
+      this.snackBar.open('O campo Quantidade de Litros é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierKilometers'].errors?.['required']) {
+      this.snackBar.open('A quilometragem é obrigatória', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    if (this.form.controls['fuelSupplierInvoiceNumber'].errors?.['required']) {
+      this.snackBar.open('O campo Número do Comprovante é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+  }
+  
 }

@@ -22,6 +22,7 @@ import { FormAddFuelSupplier } from '../../forms/form-add-fuel-supplier/form-add
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { Router } from '@angular/router';
 import { VehicleStateService } from '../../services/vehicle-state-service';
+import { NewWindow } from '../../directives/new-window';
 
 
 @Component({
@@ -29,7 +30,7 @@ import { VehicleStateService } from '../../services/vehicle-state-service';
   imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatButtonModule, 
     MatIconModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatDatepickerModule, 
     MatNativeDateModule, MatButtonModule, MatIconModule, MatTooltipModule, MatProgressBarModule, MatCardModule, 
-    MatSnackBarModule, MatProgressSpinnerModule],
+    MatSnackBarModule, MatProgressSpinnerModule, NewWindow],
   templateUrl: './fuel-component.html',
   styleUrl: './fuel-component.scss',
 })

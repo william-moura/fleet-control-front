@@ -23,11 +23,12 @@ import { VehicleService } from '../../services/vehicle-service';
 import { FormAddKmFull } from '../../forms/form-add-km-full/form-add-km-full';
 import { Router } from '@angular/router';
 import { VehicleStateService } from '../../services/vehicle-state-service';
+import { NewWindow } from '../../directives/new-window';
 
 @Component({
   selector: 'app-km-component',
   imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule, MatFormFieldModule, MatButtonModule, 
-    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule],
+    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule, NewWindow],
   templateUrl: './km-component.html',
   styleUrl: './km-component.scss',
 })

@@ -22,12 +22,13 @@ import { UserService } from '../../services/user-service';
 import { Router } from '@angular/router';
 import { UpdatePassword } from '../../forms/update-password/update-password';
 import { VehicleStateService } from '../../services/vehicle-state-service';
+import { NewWindow } from '../../directives/new-window';
 
 @Component({
   selector: 'app-users',
   imports: [CommonModule, MatTableModule, MatPaginatorModule, 
     MatSortModule, MatInputModule, MatFormFieldModule, 
-    MatButtonModule, MatIconModule, MatChipsModule],
+    MatButtonModule, MatIconModule, MatChipsModule, NewWindow],
   templateUrl: './users.html',
   styleUrl: './users.scss',
 })

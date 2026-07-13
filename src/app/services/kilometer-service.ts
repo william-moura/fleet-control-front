@@ -32,4 +32,7 @@ export class KilometerService {
   listKilometers(): Observable<Kilometer[]> {
     return this.http.get<Kilometer[]>(this.API_URL);
   }
+  getKilometerById(id: number): Observable<Kilometer> {
+    return this.http.get<Kilometer>(`${this.API_URL}/${id}`);
+  }
 }
