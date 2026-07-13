@@ -20,7 +20,7 @@
   
     <div class="conteudo-principal">
       <main class="formulario-wrapper">
-        <mat-tab-group animationDuration="0ms" class="abas-navegacao">
+        <mat-tab-group animationDuration="0ms" class="abas-navegacao" #tabGroup (selectedTabChange)="tabChanged($event)">
           <mat-tab label="Dados Principais">
             <form [formGroup]="veiculoForm" class="form-container">
               
@@ -209,7 +209,7 @@
               <div class="p-4">                
                 <app-sync-driver [drivers]="drivers" (deleteDriverEmit)="deleteDriver($event)"></app-sync-driver>
               </div>
-              <div class="grid-form-2col p-4 mt-4">
+              <div class="grid-form-2col p-4 mt-4 pb-4">
                 <form [formGroup]="driverForm">
                 <app-async-select [options$]="drivers$()" [label]="'Motorista'" [valueKey]="'id'" [displayKey]="'driverName'" (click)="getDrivers()"
                 formControlName="driverId"
@@ -221,12 +221,14 @@
           }
           </mat-tab-group>
   
+        @if (isAba2Active) {
         <footer class="acoes-footer">
           <button mat-button (click)="cancelar()">Cancelar</button>
-          <button mat-flat-button color="primary" (click)="salvar()">
-            <mat-icon>save</mat-icon> Salvar Alterações
-          </button>
-        </footer>
+            <button mat-flat-button color="primary" (click)="salvar()">
+              <mat-icon>save</mat-icon> Salvar Alterações
+            </button>
+          </footer>
+        }
       </main>
       <aside class="sidebar-veiculo">
         <mat-card class="card-foto-resumo">

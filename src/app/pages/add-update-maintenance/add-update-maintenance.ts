@@ -24,6 +24,10 @@ import { SupplierType } from '../../models/supplier-type';
 import { MaintenanceTypeService } from '../../services/maintenance-type-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { minDateValidator } from '../../rules/min-date-validator';
+import { map, Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { AsyncSelect } from '../../components/async-select/async-select';
+
 @Component({
   selector: 'app-add-update-maintenance',
   imports: [CommonModule,
@@ -37,7 +41,7 @@ import { minDateValidator } from '../../rules/min-date-validator';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaskDirective],
+    NgxMaskDirective,AsyncSelect],
   templateUrl: './add-update-maintenance.html',
   styleUrl: './add-update-maintenance.scss',
 })
@@ -58,7 +62,10 @@ export class AddUpdateMaintenance {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   isLoading = signal<boolean>(true);
-  
+  vehicles$ = signal<Observable<Vehicle[]>>(of([]));
+  suppliers$ = signal<Observable<Supplier[]>>(of([]));
+  services$ = signal<Observable<MaintenanceServiceModel[]>>(of([]));
+
   constructor() {
     this.form = this.fb.group({
       maintenanceDate: ['', Validators.required],
@@ -85,6 +92,9 @@ export class AddUpdateMaintenance {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.getVehicles();
+      this.getSuppliers();
+      this.getServices();
       this.maintenanceService.getMaintenanceById(Number(id)).subscribe((maintenance) => {
         this.maintenance.set(maintenance);
         this.update.set(true);
@@ -99,8 +109,15 @@ export class AddUpdateMaintenance {
         if (maintenance.maintenancePreviousDateFinished) {
           const date = maintenance.maintenancePreviousDateFinished as string;
           maintenance.maintenancePreviousDateFinished = date.split('-').reverse().join('/');
-        }
-        this.form.patchValue(maintenance);
+        }        
+        this.form.patchValue({ ...maintenance });
+        if (maintenance.services) {
+          const services = maintenance.services.map((service: MaintenanceServiceModel) => service.id);          
+          if (services) {
+            maintenance.services = [];            
+            this.form.patchValue({ services: services });
+          }
+        }        
       });
     } else {
       this.update.set(false);
@@ -268,5 +285,14 @@ export class AddUpdateMaintenance {
       }
       
     }
+  }
+  async getVehicles() {
+    this.vehicles$.set(this.vehicleService.getAllVehicles(0, 10000).pipe(map((vehicles) => vehicles.data as Vehicle[])));
+  }
+  async getSuppliers() {
+    this.suppliers$.set(this.supplierService.getAllSuppliers(SupplierType.MECHANIC, 0, 1000).pipe(map((suppliers) => suppliers.data as Supplier[])));
+  }
+  async getServices() {
+    this.services$.set(this.maintenanceTypeService.getAllMaintenanceTypes(0, 1000).pipe(map((maintenanceServices) => maintenanceServices.data as MaintenanceServiceModel[])));
   }
 }

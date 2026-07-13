@@ -20,7 +20,8 @@ import { VehicleFine } from '../../models/vehicle-fine';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { AsyncSelect } from '../../components/async-select/async-select';
+import { map, Observable, of } from 'rxjs';
 @Component({
   selector: 'app-add-update-vehicle-fine',
   imports: [CommonModule,
@@ -34,7 +35,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaskDirective],
+    NgxMaskDirective,AsyncSelect],
   templateUrl: './add-update-vehicle-fine.html',
   styleUrl: './add-update-vehicle-fine.scss',
 })
@@ -52,6 +53,8 @@ export class AddUpdateVehicleFine {
   private snackBar = inject(MatSnackBar);
   update = signal<boolean>(false);
   private route = inject(ActivatedRoute);
+  vehicles$ = signal<Observable<Vehicle[]>>(of([]));
+  drivers$ = signal<Observable<Driver[]>>(of([]));
   constructor() {
     this.form = this.fb.group({
       vehicleId: ['', Validators.required],
@@ -74,9 +77,11 @@ export class AddUpdateVehicleFine {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.getVehicles();
       this.vehicleFineService.getVehicleFineById(Number(id)).subscribe((vehicleFine) => {
         this.vehicleFine.set(vehicleFine);
         this.update.set(true);
+        this.getDrivers(Number(vehicleFine.vehicle?.id));
         if (vehicleFine.finePaidDate) {
           const paidDate = vehicleFine.finePaidDate as string;
           vehicleFine.finePaidDate = paidDate.split('-').reverse().join('/');
@@ -215,5 +220,11 @@ export class AddUpdateVehicleFine {
         this.snackBar.open('Erro ao atualizar multa ' + error.message, 'Fechar', { duration: 3000 });
       }
     });
+  }
+  async getVehicles() {
+    this.vehicles$.set(this.vehicleService.getAllVehicles(0, 10000).pipe(map((vehicles) => vehicles.data as Vehicle[])));
+  }
+  async getDrivers(vehicleId: number) {
+    this.drivers$.set(this.vehicleService.getDriversByVehicleId(vehicleId).pipe(map((drivers) => drivers as Driver[])));
   }
 }

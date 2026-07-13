@@ -20,7 +20,8 @@ import { Kilometer } from '../../models/kilometer';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { KilometerService } from '../../services/kilometer-service';
-
+import { AsyncSelect } from '../../components/async-select/async-select';
+import { map, Observable, of } from 'rxjs';
 @Component({
   selector: 'app-add-update-km',
   imports: [CommonModule,
@@ -34,7 +35,7 @@ import { KilometerService } from '../../services/kilometer-service';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaskDirective],
+    NgxMaskDirective,AsyncSelect],
   templateUrl: './add-update-km.html',
   styleUrl: './add-update-km.scss',
 })
@@ -53,9 +54,11 @@ export class AddUpdateKm {
   private snackBar = inject(MatSnackBar);
   private kilometerService = inject(KilometerService);
   private route = inject(ActivatedRoute);
+  vehicles$ = signal<Observable<Vehicle[]>>(of([]));
+  drivers$ = signal<Observable<Driver[]>>(of([]));
   constructor() {
     this.form = this.fb.group({
-      vehicleId: ['', Validators.required],
+      vehicleId: [null, Validators.required],
       driverId: ['', Validators.required],
       kilometersValue: ['', Validators.required],
       kilometersDate: ['', Validators.required],
@@ -68,9 +71,11 @@ export class AddUpdateKm {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.getVehicles();
       this.kilometerService.getKilometerById(Number(id)).subscribe((kilometer) => {
         this.kilometer.set(kilometer);
         this.update.set(true);
+        this.getDrivers(kilometer.vehicleId);
         if (kilometer.kilometersDate) {
           const date = kilometer.kilometersDate as string;
           kilometer.kilometersDate = date.split('-').reverse().join('/');
@@ -181,5 +186,11 @@ export class AddUpdateKm {
     await this.vehicleService.getDriversByVehicleId(vehicleId).subscribe((drivers: Driver[]) => {
       this.drivers.set(drivers);
     });
+  }
+  async getVehicles() {
+    this.vehicles$.set(this.vehicleService.getAllVehicles(0, 10000).pipe(map((vehicles) => vehicles.data as Vehicle[])));
+  }
+  async getDrivers(vehicleId: number) {
+    this.drivers$.set(this.vehicleService.getDriversByVehicleId(vehicleId).pipe(map((drivers) => drivers as Driver[])));
   }
 }

@@ -29,7 +29,7 @@ export class AsyncSelect {
   valueKey = input<string>('id');
   displayKey = input<string>('nome');
   multiple = input<boolean>(false);
-
+  disabled = input<boolean>(false);
   control = new FormControl();
 
   // Callbacks internos vazios exigidos pelo ControlValueAccessor

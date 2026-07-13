@@ -25,6 +25,9 @@ import { DriverService } from '../../services/driver-service';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { SupplierType } from '../../models/supplier-type';
 import { maxDateValidator } from '../../rules/min-date-validator';
+import { map, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { AsyncSelect } from '../../components/async-select/async-select';
 
 @Component({
   selector: 'app-add-update-fuel',
@@ -39,7 +42,8 @@ import { maxDateValidator } from '../../rules/min-date-validator';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaskDirective],
+    NgxMaskDirective,
+    AsyncSelect],
   templateUrl: './add-update-fuel.html',
   styleUrl: './add-update-fuel.scss',
 })
@@ -60,6 +64,9 @@ export class AddUpdateFuel {
   private driverService = inject(DriverService);
   private fuelSupplyStateService = inject(VehicleStateService);
   private route = inject(ActivatedRoute);
+  vehicles$ = signal<Observable<Vehicle[]>>(of([]));
+  suppliers$ = signal<Observable<Supplier[]>>(of([]));
+  drivers$ = signal<Observable<Driver[]>>(of([]));
   constructor() {
     this.form = this.fb.group({
       fuelSupplierDate: ['', [Validators.required, maxDateValidator()]],
@@ -79,6 +86,9 @@ export class AddUpdateFuel {
     this.update.set(false);
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.getSuppliers();
+      this.getVehicles();      
+      this.getFuelTypes();
       this.fuelSupplyService.getFuelSupplyById(Number(id)).subscribe((fuelSupply) => {
         this.fuel.set(fuelSupply);
         this.update.set(true);
@@ -87,6 +97,7 @@ export class AddUpdateFuel {
           fuelSupply.fuelSupplierDate = date.split('-').reverse().join('/');
         }
         this.form.patchValue(fuelSupply);
+        this.getDrivers();
       });
     }
     this.fuel.set(this.fuelSupplyStateService.selectedFuelSupply());
@@ -100,10 +111,7 @@ export class AddUpdateFuel {
     } else {
       this.update.set(false);
     }
-    this.getSuppliers();
-    this.getVehicles();
-    this.getDrivers();
-    this.getFuelTypes();
+    
   }
   cancelar() {
     this.clearForm();
@@ -161,21 +169,15 @@ export class AddUpdateFuel {
       }
     });
   }
-  private getSuppliers() {
-    this.supplierService.getAllSuppliers(SupplierType.GAS_STATION, 0, 10000).subscribe((suppliers) => {
-      this.suppliers.set(suppliers.data);
-    });
+  async getSuppliers() {
+    this.suppliers$.set(this.supplierService.getAllSuppliers(SupplierType.GAS_STATION, 0, 10000).pipe(map((suppliers) => suppliers.data as Supplier[])));
   }
-  private getVehicles() {
-    this.vehicleService.getAllVehicles(0, 1000).subscribe((vehicles) => {
-      this.vehicles.set(vehicles.data);
-    });
+  async getVehicles() {
+    this.vehicles$.set(this.vehicleService.getAllVehicles(0, 10000).pipe(map((vehicles) => vehicles.data as Vehicle[])));
   }
-  getDrivers() {
+  async getDrivers() {
     if (this.form.value.vehicleId) {
-      this.vehicleService.getDriversByVehicleId(this.form.value.vehicleId).subscribe((drivers) => {
-        this.drivers.set(drivers);
-      });
+      this.drivers$.set(this.vehicleService.getDriversByVehicleId(this.form.value.vehicleId).pipe(map((drivers) => drivers as Driver[])));
     }
   }
   private getFuelTypes() {
@@ -251,7 +253,6 @@ export class AddUpdateFuel {
       this.snackBar.open('O campo Número do Comprovante é obrigatório', 'Fechar', { duration: 3000 });
       return;
     }
-
-    
   }
+  
 }

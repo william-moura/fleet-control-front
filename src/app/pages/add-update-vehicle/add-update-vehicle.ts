@@ -1,7 +1,7 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -101,6 +101,7 @@ export class AddUpdateVehicle {
   private driverService = inject(DriverService);
   driverForm: FormGroup;
   //driverId = input<number | null>(null);
+  isAba2Active = true;
   ngOnInit() {
     this.getBrands();    
     const id = this.route.snapshot.paramMap.get('id');
@@ -469,5 +470,10 @@ export class AddUpdateVehicle {
       });
       this.drivers.set(vehicle.drivers || []);      
     });
+  }
+
+  tabChanged(event: MatTabChangeEvent): void {
+    // A propriedade 'index' começa em 0. Aba 2 é o índice 1
+    this.isAba2Active = event.index === 0;
   }
 }

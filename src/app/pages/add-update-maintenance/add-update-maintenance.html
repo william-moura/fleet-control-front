@@ -25,40 +25,34 @@
               <section class="secao-form">
                 <h3><mat-icon>car</mat-icon> Dados da Manutenção</h3>
                 <div class="grid-3col-modificado">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Veículo</mat-label>
-                    <mat-select formControlName="vehicleId">
-                      <mat-option [value]="null">Selecione um veículo</mat-option>
-                      @for (vehicle of vehicles(); track vehicle.id) {
-                        <mat-option [value]="vehicle.id">{{vehicle.vehiclePlate }} - {{vehicle.vehicleModel}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Fornecedor</mat-label>
-                    <mat-select formControlName="supplierId">
-                      <mat-option [value]="null">Selecione um fornecedor</mat-option>
-                      @for (supplier of suppliers(); track supplier.id) {
-                        <mat-option [value]="supplier.id">{{supplier.supplierFantasyName}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                  <mat-form-field appearance="outline">
-                    <mat-label>Serviços Realizados</mat-label>
-                    <mat-select formControlName="services" multiple>
-                      <mat-select-trigger>
-                        {{ form.get('services')?.value?.[0]?.maintenance_control_service_name || '' }}
-                        @if ((form.get('services')?.value?.length || 0) > 0) {
-                          <span class="exemplo-obs">
-                            (+{{ (form.get('services')?.value?.length || 0)}} {{ form.get('services')?.value?.length === 2 ? 'outro' : 'outros' }})
-                          </span>
-                        }
-                      </mat-select-trigger>
-                      @for (service of services(); track service.id) {
-                        <mat-option [value]="service.id">{{service.maintenance_control_service_name}}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
+                  <app-async-select 
+                    [options$]="vehicles$()" 
+                    [label]="'Veículo'" 
+                    [valueKey]="'id'" 
+                    [displayKey]="'vehicleModel'" 
+                    (click)="getVehicles()" 
+                    formControlName="vehicleId"
+                  >
+                  </app-async-select>
+                  <app-async-select 
+                    [options$]="suppliers$()" 
+                    [label]="'Fornecedor'" 
+                    [valueKey]="'id'" 
+                    [displayKey]="'supplierFantasyName'" 
+                    (click)="getSuppliers()" 
+                    formControlName="supplierId"
+                  >
+                  </app-async-select>
+                  <app-async-select 
+                    [options$]="services$()" 
+                    [label]="'Serviços Realizados'" 
+                    [valueKey]="'id'" 
+                    [displayKey]="'maintenance_control_service_name'" 
+                    (click)="getServices()" 
+                    formControlName="services"
+                    [multiple]="true"
+                  >
+                  </app-async-select>
                 </div>
                 <div class="grid-3col-modificado">
                   <mat-form-field appearance="outline">
