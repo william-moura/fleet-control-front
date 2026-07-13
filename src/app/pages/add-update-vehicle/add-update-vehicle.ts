@@ -41,6 +41,7 @@ import { SyncDriver } from '../../components/sync-driver/sync-driver';
 import { Driver } from '../../models/driver';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { DriverService } from '../../services/driver-service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-add-update-vehicle',
@@ -73,6 +74,7 @@ import { DriverService } from '../../services/driver-service';
   styleUrl: './add-update-vehicle.scss',
 })
 export class AddUpdateVehicle {
+  private title = inject(Title);
   veiculoForm: FormGroup;
   veiculoDados: Vehicle | null = null;
   //veiculoDadoss = input<Vehicle | null>(null);
@@ -103,9 +105,11 @@ export class AddUpdateVehicle {
   //driverId = input<number | null>(null);
   isAba2Active = true;
   ngOnInit() {
-    this.getBrands();    
+    this.getBrands();
+    this.title.setTitle('Adicionar Veículo');
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      this.title.setTitle('Editar Veículo');
       this.getVehicleById(Number(id));
     }
     const veiculoDadoss = this.veiculoDados;
