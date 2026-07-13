@@ -85,10 +85,10 @@ export class AddUpdateFuel {
   ngOnInit() {
     this.update.set(false);
     const id = this.route.snapshot.paramMap.get('id');
+    this.getFuelTypes();
     if (id) {
       this.getSuppliers();
       this.getVehicles();      
-      this.getFuelTypes();
       this.fuelSupplyService.getFuelSupplyById(Number(id)).subscribe((fuelSupply) => {
         this.fuel.set(fuelSupply);
         this.update.set(true);
