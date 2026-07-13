@@ -73,7 +73,7 @@ export class FuelComponent implements OnInit{
           },
           error: (error) => {
             console.error('Erro ao excluir abastecimento:', error);
-            this.snackBar.open('Erro ao excluir abastecimento', 'Fechar', { duration: 3000 });
+            this.snackBar.open('Erro ao excluir abastecimento, ' + error.message, 'Fechar', { duration: 3000 });
           }        
         });
       }
