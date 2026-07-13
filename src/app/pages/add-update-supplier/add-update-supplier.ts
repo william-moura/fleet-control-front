@@ -116,6 +116,9 @@ export class AddUpdateSupplier {
         supplierNeighborhood: cep.neighborhood,
       });
       this.loading.set(false);
+    }, error => {
+      this.loading.set(false);
+      this.snackBar.open('Erro ao buscar CEP, verifique se o CEP é válido', 'Fechar', { duration: 3000 });
     });
   }
   ngOnInit() {

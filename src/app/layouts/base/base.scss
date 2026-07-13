@@ -1,5 +1,5 @@
 // Importamos as variáveis ou redefinimos aqui para consistência
-$sidebar-width: 260px;
+$sidebar-width: 20px;
 $sidebar-collapsed-width: 80px;
 $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 $bg-body: #f8fafc;
@@ -24,10 +24,6 @@ $bg-body: #f8fafc;
   &.sidebar-collapsed {
     margin-left: $sidebar-collapsed-width;
   }
-  &.content-full {
-    flex: 0 0 100%;
-    margin-left: 15px !important;
-  }
 
   .top-bar {
     height: 64px;
@@ -49,7 +45,7 @@ $bg-body: #f8fafc;
 
   .page-container {
     padding: 15px;
-    // Aqui você pode adicionar um max-width se quiser um layout centralizado    
+    // Aqui você pode adicionar um max-width se quiser um layout centralizado
   }
 }
 

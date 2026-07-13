@@ -2,11 +2,11 @@ import { Component, HostListener, inject, signal } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { LayoutService } from './services/layout-service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { AuthService } from './services/auth-service';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SideMenuComponent, AsyncPipe],
+  imports: [RouterOutlet, SideMenuComponent, AsyncPipe, CommonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -15,13 +15,19 @@ export class App {
   public router = inject(Router);
   private channel = new BroadcastChannel('app_session_channel');
   private activeTabsCount = 1;
+  withSidebar: boolean = true;
   constructor(public layoutService: LayoutService, protected authService: AuthService) {
     if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
     }
   }
-  
+
   ngOnInit() {
+    const sidebar = window.location.search.split('sidebar=')[1];
+    console.log(sidebar,'sidebar');
+    if (sidebar === 'false') {
+      this.withSidebar = false;
+    }
     // 1. Avisa as abas existentes que uma nova aba foi aberta
     this.channel.postMessage({ type: 'TAB_OPENED' });
 
