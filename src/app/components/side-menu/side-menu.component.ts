@@ -44,6 +44,6 @@ export class SideMenuComponent {
     const largura = Math.round(screen.width * 0.9);
     const altura = Math.round(screen.height * 0.9);
     const configuracoesJanela = `width=${largura},height=${altura},menubar=yes,toolbar=yes,location=yes,status=yes`;
-    window.open(url, '_blank', configuracoesJanela);
+    window.open(url+'?sidebar=false', '_blank', configuracoesJanela);
   }
 }

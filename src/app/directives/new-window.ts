@@ -32,7 +32,7 @@ export class NewWindow {
     const configuracoesJanela = `width=${largura},height=${altura},menubar=yes,toolbar=yes,location=yes,status=yes`;
 
     // Abre a nova janela com as configurações desejadas
-    window.open(url, '_blank', configuracoesJanela);
+    window.open(url+'?sidebar=false', '_blank', configuracoesJanela);
   }
 
 }
