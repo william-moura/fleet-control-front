@@ -89,7 +89,7 @@ export class DriversComponent implements AfterViewInit {
         this.snackBar.open('Motorista excluído com sucesso', 'Fechar', { duration: 3000 });
       } catch (error) {
         console.error('Erro ao excluir motorista:', error);
-        this.snackBar.open('Erro ao excluir motorista, ' + error.message, 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao excluir motorista, ' + error.error.message, 'Fechar', { duration: 3000 });
       }
       finally {        
         this.getDrivers();
