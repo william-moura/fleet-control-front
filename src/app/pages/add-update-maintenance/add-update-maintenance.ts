@@ -324,4 +324,8 @@ export class AddUpdateMaintenance {
       return null;
     };
   }
+  triggerMaintenanceNextDate() {
+    this.form.get('maintenanceNextDate')?.updateValueAndValidity();
+    this.form.get('maintenancePreviousDateFinished')?.updateValueAndValidity();
+  }
 }

@@ -231,7 +231,7 @@ export class AddUpdateVehicleFine {
   async getDrivers(vehicleId: number) {
     this.drivers$.set(this.vehicleService.getDriversByVehicleId(vehicleId).pipe(map((drivers) => drivers as Driver[])));
   }
-  private validateFineDate() {
+  validateFineDate() {
     return (control: AbstractControl) => {
       const regexData = /^\d{2}\/\d{2}\/\d{4}$/;
       const value = control.value;
@@ -259,5 +259,8 @@ export class AddUpdateVehicleFine {
       }
       return null;
     };
+  }
+  triggerFineDate() {
+    this.form.get('finePaidDate')?.updateValueAndValidity();
   }
 }
