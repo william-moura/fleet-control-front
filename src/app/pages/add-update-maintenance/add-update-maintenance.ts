@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -71,9 +71,9 @@ export class AddUpdateMaintenance {
       maintenanceDate: ['', Validators.required],
       services: ['', Validators.required],
       maintenanceCost: ['', Validators.required],
-      maintenanceNextDate: ['', [Validators.required, minDateValidator()]],
+      maintenanceNextDate: ['', [Validators.required, this.validateMaintenanceNextDate()]],
       maintenanceKilometers: ['', Validators.required],
-      maintenancePreviousDateFinished: ['', [Validators.required, minDateValidator()]],
+      maintenancePreviousDateFinished: ['', [Validators.required, this.validateMaintenanceNextDate()]],
       maintenanceNotes: [''],
       vehicleId: ['', Validators.required],
       supplierId: ['', Validators.required],
@@ -256,7 +256,7 @@ export class AddUpdateMaintenance {
         return;
       }
       if (this.form.get('maintenanceNextDate')?.errors?.['minDate']) {
-        this.snackBar.open('Data da próxima manutenção deve ser maior que a data atual', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Data da próxima manutenção deve ser maior ou igual a data de manutenção', 'Fechar', { duration: 3000 });
         return;
       }
       if (this.form.get('maintenanceNextKilometers')?.errors?.['min']) {
@@ -272,7 +272,7 @@ export class AddUpdateMaintenance {
         return;
       }
       if (this.form.get('maintenancePreviousDateFinished')?.errors?.['minDate']) {
-        this.snackBar.open('Data da próxima manutenção deve ser maior que a data atual', 'Fechar', { duration: 3000 });
+        this.snackBar.open('Data de previsão de termino da manutenção deve ser maior ou igual a data de manutenção', 'Fechar', { duration: 3000 });
         return;
       }
       if (this.form.get('maintenanceKilometers')?.errors?.['required']) {
@@ -294,5 +294,34 @@ export class AddUpdateMaintenance {
   }
   async getServices() {
     this.services$.set(this.maintenanceTypeService.getAllMaintenanceTypes(0, 1000).pipe(map((maintenanceServices) => maintenanceServices.data as MaintenanceServiceModel[])));
+  }
+  private validateMaintenanceNextDate() {
+    return (control: AbstractControl) => {
+      const regexData = /^\d{2}\/\d{2}\/\d{4}$/;
+      const value = control.value;
+      if (!value) {
+        return null;
+      }
+      if (!regexData.test(value)) return { invalidDate: true };
+      const [day, month, year] = value.split('/').map(Number);
+      const date = new Date(year, month - 1, day);
+
+      const validaData = this.form.get('maintenanceDate')?.value;
+
+      if (!regexData.test(validaData)) {
+        this.snackBar.open('Data de manutenção inválida', 'Fechar', { duration: 3000 });
+        return { minDate: true };
+      } 
+
+      const [dayMaintenance, monthMaintenance, yearMaintenance] = validaData.split('/').map(Number);
+      const maintenanceDate = new Date(yearMaintenance, monthMaintenance - 1, dayMaintenance);
+
+      maintenanceDate.setHours(0, 0, 0, 0);
+      date.setHours(0, 0, 0, 0);            
+      if (date < maintenanceDate) {
+        return { minDate: true };
+      }
+      return null;
+    };
   }
 }
