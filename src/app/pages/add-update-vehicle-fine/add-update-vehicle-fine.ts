@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -62,7 +62,7 @@ export class AddUpdateVehicleFine {
       fineDate: ['', Validators.required],
       fineAmount: ['', Validators.required],
       fineLevel: ['', Validators.required],
-      finePaidDate: ['', Validators.required],
+      finePaidDate: ['', [Validators.required, this.validateFineDate()]],
       fineNotes: [''],
       fineStatus: ['', ],
       finePoints: ['', [Validators.required, Validators.min(1)]],
@@ -128,6 +128,10 @@ export class AddUpdateVehicleFine {
       }
       if (this.form.get('finePaidDate')?.errors?.['required']) {
         this.snackBar.open('Data de vencimento é obrigatório', 'Fechar', { duration: 3000 });
+        return;
+      }
+      if (this.form.get('finePaidDate')?.errors?.['minDate']) {
+        this.snackBar.open('Data de vencimento deve ser maior ou igual a data de multa', 'Fechar', { duration: 3000 });
         return;
       }
       if (this.form.get('fineAmount')?.errors?.['required']) {
@@ -226,5 +230,37 @@ export class AddUpdateVehicleFine {
   }
   async getDrivers(vehicleId: number) {
     this.drivers$.set(this.vehicleService.getDriversByVehicleId(vehicleId).pipe(map((drivers) => drivers as Driver[])));
+  }
+  validateFineDate() {
+    return (control: AbstractControl) => {
+      const regexData = /^\d{2}\/\d{2}\/\d{4}$/;
+      const value = control.value;
+      if (!value) {
+        return null;
+      }
+      if (!regexData.test(value)) return { invalidDate: true };
+      const [day, month, year] = value.split('/').map(Number);
+      const date = new Date(year, month - 1, day);
+
+      const validaData = this.form.get('fineDate')?.value;
+
+      if (!regexData.test(validaData)) {
+        this.snackBar.open('Data de multa inválida', 'Fechar', { duration: 3000 });
+        return { minDate: true };
+      } 
+
+      const [dayMaintenance, monthMaintenance, yearMaintenance] = validaData.split('/').map(Number);
+      const maintenanceDate = new Date(yearMaintenance, monthMaintenance - 1, dayMaintenance);
+
+      maintenanceDate.setHours(0, 0, 0, 0);
+      date.setHours(0, 0, 0, 0);            
+      if (date < maintenanceDate) {
+        return { minDate: true };
+      }
+      return null;
+    };
+  }
+  triggerFineDate() {
+    this.form.get('finePaidDate')?.updateValueAndValidity();
   }
 }

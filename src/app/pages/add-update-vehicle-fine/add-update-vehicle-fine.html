@@ -47,7 +47,7 @@
                   <input matInput formControlName="fineDate" 
                   mask="00/00/0000" 
                   [dropSpecialCharacters]="false" 
-                  placeholder="DD/MM/AAAA">
+                  placeholder="DD/MM/AAAA" (change)="triggerFineDate()">
                 </mat-form-field>
               </div>
               <div class="grid-3col-modificado">
