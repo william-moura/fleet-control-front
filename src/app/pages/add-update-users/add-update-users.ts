@@ -75,13 +75,13 @@ export class AddUpdateUsers {
       });
     }
     this.user.set(this.userStateService.selectedUser());
-    if (this.user()) {
-      this.update.set(true);
-      const dataForm = { ...this.user() };
-      this.form.patchValue(dataForm);
-    } else {
-      this.update.set(false);
-    }
+    // if (this.user()) {
+    //   this.update.set(true);
+    //   const dataForm = { ...this.user() };
+    //   this.form.patchValue(dataForm);
+    // } else {
+    //   this.update.set(false);
+    // }
   }
   confirmPasswordValidator(form: FormGroup) {
     const password = form.get('password')?.value;
