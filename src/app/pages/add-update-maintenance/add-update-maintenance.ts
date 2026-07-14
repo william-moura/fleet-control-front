@@ -305,10 +305,20 @@ export class AddUpdateMaintenance {
       if (!regexData.test(value)) return { invalidDate: true };
       const [day, month, year] = value.split('/').map(Number);
       const date = new Date(year, month - 1, day);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      date.setHours(0, 0, 0, 0);      
-      if (date < today) {
+
+      const validaData = this.form.get('maintenanceDate')?.value;
+
+      if (!regexData.test(validaData)) {
+        this.snackBar.open('Data de manutenção inválida', 'Fechar', { duration: 3000 });
+        return { minDate: true };
+      } 
+
+      const [dayMaintenance, monthMaintenance, yearMaintenance] = validaData.split('/').map(Number);
+      const maintenanceDate = new Date(yearMaintenance, monthMaintenance - 1, dayMaintenance);
+
+      maintenanceDate.setHours(0, 0, 0, 0);
+      date.setHours(0, 0, 0, 0);            
+      if (date < maintenanceDate) {
         return { minDate: true };
       }
       return null;
