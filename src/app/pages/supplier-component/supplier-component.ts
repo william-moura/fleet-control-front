@@ -87,7 +87,7 @@ export class SupplierComponent {
         },
         error: (error) => {
           console.error('Erro ao excluir fornecedor:', error);
-          this.snackBar.open('Erro ao excluir fornecedor, ' + error.message, 'Fechar', { duration: 3000 });
+          this.snackBar.open('Erro ao excluir fornecedor, ' + error.error.message, 'Fechar', { duration: 3000 });
         }
       });
     }
