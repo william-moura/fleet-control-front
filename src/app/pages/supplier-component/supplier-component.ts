@@ -80,9 +80,15 @@ export class SupplierComponent {
       },
     }).afterClosed());
     if (result) {
-      this.supplierService.deleteSupplier(supplier.id).subscribe(() => {
-        this.snackBar.open('Fornecedor excluído com sucesso', 'Fechar', { duration: 3000 });
-        this.getSuppliers();
+      this.supplierService.deleteSupplier(supplier.id).subscribe({
+        next: () => {
+          this.snackBar.open('Fornecedor excluído com sucesso', 'Fechar', { duration: 3000 });
+          this.getSuppliers();
+        },
+        error: (error) => {
+          console.error('Erro ao excluir fornecedor:', error);
+          this.snackBar.open('Erro ao excluir fornecedor, ' + error.message, 'Fechar', { duration: 3000 });
+        }
       });
     }
   }
