@@ -62,7 +62,7 @@ export class AddUpdateDriver {
   private vehicleFineService = inject(VehicleFineService);
   driverFines = signal<VehicleFine[]>([]);
   private routerSubscription: Subscription | undefined;
-  constructor(private cdr: ChangeDetectorRef) {    
+  constructor(private cdr: ChangeDetectorRef) {
     this.form = this.fb.group({
       driverName: ['', Validators.required],
       driverRegisteredNumber: [{value: '', disabled: true}, Validators.required],
@@ -262,8 +262,7 @@ export class AddUpdateDriver {
         this.clearForm();
       }
     })
-    this.driver.set(this.driverStateService.selectedDriver());
-    console.log(this.driver(), 'driver');
+    this.driver.set(this.driverStateService.selectedDriver());    
     if (this.driver()) {
       const driverId = this.driver()?.id;
       if (!driverId) {
