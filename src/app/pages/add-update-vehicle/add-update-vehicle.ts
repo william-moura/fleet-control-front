@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
@@ -138,7 +138,7 @@ export class AddUpdateVehicle {
     }
   }
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     const currentYear = new Date().getFullYear() +1;
     console.log(currentYear, 'currentYear');
     this.veiculoForm = this.fb.group({
@@ -340,6 +340,7 @@ export class AddUpdateVehicle {
         this.photosIds.push(photo.id);
         this.previews.push(photo);
         console.log(this.previews);
+        this.cdr.detectChanges();
       });
     }
   }
@@ -350,6 +351,7 @@ export class AddUpdateVehicle {
       console.log(response);
     });
     console.log(this.previews);
+    this.cdr.detectChanges();
   }
   private clearForm() {
     this.selectedPhoto = null;
@@ -360,6 +362,7 @@ export class AddUpdateVehicle {
     this.update.set(false);
     this.isLoading.set(false);
     this.vehicleStateService.setVehicle(null);
+    this.cdr.detectChanges();
   }  
   private validatePurchaseDate() {
     return (control: AbstractControl) => {
