@@ -166,8 +166,9 @@ export class AddUpdateKm {
       return;
     }
     const dataForm = { ...this.form.value };
+    console.log(dataForm, 'forororor');
     if (dataForm.kilometersDate) {
-      dataForm.kilometersDate = dataForm.kilometersDate.split('-').reverse().join('/');
+      dataForm.kilometersDate = dataForm.kilometersDate.split('/').reverse().join('-');
     }
     this.kilometerService.updateKilometer(id, dataForm).subscribe({
       next: (kilometer) => {

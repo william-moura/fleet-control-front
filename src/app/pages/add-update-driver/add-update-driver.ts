@@ -428,23 +428,37 @@ export class AddUpdateDriver {
   private validateLicenseExpirationDate() {
     return (control: AbstractControl) => {
       const licenseExpirationDate = control.value;
-      const today = new Date();
-      const licenseExpirationDateDate = new Date(licenseExpirationDate);
-      if (licenseExpirationDateDate.getFullYear() < today.getFullYear() || (licenseExpirationDateDate.getFullYear() === today.getFullYear() && licenseExpirationDateDate.getMonth() < today.getMonth()) || (licenseExpirationDateDate.getFullYear() === today.getFullYear() && licenseExpirationDateDate.getMonth() === today.getMonth() && licenseExpirationDateDate.getDate() < today.getDate() )) {
-
-        return { invalidLicenseExpirationDate: true };
+      const regexData = /^\d{2}\/\d{2}\/\d{4}$/;    
+      if (!licenseExpirationDate) {
+        return null;
       }
-      return null;
+    if (!regexData.test(licenseExpirationDate)) return { invalidDate: true };
+    const [day, month, year] = licenseExpirationDate.split('/').map(Number);
+    const date = new Date(year, month - 1, day);
+    const today = new Date();
+      
+    const licenseExpirationDateDate = new Date(date);
+    if (licenseExpirationDateDate < today) {
+      return { invalidLicenseExpirationDate: true };
+    }
+    return null;
     }
   }
 
   validateLicenseExpirationDateInput(event: Event) {
     const input = event.target as HTMLInputElement;
     const value = input.value;
-    const date = new Date(value);
+    const regexData = /^\d{2}\/\d{2}\/\d{4}$/;    
+    if (!value) {
+      return null;
+    }
+    if (!regexData.test(value)) return { invalidDate: true };
+    const [day, month, year] = value.split('/').map(Number);
+    const date = new Date(year, month - 1, day);
     const licenseExpirationDateDate = new Date(date);
     const hoje = new Date();
-    if (licenseExpirationDateDate.getFullYear() < hoje.getFullYear() || (licenseExpirationDateDate.getFullYear() === hoje.getFullYear() && licenseExpirationDateDate.getMonth() < hoje.getMonth()) || (licenseExpirationDateDate.getFullYear() === hoje.getFullYear() && licenseExpirationDateDate.getMonth() === hoje.getMonth() && licenseExpirationDateDate.getDate() < hoje.getDate() )) {     
+
+    if (licenseExpirationDateDate < hoje) {        
       this.snackBar.open('Data de expiração da CNH deve ser maior que a data atual', 'Fechar', { duration: 3000 });
       return false;
     }
