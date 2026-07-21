@@ -432,14 +432,8 @@ export class AddUpdateDriver {
       if (!licenseExpirationDate) {
         return null;
       }
-    if (!regexData.test(licenseExpirationDate)) return { invalidDate: true };
-    const [day, month, year] = licenseExpirationDate.split('/').map(Number);
-    const date = new Date(year, month - 1, day);
-    const today = new Date();
-      
-    const licenseExpirationDateDate = new Date(date);
-    if (licenseExpirationDateDate < today) {
-      return { invalidLicenseExpirationDate: true };
+    if (!regexData.test(licenseExpirationDate)) {
+      return { invalidDate: true };
     }
     return null;
     }
@@ -452,16 +446,9 @@ export class AddUpdateDriver {
     if (!value) {
       return null;
     }
-    if (!regexData.test(value)) return { invalidDate: true };
-    const [day, month, year] = value.split('/').map(Number);
-    const date = new Date(year, month - 1, day);
-    const licenseExpirationDateDate = new Date(date);
-    const hoje = new Date();
-
-    if (licenseExpirationDateDate < hoje) {        
-      this.snackBar.open('Data de expiração da CNH deve ser maior que a data atual', 'Fechar', { duration: 3000 });
-      return false;
-    }
+    if (!regexData.test(value)) {
+      return { invalidDate: true };
+    } 
     return null;
   }
 }
