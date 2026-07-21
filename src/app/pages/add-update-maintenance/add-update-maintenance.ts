@@ -198,8 +198,8 @@ export class AddUpdateMaintenance {
     if (dataForm.maintenanceNextDate) {
       dataForm.maintenanceNextDate = dataForm.maintenanceNextDate.split('/').reverse().join('-');
     }
-    if (dataForm.previsionDateFinish) {
-      dataForm.previsionDateFinish = dataForm.previsionDateFinish.split('/').reverse().join('-');
+    if (dataForm.maintenancePreviousDateFinished) {
+      dataForm.maintenancePreviousDateFinished = dataForm.maintenancePreviousDateFinished.split('/').reverse().join('-');
     }
     this.maintenanceService.updateMaintenance(id, dataForm as Maintenance).subscribe({
       next: (maintenance) => {
