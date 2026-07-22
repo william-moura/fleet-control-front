@@ -1,0 +1,30 @@
+.dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .notification-item {
+    margin-bottom: 8px;
+    border-left: 4px solid transparent;
+    background: #fafafa;
+    border-radius: 4px;
+  
+    &:hover {
+      background: #f0f0f0;
+    }
+  }
+  
+  // Estilização dinâmica baseada no tipo enviado pelo backend polimórfico
+  .error { color: #f44336; }
+  .warning { color: #ff9800; }
+  .info { color: #2196f3; }
+  
+  .notification-title {
+    font-weight: bold;
+  }
+  .notification-message {
+    font-size: 0.9em;
+    color: #666;
+  }
+  

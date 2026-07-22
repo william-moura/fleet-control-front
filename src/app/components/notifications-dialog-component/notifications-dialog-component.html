@@ -1,0 +1,25 @@
+<h2 mat-dialog-title class="dialog-header">
+    <mat-icon color="warn">notifications_active</mat-icon>
+    Alertas do Sistema
+  </h2>
+  
+  <mat-dialog-content class="mat-typography">
+    <p *ngIf="notifications.length === 0">Nenhum alerta crítico pendente.</p>
+    
+    <mat-nav-list *ngIf="notifications.length > 0">
+      <mat-list-item *ngFor="let notification of notifications" class="notification-item">
+        <mat-icon matListItemIcon [class]="notification.data.type">error_outline</mat-icon>
+        <div matListItemTitle class="notification-title">{{ notification.data.title }}</div>
+        <div matListItemLine class="notification-message">{{ notification.data.message }}</div>
+        
+        <button mat-icon-button matListItemMeta (click)="verMotorista(notification)" title="Revisar CNH">
+          <mat-icon color="primary">visibility</mat-icon>
+        </button>
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="fechar()">Fechar</button>
+  </mat-dialog-actions>
+  
