@@ -23,6 +23,12 @@ import { AddUpdateMaintenance } from './pages/add-update-maintenance/add-update-
 import { AddUpdateFuel } from './pages/add-update-fuel/add-update-fuel';
 import { AddUpdateSupplier } from './pages/add-update-supplier/add-update-supplier';
 import { AddUpdateUsers } from './pages/add-update-users/add-update-users';
+import { Prefeituras } from './pages/prefeituras/prefeituras';
+import { Orgaos } from './pages/orgaos/orgaos';
+import { Secretarias } from './pages/secretarias/secretarias';
+import { AddUpdatePrefeitura } from './pages/add-update-prefeitura/add-update-prefeitura';
+import { AddUpdateOrgao } from './pages/add-update-orgao/add-update-orgao';
+import { AddUpdateSecretaria } from './pages/add-update-secretaria/add-update-secretaria';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard], pathMatch: 'full' },
@@ -36,6 +42,9 @@ export const routes: Routes = [
     { path: 'reports', component: ReportsComponent, data: { icon: 'report', name: 'Relatórios' , permission: 'acessar_relatorios'}, canActivate: [authGuard, roleGuard] },
     { path: 'supplier', component: SupplierComponent, data: { icon: 'local_shipping', name: 'Fornecedores' , permission: 'listar_fornecedores'}, canActivate: [authGuard, roleGuard] },
     { path: 'users', component: Users, data: { icon: 'groups', name: 'Usuários' , permission: 'listar_usuarios'}, canActivate: [authGuard, roleGuard] },
+    { path: 'prefeituras', component: Prefeituras, data: { icon: 'home', name: 'Prefeituras' }},
+    { path: 'orgaos', component: Orgaos, data: { icon: 'home', name: 'Órgãos' }},
+    { path: 'secretarias', component: Secretarias, data: { icon: 'home', name: 'Secretarias' }},
     { path: 'login', component: LoginComponent },    
     { path: 'report/preview/:id', component: ReportPreviewComponent, data: { icon: 'report', name: 'Visualizar Relatório', permission: 'nothing'} },
     { path: 'users/manage-roles', component: Roles, data: { icon: 'manage_accounts', name: 'Gerenciar Cargos', display: false} },
@@ -55,5 +64,11 @@ export const routes: Routes = [
     { path: 'supplier/new', component: AddUpdateSupplier, data: { icon: 'local_shipping', name: 'Fornecedor', display: false} },
     { path: 'users/edit/:id', component: AddUpdateUsers, data: { icon: 'groups', name: 'Usuário', display: false} },
     { path: 'users/new', component: AddUpdateUsers, data: { icon: 'groups', name: 'Usuário', display: false} },
+    { path: 'prefeitura/edit/:id', component: AddUpdatePrefeitura, data: { icon: 'home', name: 'Prefeitura', display: false} },
+    { path: 'prefeitura/new', component: AddUpdatePrefeitura, data: { icon: 'home', name: 'Prefeitura', display: false} },
+    { path: 'orgao/edit/:id', component: AddUpdateOrgao, data: { icon: 'home', name: 'Órgão', display: false} },
+    { path: 'orgao/new', component: AddUpdateOrgao, data: { icon: 'home', name: 'Órgão', display: false} },
+    { path: 'secretaria/edit/:id', component: AddUpdateSecretaria, data: { icon: 'home', name: 'Secretaria', display: false} },
+    { path: 'secretaria/new', component: AddUpdateSecretaria, data: { icon: 'home', name: 'Secretaria', display: false} },
     { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
 ];
