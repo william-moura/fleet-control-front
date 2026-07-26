@@ -1,1 +1,130 @@
-<p>add-update-prefeitura works!</p>
+<div class="container-pagina">
+  <header class="header-pag">
+    <div class="titulo-wrapper">
+      <button mat-icon-button aria-label="Voltar" (click)="cancelar()">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <div>
+        <span class="breadcrumbs">Administração > Prefeituras > Cadastro</span>
+        <h1>Cadastro de Prefeitura</h1>
+      </div>
+    </div>
+  </header>
+  <!-- Spinner do Angular Material -->
+<div *ngIf="loading()" class="spinner-container">
+  <mat-progress-spinner 
+    mode="indeterminate" 
+    color="primary">
+  </mat-progress-spinner>
+</div>
+
+  <main class="formulario-wrapper">
+    <form [formGroup]="form">
+      
+      <div class="layout-topo-foto">
+        <div class="inputs-principais">
+          
+          <div class="grid-3col-modificado">
+            <mat-form-field appearance="outline">
+              <mat-label>Código</mat-label>
+              <input matInput formControlName="id" placeholder="Código da Prefeitura">
+              <mat-icon matSuffix color="primary">badge</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Razão Social</mat-label>
+              <input matInput formControlName="razaoSocial" placeholder="Razão Social da Prefeitura">
+              <mat-icon matSuffix color="primary">person</mat-icon>
+            </mat-form-field>
+            
+          </div>
+
+          <div class="grid-4col">
+            <mat-form-field appearance="outline">
+              <mat-label>Nome Fantasia</mat-label>
+              <input matInput formControlName="nomeFantasia" placeholder="Nome Fantasia da Prefeitura">
+              <mat-icon matSuffix color="primary">person</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>CNPJ</mat-label>
+              <input matInput formControlName="cnpj" placeholder="CNPJ da Prefeitura" mask="99.999.999/9999-99">
+              <mat-icon matSuffix>badge</mat-icon>
+              <mat-error *ngIf="form.get('cnpj')">CNPJ inválido</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Telefone</mat-label>
+              <input matInput formControlName="telefone" placeholder="Telefone" mask="(00) 0000-0000||(00) 00000-0000">
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
+                        
+          </div>
+          <div class="grid-2col-compacto">
+            <mat-form-field appearance="outline">
+              <mat-label>CEP</mat-label>
+              <input matInput formControlName="cep" placeholder="CEP" mask="99999-999" (change)="getCep(form.value.cep)">
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Endereço</mat-label>
+              <input matInput formControlName="endereco" placeholder="Endereço">
+              <mat-icon matSuffix>map</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="grid-3col-ajustado">
+            <mat-form-field appearance="outline">
+              <mat-label>Bairro</mat-label>
+              <input matInput formControlName="bairro" placeholder="Bairro">
+              <mat-icon matSuffix>apartment</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Cidade</mat-label>
+              <input matInput formControlName="cidade" placeholder="Cidade">
+              <mat-icon matSuffix>apartment</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <input matInput formControlName="uf" placeholder="Estado" appUppercase>
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>E-mail</mat-label>
+              <input matInput formControlName="email" placeholder="E-mail" type="email">
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="sidebar-foto-pessoa">
+          <input type="file" #fileInput (change)="onFileSelected($event)" style="display: none" accept=".png, .jpg, .jpeg">
+          <div class="avatar-container">
+            <div class="avatar-dropzone">
+              <img [src]="form.get('foto')?.value" alt="Foto de Perfil">
+              <span class="label-foto">(Imagem)</span>
+              @if(!form.get('foto')?.value) {
+              <button type="button" mat-mini-fab color="primary" class="btn-upload" (click)="fileInput.click()">
+                <mat-icon>add_a_photo</mat-icon>
+              </button>
+              }
+              @if(form.get('foto')?.value) {
+                <button type="button" mat-mini-fab color="primary" class="btn-delete" (click)="deletePhoto()">
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              }
+            </div>
+            <p class="info-foto">Tamanho máximo: 2MB. Formatos aceitos: JPEG, JPG e PNG.</p>
+          </div>
+        </div>
+      </div>
+      <footer class="acoes-footer">
+        <button type="button" mat-stroked-button (click)="cancelar()">
+          <mat-icon>delete_outline</mat-icon> Cancelar
+        </button>
+        <button type="submit" mat-flat-button color="primary" (click)="salvar()">
+          <mat-icon>save</mat-icon> Salvar Cadastro
+        </button>
+      </footer>
+
+    </form>
+  </main>
+</div>

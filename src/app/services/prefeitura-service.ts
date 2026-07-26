@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { Pagination } from '../models/pagination';
 import { Orgao } from '../models/orgao';
 import { Secretaria } from '../models/secretaria';
+import { Photo } from '../models/photo';
 
 @Injectable({
   providedIn: 'root',
@@ -29,5 +30,8 @@ export class PrefeituraService {
   }
   deleteSecretaria(id: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/secretarias/${id}`);
+  }
+  uploadPhotos(formData: FormData): Observable<Photo> {
+    return this.http.post<Photo>(`${environment.apiUrl}/prefeituras/upload-photos`, formData);
   }
 }

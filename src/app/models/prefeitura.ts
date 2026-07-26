@@ -2,7 +2,8 @@ import { Orgao } from "./orgao";
 
 export interface Prefeitura {
     id: string;
-    nome: string;
+    razaoSocial: string;
+    nomeFantasia: string;
     cnpj: string;
     uf: string;
     endereco: string;
