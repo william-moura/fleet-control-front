@@ -74,15 +74,17 @@ export class AddUpdateDriver {
       driverRg: ['', [Validators.required, Validators.maxLength(9)]],
       driverCpf: ['', [Validators.required, this.validateCpf]],
       driverLicenseNumber: ['', Validators.required],
-      driverLicenseExpirationDate: ['', [Validators.required, this.validateLicenseExpirationDate()]],
+      driverLicenseExpirationDate: ['', [Validators.required, this.validateLicenseExpirationDate(), this.validateDate()]],
       driverLicenseCategory: ['', Validators.required],
-      driverBirthDate: ['', [Validators.required, this.validateBirthDate()]],
+      driverBirthDate: ['', [Validators.required, this.validateBirthDate(), this.validateDate()]],
       driverEmail: ['', [Validators.required, Validators.email]],
       driverPhone: ['', Validators.required],
       driverStatus: ['', Validators.required],
       driverPhoto: [''],
       driverNeighborhood: ['', Validators.required],
       photosIds: [[]],
+      driverAdmissionDate: ['', [Validators.required, this.validateDate()]],
+      driverDemissionDate: ['', [this.validateDate()]],
     });    
   }
   private validateCpf(control: AbstractControl) {
@@ -216,6 +218,18 @@ export class AddUpdateDriver {
     }
     if (this.form.get('driverEmail')?.errors?.['email']) {
       this.snackBar.open('Email do motorista é inválido', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverAdmissionDate')?.errors?.['required']) {
+      this.snackBar.open('Data de admissão do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverAdmissionDate')?.errors?.['invalidDate']) {
+      this.snackBar.open('Data de admissão do motorista é inválida', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverDemissionDate')?.errors?.['invalidDate']) {
+      this.snackBar.open('Data de demissão do motorista é inválida', 'Fechar', { duration: 3000 });
       return;
     }
     if (this.form.valid) {
@@ -447,8 +461,67 @@ export class AddUpdateDriver {
       return null;
     }
     if (!regexData.test(value)) {
-      return { invalidDate: true };
-    } 
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    const matches = value.split(regexData);
+    if (!matches) {
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    
+    // 2. Extrai os números
+    const day = parseInt(matches[1], 10);
+    const month = parseInt(matches[2], 10);
+    const year = parseInt(matches[3], 10);
+    
+    if (isNaN(day) || isNaN(month) || isNaN(year)) {
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
+      return false;
+    }
+
+    // 3. Validações básicas de intervalo
+    if (month < 1 || month > 12 || day < 1 || day > 31) {
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    
+    // Limita o ano se você não quiser aceitar o ano 5432 do seu exemplo
+    if (year < 1900 || year > 2100) {
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
+      return false;
+    }
+
+    
     return null;
+  }
+  private validateDate() {
+    return (control: AbstractControl) => {
+      const date = control.value;
+      const regexData = /^\d{2}\/\d{2}\/\d{4}$/;
+      if (!date) {
+        return null;
+      }
+      if (!regexData.test(date)) {
+        return { invalidDate: true };
+      }
+      const matches = date.split('/');
+      if (!matches) {
+        return { invalidDate: true };
+      }      
+      const day = parseInt(matches[0], 10);
+      const month = parseInt(matches[1], 10);
+      const year = parseInt(matches[2], 10);      
+      if (isNaN(day) || isNaN(month) || isNaN(year)) {
+        return { invalidDate: true };
+      }
+      if (month < 1 || month > 12 || day < 1 || day > 31) {
+        return { invalidDate: true };
+      }
+      if (year < 1900 || year > 2100) {
+        return { invalidDate: true };
+      }
+      return null;
+    }
   }
 }
