@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Prefeitura } from '../models/prefeitura';
 import { Observable } from 'rxjs';
@@ -14,6 +14,9 @@ import { Photo } from '../models/photo';
 export class PrefeituraService {
   private http = inject(HttpClient);
   getPrefeituras(indicePagina: number, pageSize: number): Observable<Pagination<Prefeitura>> {
+    const params = new HttpParams()
+    .set('page', (indicePagina + 1).toString()) // MatPaginator começa em 0, Laravel em 1
+    .set('per_page', pageSize.toString());
     return this.http.get<Pagination<Prefeitura>>(`${environment.apiUrl}/prefeituras?page=${indicePagina}&per_page=${pageSize}`);
   }
   deletePrefeitura(id: number): Observable<void> {
@@ -33,5 +36,14 @@ export class PrefeituraService {
   }
   uploadPhotos(formData: FormData): Observable<Photo> {
     return this.http.post<Photo>(`${environment.apiUrl}/prefeituras/upload-photos`, formData);
+  }
+  createPrefeitura(prefeitura: Prefeitura): Observable<Prefeitura> {
+    return this.http.post<Prefeitura>(`${environment.apiUrl}/prefeituras`, prefeitura);
+  }
+  getNextRegistrationNumber(): Observable<string> {
+    return this.http.get<string>(`${environment.apiUrl}/prefeituras-next-registration`);
+  }
+  updatePrefeitura(prefeitura: Prefeitura, id: number): Observable<Prefeitura> {
+    return this.http.put<Prefeitura>(`${environment.apiUrl}/prefeituras/${id}`, prefeitura);
   }
 }

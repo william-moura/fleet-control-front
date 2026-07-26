@@ -56,7 +56,7 @@ export class AddUpdatePrefeitura {
       uf: ['', Validators.required],
       endereco: ['', Validators.required],
       numero: ['', Validators.required],
-      complemento: ['', Validators.required],
+      complemento: [''],
       bairro: ['', Validators.required],
       cidade: ['', Validators.required],
       cep: ['', Validators.required],
@@ -72,6 +72,13 @@ export class AddUpdatePrefeitura {
   }
   salvar() {
     console.log(this.form.value);
+    if (this.form.valid) {
+      if (this.update() === false) {
+        this.create();
+      } else {
+        this.updatePrefeitura();
+      }
+    }
   }
 
   getCep(cep: string) {
@@ -126,5 +133,31 @@ export class AddUpdatePrefeitura {
       photosIds: [],
     });
     this.cdr.detectChanges();
+  }
+  getNextRegistrationNumber() {
+    this.prefeituraService.getNextRegistrationNumber().subscribe((number) => {
+      this.form.patchValue({
+        id: number,
+      });
+    });
+  }
+
+  ngOnInit() {
+    console.log('ngOnInit');
+    this.getNextRegistrationNumber();
+  }
+
+  private create() {
+    this.prefeituraService.createPrefeitura(this.form.value).subscribe((prefeitura) => {
+      this.snackBar.open('Prefeitura criada com sucesso', 'Fechar', { duration: 3000 });
+      this.router.navigate(['/prefeituras']);
+    });
+  }
+
+  private updatePrefeitura() {
+    this.prefeituraService.updatePrefeitura(this.form.value, this.form.value.id).subscribe((prefeitura) => {
+      this.snackBar.open('Prefeitura atualizada com sucesso', 'Fechar', { duration: 3000 });
+      this.router.navigate(['/prefeituras']);
+    });
   }
 }
