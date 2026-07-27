@@ -53,7 +53,28 @@ export class PrefeituraService {
   getNextRegistrationNumberOrgao(): Observable<string> {
     return this.http.get<string>(`${environment.apiUrl}/orgaos-next-registration`);
   }
+  getOrgaoById(id: number): Observable<Orgao> {
+    return this.http.get<Orgao>(`${environment.apiUrl}/orgaos/${id}`);
+  }
   createOrgao(orgao: Orgao): Observable<Orgao> {
     return this.http.post<Orgao>(`${environment.apiUrl}/orgaos`, orgao);
+  }
+  updateOrgao(orgao: Orgao, id: number): Observable<Orgao> {
+    return this.http.put<Orgao>(`${environment.apiUrl}/orgaos/${id}`, orgao);
+  }
+  getSecretariaById(id: number): Observable<Secretaria> {
+    return this.http.get<Secretaria>(`${environment.apiUrl}/secretarias/${id}`);
+  }
+  getNextRegistrationNumberSecretaria(): Observable<string> {
+    return this.http.get<string>(`${environment.apiUrl}/secretarias-next-registration`);
+  }
+  createSecretaria(secretaria: Secretaria): Observable<Secretaria> {
+    return this.http.post<Secretaria>(`${environment.apiUrl}/secretarias`, secretaria);
+  }
+  updateSecretaria(secretaria: Secretaria, id: number): Observable<Secretaria> {
+    return this.http.put<Secretaria>(`${environment.apiUrl}/secretarias/${id}`, secretaria);
+  }
+  getOrgaosByPrefeituraId(prefeituraId: number): Observable<Orgao[]> {
+    return this.http.get<Orgao[]>(`${environment.apiUrl}/orgaos/prefeitura/${prefeituraId}`);
   }
 }
