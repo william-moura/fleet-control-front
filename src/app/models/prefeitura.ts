@@ -1,4 +1,5 @@
 import { Orgao } from "./orgao";
+import { Photo } from "./photo";
 
 export interface Prefeitura {
     id: string;
@@ -15,5 +16,5 @@ export interface Prefeitura {
     email: string | null;
     site: string | null;
     orgaos: Orgao[];
-    foto: string | null;
+    photos: Photo[] | null;
 }

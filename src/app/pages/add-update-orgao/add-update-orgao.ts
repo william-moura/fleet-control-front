@@ -51,7 +51,18 @@ export class AddUpdateOrgao {
     this.router.navigate(['/orgaos']);
   }
   salvar() {
-    console.log(this.form.value);
+    if (this.form.get('nome')?.getError('required')) {
+      this.form.get('nome')?.setErrors({required: true});
+    }
+    if (this.form.get('sigla')?.getError('required')) {
+      this.form.get('sigla')?.setErrors({required: true});
+    }
+    if (this.form.get('prefeituraId')?.getError('required')) {
+      this.form.get('prefeituraId')?.setErrors({required: true});
+    }
+    if (this.form.valid) {
+      this.createOrgao();
+    }    
   }
   getPrefeituras() {
     this.prefeituraService.getPrefeituras(0, 1000).subscribe((prefeituras) => {
@@ -61,5 +72,17 @@ export class AddUpdateOrgao {
   }
   onPrefeituraChange(event: any) {
     console.log(event);
+  }
+  ngOnInit() {
+    this.prefeituraService.getNextRegistrationNumberOrgao().subscribe((nextRegistrationNumber) => {
+      this.form.patchValue({
+        id: Number(nextRegistrationNumber),
+      });
+    });
+  }
+  private createOrgao() {
+    this.prefeituraService.createOrgao(this.form.value).subscribe((orgao) => {
+      this.router.navigate(['/orgaos']);
+    });
   }
 }

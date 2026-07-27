@@ -13,6 +13,7 @@ import { Photo } from '../models/photo';
 })
 export class PrefeituraService {
   private http = inject(HttpClient);
+  private readonly API_URL_UPLOADS = environment.apiUrl + '/upload';
   getPrefeituras(indicePagina: number, pageSize: number): Observable<Pagination<Prefeitura>> {
     const params = new HttpParams()
     .set('page', (indicePagina + 1).toString()) // MatPaginator começa em 0, Laravel em 1
@@ -34,8 +35,8 @@ export class PrefeituraService {
   deleteSecretaria(id: number): Observable<void> {
     return this.http.delete<void>(`${environment.apiUrl}/secretarias/${id}`);
   }
-  uploadPhotos(formData: FormData): Observable<Photo> {
-    return this.http.post<Photo>(`${environment.apiUrl}/prefeituras/upload-photos`, formData);
+  uploadPhotos(photos: FormData): Observable<Photo> {
+    return this.http.post<Photo>(`${this.API_URL_UPLOADS}`, photos);
   }
   createPrefeitura(prefeitura: Prefeitura): Observable<Prefeitura> {
     return this.http.post<Prefeitura>(`${environment.apiUrl}/prefeituras`, prefeitura);
@@ -45,5 +46,14 @@ export class PrefeituraService {
   }
   updatePrefeitura(prefeitura: Prefeitura, id: number): Observable<Prefeitura> {
     return this.http.put<Prefeitura>(`${environment.apiUrl}/prefeituras/${id}`, prefeitura);
+  }
+  getPrefeituraById(id: number): Observable<Prefeitura> {
+    return this.http.get<Prefeitura>(`${environment.apiUrl}/prefeituras/${id}`);
+  }
+  getNextRegistrationNumberOrgao(): Observable<string> {
+    return this.http.get<string>(`${environment.apiUrl}/orgaos-next-registration`);
+  }
+  createOrgao(orgao: Orgao): Observable<Orgao> {
+    return this.http.post<Orgao>(`${environment.apiUrl}/orgaos`, orgao);
   }
 }
