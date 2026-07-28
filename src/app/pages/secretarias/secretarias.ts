@@ -64,8 +64,8 @@ export class Secretarias {
   async deleteSecretaria(secretaria: Secretaria) {
     const confirm = await this.dialog.open(ConfirmDialog, {
       data: {
-        titulo: 'Excluir Secretaria',
-        mensagem: 'Tem certeza que deseja excluir a secretaria?',
+        title: 'Excluir Secretaria',
+        message: 'Tem certeza que deseja excluir a secretaria?',
       },
     });
     const result = await firstValueFrom(confirm.afterClosed());

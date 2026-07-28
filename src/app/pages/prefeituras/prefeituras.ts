@@ -63,8 +63,8 @@ export class Prefeituras {
   async deletePrefeitura(prefeitura: Prefeitura) {
     const confirm = await this.dialog.open(ConfirmDialog, {
       data: {
-        titulo: 'Excluir Prefeitura',
-        mensagem: 'Tem certeza que deseja excluir a prefeitura?',
+        title: 'Excluir Prefeitura',
+        message: 'Tem certeza que deseja excluir a prefeitura?',
       },
     });
     const result = await firstValueFrom(confirm.afterClosed());

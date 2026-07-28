@@ -62,8 +62,8 @@ export class Orgaos {
   async deleteOrgao(orgao: Orgao) {
     const confirm = await this.dialog.open(ConfirmDialog, {
       data: {
-        titulo: 'Excluir Órgão',
-        mensagem: 'Tem certeza que deseja excluir o órgão?',
+        title: 'Excluir Órgão',
+        message: 'Tem certeza que deseja excluir o órgão?',
       },
     });
     const result = await firstValueFrom(confirm.afterClosed());
