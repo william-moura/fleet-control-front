@@ -77,4 +77,7 @@ export class PrefeituraService {
   getOrgaosByPrefeituraId(prefeituraId: number): Observable<Orgao[]> {
     return this.http.get<Orgao[]>(`${environment.apiUrl}/orgaos/prefeitura/${prefeituraId}`);
   }
+  getSecretariaByOrgaoId(orgaoId: number): Observable<Secretaria[]> {
+    return this.http.get<Secretaria[]>(`${environment.apiUrl}/secretarias/orgao/${orgaoId}`);
+  }
 }

@@ -119,6 +119,12 @@
                     [dropSpecialCharacters]="false"
                     [leadZeroDateTime]="true">
                   </mat-form-field>
+                  <app-async-select [options$]="prefeituras$()" [label]="'Prefeitura'" [valueKey]="'id'" [displayKey]="'nomeFantasia'" (click)="getPrefeituras()"
+                  formControlName="prefeituraId"></app-async-select>
+                  <app-async-select [options$]="orgaoes$()" [label]="'Órgão'" [valueKey]="'id'" [displayKey]="'nome'" (click)="getOrgaoes()"
+                  formControlName="orgaoId"></app-async-select>
+                  <app-async-select [options$]="secretarias$()" [label]="'Secretaria'" [valueKey]="'id'" [displayKey]="'nome'" (click)="getSecretarias()"
+                  formControlName="secretariaId"></app-async-select>
                 </div>
                 <div class="linha-full">
                   <mat-form-field appearance="outline">

@@ -42,6 +42,10 @@ import { Driver } from '../../models/driver';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { DriverService } from '../../services/driver-service';
 import { Title } from '@angular/platform-browser';
+import { Prefeitura } from '../../models/prefeitura';
+import { PrefeituraService } from '../../services/prefeitura-service';
+import { Orgao } from '../../models/orgao';
+import { Secretaria } from '../../models/secretaria';
 
 @Component({
   selector: 'app-add-update-vehicle',
@@ -104,11 +108,17 @@ export class AddUpdateVehicle {
   driverForm: FormGroup;
   //driverId = input<number | null>(null);
   isAba2Active = true;
+  prefeituras$ = signal<Observable<Prefeitura[]>>(of([]));
+  orgaoes$ = signal<Observable<Orgao[]>>(of([]));
+  secretarias$ = signal<Observable<Secretaria[]>>(of([]));
+  private prefeituraService = inject(PrefeituraService);
   ngOnInit() {
     this.getBrands();
+    this.getPrefeituras();
     this.title.setTitle('Adicionar Veículo');
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
+      
       this.title.setTitle('Editar Veículo');
       this.getVehicleById(Number(id));
     }
@@ -129,8 +139,8 @@ export class AddUpdateVehicle {
       this.photosIds = veiculoDadoss.photos.map((photo: Photo) => photo.id);
       this.selectedPhoto = veiculoDadoss.photos[0];
       this.veiculoDados = veiculoDadoss;
-      this.veiculoForm.patchValue(veiculoDadoss);
-
+      this.veiculoForm.patchValue(veiculoDadoss);      
+      this.getOrgaoes();      
 
     } else {
       this.update.set(false);
@@ -156,7 +166,10 @@ export class AddUpdateVehicle {
       vehicleColor: ['', Validators.required],
       vehicleModelYear: ['', [Validators.required, Validators.max(currentYear)]],
       vehicleRenavamNumber: ['', Validators.required],
-      vehicleChassisNumber: ['', Validators.required],      
+      vehicleChassisNumber: ['', Validators.required],
+      prefeituraId: ['', Validators.required],
+      orgaoId: ['', Validators.required],
+      secretariaId: ['', Validators.required],
     });
     this.driverForm = this.fb.group({
       driverId: ['', Validators.required],
@@ -475,12 +488,38 @@ export class AddUpdateVehicle {
           this.isLoading.set(false);
         }
       });
-      this.drivers.set(vehicle.drivers || []);      
+      this.drivers.set(vehicle.drivers || []);
+      this.prefeituraService.getOrgaosByPrefeituraId(vehicle.prefeituraId).subscribe((orgaoes) => {
+        this.orgaoes$.set(of(orgaoes));
+        if (vehicle.orgaoId) {
+          this.prefeituraService.getSecretariaByOrgaoId(vehicle.orgaoId).subscribe((secretarias) => {
+            this.secretarias$.set(of(secretarias));
+          });
+        }
+      });
     });
   }
 
   tabChanged(event: MatTabChangeEvent): void {
     // A propriedade 'index' começa em 0. Aba 2 é o índice 1
     this.isAba2Active = event.index === 0;
+  }
+  getPrefeituras() {
+    this.prefeituraService.getPrefeituras(0, 1000).subscribe((prefeituras) => {
+      this.prefeituras$.set(of(prefeituras.data));
+      if (this.veiculoForm.value.orgaoId) {
+        this.getSecretarias();
+      }
+    });
+  }
+  getOrgaoes() {
+    this.prefeituraService.getOrgaosByPrefeituraId(this.veiculoForm.value.prefeituraId).subscribe((orgaoes) => {
+      this.orgaoes$.set(of(orgaoes));
+    });
+  }
+  getSecretarias() {
+    this.prefeituraService.getSecretariaByOrgaoId(this.veiculoForm.value.orgaoId).subscribe((secretarias) => {
+      this.secretarias$.set(of(secretarias));
+    });
   }
 }

@@ -28,4 +28,7 @@ export interface Vehicle {
   maintenances: Maintenance[] | null;
   fines: VehicleFine[] | null;
   fuelSuppliers: FuelSupply[] | null;
+  prefeituraId: number;
+  orgaoId: number;
+  secretariaId: number;
 }
