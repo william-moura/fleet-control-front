@@ -20,4 +20,6 @@ export interface Driver {
   driverPhoto: string;
   photosIds: number[];
   photos: Photo[];
+  driverAdmissionDate: string;
+  driverDemissionDate: string;
 }

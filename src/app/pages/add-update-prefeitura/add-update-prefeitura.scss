@@ -1,0 +1,310 @@
+$bg-fundo: #ffffff;
+$borda-cor: #e2e8f0;
+$texto-secundario: #64748b;
+$primary-blue: #0b57d0;
+@use '@angular/material' as mat;
+
+.container-pagina {
+  background-color: $bg-fundo;
+  min-height: 100vh;
+  padding: 15px;
+  box-sizing: border-box;
+  width: 100%;  
+  border-radius: 12px;  
+  border: 1px solid #E5E7EB;
+}
+
+.header-pag {
+  margin-bottom: 20px;
+  .titulo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    .breadcrumbs { font-size: 12px; color: $texto-secundario; }
+    h1 { margin: 0; font-size: 30px; font-weight: 700; color: #1e293b; }
+  }
+}
+
+.formulario-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid $borda-cor;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+// Layout Topo + Foto alinhada
+.layout-topo-foto {
+  display: grid;
+  grid-template-columns: 1fr 180px;
+  gap: 20px 0px;
+  margin-bottom: 16px;
+
+  @media(max-width: 900px) {
+    grid-template-columns: 1fr;
+    .sidebar-foto-pessoa { justify-content: center; }
+  }
+}
+
+.inputs-principais {
+  display: flex;
+  flex-direction: column;
+}
+
+// Grid Managers
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  .span-2 { grid-column: span 2; }
+  .span-3 { grid-column: span 3; }
+}
+
+.grid-3col-ajustado {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-3col-modificado {
+  display: grid;
+  grid-template-columns: 200px 1fr 200px;
+  gap: 16px;
+  width: 100%;
+}
+.mat-icon, mat-icon {
+  color: $primary-blue;
+}
+
+.grid-4col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  @media(max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+}
+
+.grid-2col-compacto {
+  display: grid;
+  grid-template-columns: 0.3fr 1fr;
+  gap: 12px;
+}
+
+mat-form-field { width: 100%; }
+
+// Estilização do Campo eSocial Customizado (Conforme Imagem)
+.status-esocial {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  
+  .label-fake {
+    font-size: 12px;
+    color: $texto-secundario;
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  .badge-esocial {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 48px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid $borda-cor;
+    background-color: #f8fafc;
+    color: $texto-secundario;
+
+    &.sucesso {
+      background-color: #e6f4ea;
+      color: #137333;
+      border-color: #c2e7cd;
+      mat-icon { color: #137333; font-size: 20px; width: 20px; height: 20px;}
+    }
+  }
+}
+
+// Área de Dropzone da Foto do Usuário
+.sidebar-foto-pessoa {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-top: 4px;
+
+  .avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+
+    .info-foto {
+      font-size: 11px;
+      color: $texto-secundario;
+      text-align: center;
+      max-width: 160px;
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
+
+  .avatar-dropzone {
+    position: relative;
+    width: 160px;
+    height: 200px;
+    border: 2px dashed #cdd0d4;
+    border-radius: 8px;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    img {
+      width: 80px;
+      height: 80px;
+      opacity: 0.3;
+      object-fit: cover;
+    }
+
+    .label-foto {
+      font-size: 13px;
+      color: $texto-secundario;
+    }
+
+    .btn-upload {
+      position: absolute;
+      bottom: -15px;
+      transform: scale(0.85);
+    }
+  }
+}
+
+// Container Inferior de Cards (Parentesco, RIC, CTPS)
+.secoes-cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 16px;
+
+  @media(max-width: 1100px) { grid-template-columns: 1fr; }
+}
+
+.card-interno {
+  background: #ffffff;
+  border: 1px solid $borda-cor;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .titulo-secao {
+    background-color: #f8fafc;
+    margin: 0;
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e293b;
+    border-bottom: 1px solid $borda-cor;
+  }
+
+  .card-interno-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+// Botão customizado da CTPS Digital
+.btn-ctps-digital {
+  background-color: #757575 !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  height: 40px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.margin-top-ajuste {
+  margin-top: 8px;
+}
+
+// Footer de Ações
+.acoes-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid $borda-cor;
+
+  button[mat-flat-button] {
+    padding: 0 24px;
+    background-color: $primary-blue;
+  }
+}
+.col-span-2 {
+  width: 100%;
+}
+.col-span-1 {
+  width: 33.33%;
+}
+.col-span-3 {
+  width: 50%;
+}
+
+.col-span-4 {
+  width: 100%;
+}
+.col-span-5 {
+  width: 100%;
+}
+.col-span-6 {
+  width: 100%;
+}
+.col-span-7 {
+  width: 100%;
+}
+.mdc-floating-label.mat-mdc-floating-label.mdc-floating-label--float-above {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: #1F2937 !important;
+}
+.mat-mdc-input-element.ng-pristine.ng-valid.mat-mdc-form-field-input-control.mdc-text-field__input.cdk-text-field-autofill-monitored.ng-touched {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #4B5563 !important;
+}
+.sidebar-foto-pessoa {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-top: 4px;
+  .avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    .info-foto {
+      font-size: 11px;
+      color: $texto-secundario;
+      text-align: center;
+      max-width: 160px;
+      margin: 0;
+      line-height: 1.4;
+    }
+  }
+}
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed; /* ou absolute, dependendo do seu layout */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* fundo levemente transparente */
+  z-index: 1000;
+}

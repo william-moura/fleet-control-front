@@ -7,6 +7,9 @@ import { Maintenance } from '../models/maintenance';
 import { FuelSupply } from '../models/fuel-supply';
 import { Supplier } from '../models/supplier';
 import { User } from '../models/user';
+import { Prefeitura } from '../models/prefeitura';
+import { Orgao } from '../models/orgao';
+import { Secretaria } from '../models/secretaria';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +24,9 @@ export class VehicleStateService {
   private _selectedFuelSupply = signal<FuelSupply | null>(null);
   private _selectedSupplier = signal<Supplier | null>(null);
   private _selectedUser = signal<User | null>(null);
-  
+  private _selectedPrefeitura = signal<Prefeitura | null>(null);
+  private _selectedOrgao = signal<Orgao | null>(null);
+  private _selectedSecretaria = signal<Secretaria | null>(null);
   // Exposição pública apenas para leitura
   readonly selectedVehicle = this._selectedVehicle.asReadonly();
   readonly selectedDriver = this._selectedDriver.asReadonly();
@@ -31,6 +36,9 @@ export class VehicleStateService {
   readonly selectedFuelSupply = this._selectedFuelSupply.asReadonly();
   readonly selectedSupplier = this._selectedSupplier.asReadonly();
   readonly selectedUser = this._selectedUser.asReadonly();
+  readonly selectedPrefeitura = this._selectedPrefeitura.asReadonly();
+  readonly selectedOrgao = this._selectedOrgao.asReadonly();
+  readonly selectedSecretaria = this._selectedSecretaria.asReadonly();
   setVehicle(veiculo: Vehicle | null) {
     this._selectedVehicle.set(veiculo);
   }
@@ -54,5 +62,14 @@ export class VehicleStateService {
   }
   setUser(user: User | null) {
     this._selectedUser.set(user);
+  }
+  setPrefeitura(prefeitura: Prefeitura | null) {
+    this._selectedPrefeitura.set(prefeitura);
+  }
+  setOrgao(orgao: Orgao | null) {
+    this._selectedOrgao.set(orgao);
+  }
+  setSecretaria(secretaria: Secretaria | null) {
+    this._selectedSecretaria.set(secretaria);
   }
 }

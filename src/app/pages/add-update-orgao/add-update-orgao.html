@@ -1,0 +1,66 @@
+<div class="container-pagina">
+    <header class="header-pag">
+      <div class="titulo-wrapper">
+        <button mat-icon-button aria-label="Voltar" (click)="cancelar()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <div>
+          <span class="breadcrumbs">Administração > Prefeituras > Cadastro</span>
+          <h1>Cadastro de Prefeitura</h1>
+        </div>
+      </div>
+    </header>
+    <!-- Spinner do Angular Material -->
+  <!-- <div *ngIf="loading()" class="spinner-container">
+    <mat-progress-spinner 
+      mode="indeterminate" 
+      color="primary">
+    </mat-progress-spinner>
+  </div> -->
+  
+    <main class="formulario-wrapper">
+      <form [formGroup]="form">
+        
+        <div class="layout-topo-foto">
+          <div class="inputs-principais">
+            
+            <div class="grid-3col-modificado">
+              <mat-form-field appearance="outline">
+                <mat-label>Código</mat-label>
+                <input matInput formControlName="id" placeholder="Código da Prefeitura">
+                <mat-icon matSuffix color="primary">badge</mat-icon>
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline">
+                  <mat-label>Nome do Órgão</mat-label>
+                  <input matInput formControlName="nome" placeholder="Nome do Órgão">
+                  <mat-icon matSuffix color="primary">person</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Sigla</mat-label>
+                    <input matInput formControlName="sigla" placeholder="Sigla do Órgão">
+                    <mat-icon matSuffix color="primary">person</mat-icon>
+                </mat-form-field>
+                
+            </div>
+            <div class="teste-grid">
+                <app-async-select [options$]="prefeituras$()" [label]="'Prefeitura'" [placeholder]="'Selecione uma prefeitura'" [valueKey]="'id'" [displayKey]="'nomeFantasia'"
+                    (click)="getPrefeituras()" formControlName="prefeituraId">
+                </app-async-select>
+            </div>
+  
+          </div>
+
+        </div>
+        <footer class="acoes-footer">
+          <button type="button" mat-stroked-button (click)="cancelar()">
+            <mat-icon>delete_outline</mat-icon> Cancelar
+          </button>
+          <button type="submit" mat-flat-button color="primary" (click)="salvar()">
+            <mat-icon>save</mat-icon> Salvar Cadastro
+          </button>
+        </footer>
+  
+      </form>
+    </main>
+  </div>
