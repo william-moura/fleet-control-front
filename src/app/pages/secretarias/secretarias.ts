@@ -27,7 +27,7 @@ import { NewWindow } from '../../directives/new-window';
 })
 export class Secretarias {
 
-  displayedColumns: string[] = ['nome', 'sigla', 'acoes'];
+  displayedColumns: string[] = ['nome', 'orgao', 'prefeitura', 'acoes'];
   dataSource = new MatTableDataSource<Secretaria>([]);
   sort = viewChild.required(MatSort);
   isLoading = signal(true);
