@@ -29,9 +29,11 @@ import { Secretarias } from './pages/secretarias/secretarias';
 import { AddUpdatePrefeitura } from './pages/add-update-prefeitura/add-update-prefeitura';
 import { AddUpdateOrgao } from './pages/add-update-orgao/add-update-orgao';
 import { AddUpdateSecretaria } from './pages/add-update-secretaria/add-update-secretaria';
+import { Configurations } from './pages/configurations/configurations';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard], pathMatch: 'full' },
+    { path: 'configurations', component: Configurations, data: { icon: 'settings', name: 'Configurações de alertas', display: true}, canActivate: [authGuard], pathMatch: 'full' },
     { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard',  permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard] },
     { path: 'drivers', component: DriversComponent, data: { icon: 'groups', name: 'Motoristas', permission: 'listar_motoristas'}, canActivate: [authGuard, roleGuard] },
     { path: 'vehicles', component: Vehicles, data: { icon: 'local_shipping', name: 'Veículos', permission: 'listar_veiculos'}, canActivate: [authGuard, roleGuard] },

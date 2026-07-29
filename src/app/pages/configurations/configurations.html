@@ -1,0 +1,50 @@
+<div class="container-pagina">
+  
+    <header class="header-pag">
+        <div class="titulo-wrapper">
+          <div>
+            <span class="breadcrumbs">Configurações de alertas</span>
+            <h1>Configurações de alertas</h1>
+          </div>
+        </div>
+      </header>
+    <div class="conteudo-principal">
+        <main class="formulario-wrapper">
+            <mat-tab-group animationDuration="0ms" class="abas-navegacao" #tabGroup>
+                <mat-tab label="Configurações">                    
+                    <section class="secao-form">
+                        <h3><mat-icon>settings</mat-icon> Configurações</h3>
+                        <div class="grid-4col">
+                            <mat-form-field appearance="outline">
+                            <mat-label>Dias Aviso CNH</mat-label>
+                            <input matInput [(ngModel)]="configuracaoPadrao.cnh.daysBefore" maxlength="2" mask="99">                                
+                            </mat-form-field>
+            
+                            <mat-form-field appearance="outline">
+                            <mat-label>Dias Aviso Manutenção</mat-label>
+                            <input matInput [(ngModel)]="configuracaoPadrao.manutencao.daysBefore" maxlength="2" mask="99">                                
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                            <mat-label>Aviso KM Manutenção</mat-label>
+                            <input matInput [(ngModel)]="configuracaoPadrao.kmManutencao.daysBefore" maxlength="7" mask="999,99">                                
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                            <mat-label>Aviso Multas</mat-label>
+                            <input matInput [(ngModel)]="configuracaoPadrao.multas.daysBefore" maxlength="2" mask="99">                                
+                            </mat-form-field>
+                        </div>
+                    </section>
+
+                </mat-tab>
+            </mat-tab-group>
+            <footer class="acoes-footer">
+                <button type="button" mat-stroked-button (click)="cancelar()">
+                  <mat-icon>delete_outline</mat-icon> Cancelar
+                </button>
+                <button type="submit" mat-flat-button color="primary" (click)="salvar()">
+                  <mat-icon>save</mat-icon> Salvar Cadastro
+                </button>
+            </footer>
+        </main>
+    </div>
+</div>

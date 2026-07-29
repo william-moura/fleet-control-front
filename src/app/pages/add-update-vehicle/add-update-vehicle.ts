@@ -150,7 +150,6 @@ export class AddUpdateVehicle {
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) {
     const currentYear = new Date().getFullYear() +1;
-    console.log(currentYear, 'currentYear');
     this.veiculoForm = this.fb.group({
       vehiclePlate: ['', Validators.required],
       vehicleStatus: ['', Validators.required],
