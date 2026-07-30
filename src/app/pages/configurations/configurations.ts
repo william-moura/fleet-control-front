@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -18,6 +18,9 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { DragDropDirective } from '../../drag-drop-directive';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { ConfigurationService } from '../../services/configuration-service';
+import { AlertSettings, Configuration } from '../../models/configuration';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-configurations',
@@ -38,48 +41,111 @@ import { HttpClient } from '@angular/common/http';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     NgxMaskDirective,
-    DragDropDirective,
     FormsModule
   ],
   templateUrl: './configurations.html',
   styleUrl: './configurations.scss',
 })
 export class Configurations {
-  alertTypes: any[] = [];
-  manutencaoDaysBefore: number = 0;
-  kmManutencao: number = 0;
-  cnhDaysBefore: number = 0;
-  configuracaoPadrao = {
-    cnh: {
-      daysBefore: 0,
-      alertType: 'cnh',
-    },
-    manutencao: {
-      daysBefore: 0,
-      alertType: 'manutencao',
-    },
-    kmManutencao: {
-      daysBefore: 0,
-      alertType: 'kmManutencao',
-    },
-    multas: {
-      daysBefore: 0,
-      alertType: 'multas',
-    },
+  private snackBar = inject(MatSnackBar);
+  configuracaoPadrao: Configuration = {
+    alerts: [],
   };
-  configuracao: any = {};
-  constructor(private router: Router, private http: HttpClient) {}
-  cancelar() {
-    this.router.navigate(['/dashboard']);
+  cnh: AlertSettings = {
+    daysBefore: null,
+    alertType: 'cnh',
+  };
+  manutencao: AlertSettings = {
+    daysBefore: null,
+    alertType: 'manutencao',
+  };
+  kmManutencao: AlertSettings = {
+    daysBefore: null,
+    alertType: 'kmManutencao',
+  }
+  multas: AlertSettings = {
+    daysBefore: null,
+    alertType: 'multas',
+  }
+  isLoading = signal<boolean>(false);
+  constructor(private router: Router, private configurationService: ConfigurationService, private cdr: ChangeDetectorRef) {
+    this.manutencao.daysBefore = 0;
+    this.kmManutencao.daysBefore = 0;
+    this.multas.daysBefore = 0;
+    this.cnh.daysBefore = 0;
+  }
+  ngOnInit() {
+    this.isLoading.set(true);
+    const configuration = this.configurationService.getConfiguration();
+    configuration.subscribe((response: Configuration) => {
+      response.alerts.forEach((alert: AlertSettings) => {
+        switch (alert.alertType) {
+          case 'cnh':
+            this.cnh = alert;
+            break;
+          case 'manutencao':
+            this.manutencao = alert;
+            break;
+          case 'kmManutencao':
+            this.kmManutencao = alert;
+            break;
+          case 'multas':
+            this.multas = alert;
+            break;
+        }
+      });
+      this.cdr.detectChanges();
+      this.isLoading.set(false);
+    });
   }
   salvar() {    
-    this.alertTypes.push(this.configuracaoPadrao.cnh);
-    this.alertTypes.push(this.configuracaoPadrao.manutencao);
-    this.alertTypes.push(this.configuracaoPadrao.kmManutencao);
-    const alerts = { alerts: this.alertTypes };
-    
-    this.http.post('http://localhost:8080/api/alert-settings', alerts).subscribe((response) => {      
-      this.router.navigate(['/dashboard']);
+    this.isLoading.set(true);
+    this.configuracaoPadrao.alerts.push(this.cnh);
+    this.configuracaoPadrao.alerts.push(this.manutencao);
+    this.configuracaoPadrao.alerts.push(this.kmManutencao);
+    this.configuracaoPadrao.alerts.push(this.multas);
+    console.log(this.configuracaoPadrao, 'hahaha');
+    this.configurationService.createConfiguration(this.configuracaoPadrao).subscribe({
+      next: (response) => {
+        this.snackBar.open('Configurações salvas com sucesso', 'Fechar', { duration: 3000 });
+      },
+      error: (error) => {
+        this.snackBar.open('Erro ao salvar configurações', 'Fechar', { duration: 3000 });
+        this.isLoading.set(false);
+      },
+      complete: () => {
+        this.isLoading.set(false);
+      }
     });
+  }
+  atualizarValor(valor: any) {
+    if (!valor) {
+      this.kmManutencao.daysBefore = 0;
+      return;
+    }
+  
+    // Converte para string e remove qualquer caractere que não seja número
+    let valorLimpo = valor.toString().replace(/\D/g, '');
+  
+    // Se o valor for muito curto, preenche com zeros à esquerda (ex: "5" vira "005")
+    valorLimpo = valorLimpo.padStart(3, '0');
+  
+    // Insere o ponto decimal antes dos últimos 2 dígitos (ex: "12345" vira "123.45")
+    const parteInteira = valorLimpo.slice(0, -2);
+    const parteDecimal = valorLimpo.slice(-2);
+    
+    this.kmManutencao.daysBefore = parseFloat(`${parteInteira}.${parteDecimal}`);
+  }
+  inputTransform(value: any): string | number {
+    if (value === null || value === undefined) return '';
+    return value.toString().replace('.', ',');
+  }
+  
+  // Transforma o texto digitado em um número decimal real para o seu model
+  outputTransform(value: any): any {
+    if (!value) return 0;
+    // Remove pontos de milhar e converte a vírgula em ponto numérico
+    const valorLimpo = value.toString().replace(/\./g, '').replace(',', '.');
+    return parseFloat(valorLimpo) || 0;
   }
 }

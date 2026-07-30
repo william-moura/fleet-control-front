@@ -11,12 +11,39 @@
   
     <ul class="nav-list">
       @for (route of menuItems(); track route.path) {
-        <li class="nav-item" routerLinkActive="active">
-          <a appNewWindow="{{route.path || route.children?.[0]?.path || ''}}">
-            <span class="material-icons">{{ route.data?.['icon'] }}</span>
-            <span class="link-name">{{ route.data?.['name'] }}</span>
-          </a>
-        </li>
+        @if (route.children && route.children.length > 0) {
+          <li class="nav-item" routerLinkActive="active" >
+            <a (click)="toggleSubmenu(route)">
+              <span class="material-icons">{{ route.data?.['icon'] }}</span>
+              <span class="link-name">{{ route.data?.['name'] }}</span>
+              <mat-icon class="seta-expansao" [class.rotacionado]="route.expanded">
+                expand_more
+              </mat-icon>
+            </a>
+            @if (route.expanded) {
+              <ul>
+                @for (child of route.children; track child.path) {
+                  <li class="nav-item submenu-item" routerLinkActive="active">
+                    <a appNewWindow="{{ child.path }}">
+                      <span class="material-icons">{{ child.data?.['icon'] }}</span>
+                      <span class="link-name">{{ child.data?.['name'] }}</span>
+                    </a>
+                  </li>
+                }
+              </ul>
+            }
+          </li>
+        }
+        @else if (route.data?.['display']) {
+          
+          <li class="nav-item" routerLinkActive="active">
+            <a appNewWindow="{{ route.path }}">
+              <span class="material-icons">{{ route.data?.['icon'] }}</span>
+              <span class="link-name">{{ route.data?.['name'] }}</span>
+            </a>
+          </li>          
+        }
+       
       }
       <li class="nav-item" routerLinkActive="active">
         <a href="javascript:void(0)" (click)="onLogout()">

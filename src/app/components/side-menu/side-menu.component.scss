@@ -161,3 +161,27 @@ $transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 a {
   cursor: pointer;
 }
+
+.submenu-item {
+  list-style: none;
+  margin: 0;
+  padding-left: 15px;
+  max-height: 200px; // Altura estimada suficiente para os itens
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 1;
+
+  &.collapsed {
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;
+  }
+
+  li a {
+    display: block;
+    padding: 8px 0;
+    color: #333;
+    text-decoration: none;
+  }
+}
