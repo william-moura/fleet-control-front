@@ -29,22 +29,38 @@ import { Secretarias } from './pages/secretarias/secretarias';
 import { AddUpdatePrefeitura } from './pages/add-update-prefeitura/add-update-prefeitura';
 import { AddUpdateOrgao } from './pages/add-update-orgao/add-update-orgao';
 import { AddUpdateSecretaria } from './pages/add-update-secretaria/add-update-secretaria';
+import { Configurations } from './pages/configurations/configurations';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard], pathMatch: 'full' },
-    { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard',  permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard] },
-    { path: 'drivers', component: DriversComponent, data: { icon: 'groups', name: 'Motoristas', permission: 'listar_motoristas'}, canActivate: [authGuard, roleGuard] },
-    { path: 'vehicles', component: Vehicles, data: { icon: 'local_shipping', name: 'Veículos', permission: 'listar_veiculos'}, canActivate: [authGuard, roleGuard] },
-    { path: 'vehicle-fines', component: VehicleFines, data: { icon: 'payment', name: 'Multas', permission: 'listar_multas_veiculos'}, canActivate: [authGuard, roleGuard] },
-    { path: 'kilometers', component: KmComponent, data: { icon: 'speed', name: 'Kilometragem' }, canActivate: [authGuard] },
-    { path: 'maintenance', component: MaintenanceComponent, data: { icon: 'build', name: 'Manutenção' , permission: 'listar_manutencoes'}, canActivate: [authGuard, roleGuard] },
-    { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' , permission: 'listar_abastecimento'}, canActivate: [authGuard, roleGuard] },
-    { path: 'reports', component: ReportsComponent, data: { icon: 'report', name: 'Relatórios' , permission: 'acessar_relatorios'}, canActivate: [authGuard, roleGuard] },
-    { path: 'supplier', component: SupplierComponent, data: { icon: 'local_shipping', name: 'Fornecedores' , permission: 'listar_fornecedores'}, canActivate: [authGuard, roleGuard] },
-    { path: 'users', component: Users, data: { icon: 'groups', name: 'Usuários' , permission: 'listar_usuarios'}, canActivate: [authGuard, roleGuard] },
-    { path: 'prefeituras', component: Prefeituras, data: { icon: 'home', name: 'Prefeituras' }},
-    { path: 'orgaos', component: Orgaos, data: { icon: 'home', name: 'Órgãos' }},
-    { path: 'secretarias', component: Secretarias, data: { icon: 'home', name: 'Secretarias' }},
+    { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard',  permission: 'acessar_dashboards', display: true}, canActivate: [authGuard, roleGuard] },    
+    { 
+        path: '',
+        children: [
+            { path: 'drivers', component: DriversComponent, data: { icon: 'groups', name: 'Motoristas', permission: 'listar_motoristas'}, canActivate: [authGuard, roleGuard] },
+            { path: 'vehicles', component: Vehicles, data: { icon: 'local_shipping', name: 'Veículos', permission: 'listar_veiculos'}, canActivate: [authGuard, roleGuard] },
+            { path: 'vehicle-fines', component: VehicleFines, data: { icon: 'payment', name: 'Multas', permission: 'listar_multas_veiculos'}, canActivate: [authGuard, roleGuard] },
+            { path: 'supplier', component: SupplierComponent, data: { icon: 'local_shipping', name: 'Fornecedores' , permission: 'listar_fornecedores', display: true}, canActivate: [authGuard, roleGuard] },
+            { path: 'users', component: Users, data: { icon: 'groups', name: 'Usuários' , permission: 'listar_usuarios', display: true}, canActivate: [authGuard, roleGuard] },
+        ],
+        data: { icon: 'dashboard', name: 'Cadastros', permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard]
+    },
+    { 
+        path: '',
+        children: [
+            { path: 'prefeituras', component: Prefeituras, data: { icon: 'home', name: 'Prefeituras' }},
+            { path: 'orgaos', component: Orgaos, data: { icon: 'home', name: 'Órgãos' }},
+            { path: 'secretarias', component: Secretarias, data: { icon: 'home', name: 'Secretarias' }},
+        ],
+        data: { icon: 'home', name: 'Prefeituras', permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard]
+    },
+    { path: 'kilometers', component: KmComponent, data: { icon: 'speed', name: 'Kilometragem', display: true }, canActivate: [authGuard] },
+    { path: 'maintenance', component: MaintenanceComponent, data: { icon: 'build', name: 'Manutenção' , permission: 'listar_manutencoes', display: true}, canActivate: [authGuard, roleGuard] },
+    { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' , permission: 'listar_abastecimento', display: true}, canActivate: [authGuard, roleGuard] },
+    { path: 'reports', component: ReportsComponent, data: { icon: 'report', name: 'Relatórios' , permission: 'acessar_relatorios', display: true}, canActivate: [authGuard, roleGuard] },
+    { path: 'configurations', component: Configurations, data: { icon: 'settings', name: 'Configurações de alertas', display: true}, canActivate: [authGuard], pathMatch: 'full' },    
+    
+    
     { path: 'login', component: LoginComponent },    
     { path: 'report/preview/:id', component: ReportPreviewComponent, data: { icon: 'report', name: 'Visualizar Relatório', permission: 'nothing'} },
     { path: 'users/manage-roles', component: Roles, data: { icon: 'manage_accounts', name: 'Gerenciar Cargos', display: false} },
