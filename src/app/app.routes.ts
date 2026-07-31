@@ -52,11 +52,17 @@ export const routes: Routes = [
             { path: 'orgaos', component: Orgaos, data: { icon: 'home', name: 'Órgãos' }},
             { path: 'secretarias', component: Secretarias, data: { icon: 'home', name: 'Secretarias' }},
         ],
-        data: { icon: 'home', name: 'Prefeituras', permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard]
+        data: { icon: 'home', name: 'Empresas', permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard]
     },
-    { path: 'kilometers', component: KmComponent, data: { icon: 'speed', name: 'Kilometragem', display: true }, canActivate: [authGuard] },
-    { path: 'maintenance', component: MaintenanceComponent, data: { icon: 'build', name: 'Manutenção' , permission: 'listar_manutencoes', display: true}, canActivate: [authGuard, roleGuard] },
-    { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' , permission: 'listar_abastecimento', display: true}, canActivate: [authGuard, roleGuard] },
+    { 
+        path: '',
+        children: [
+            { path: 'kilometers', component: KmComponent, data: { icon: 'speed', name: 'Kilometragem', display: true }, canActivate: [authGuard] },
+            { path: 'maintenance', component: MaintenanceComponent, data: { icon: 'build', name: 'Manutenção' , permission: 'listar_manutencoes', display: true}, canActivate: [authGuard, roleGuard] },
+            { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' , permission: 'listar_abastecimento', display: true}, canActivate: [authGuard, roleGuard] },
+        ],
+        data: { icon: 'local_shipping', name: 'Movimentação', permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard]
+    },    
     { path: 'reports', component: ReportsComponent, data: { icon: 'report', name: 'Relatórios' , permission: 'acessar_relatorios', display: true}, canActivate: [authGuard, roleGuard] },
     { path: 'configurations', component: Configurations, data: { icon: 'settings', name: 'Configurações de alertas', display: true}, canActivate: [authGuard], pathMatch: 'full' },    
     
