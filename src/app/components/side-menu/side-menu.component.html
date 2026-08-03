@@ -8,9 +8,15 @@
         <span class="material-icons">{{ isCollapsed ? 'menu' : 'menu_open' }}</span>
       </button>
     </div>
+    <div class="search-container" *ngIf="!isCollapsed">
+      <div class="search-wrapper">
+        <input type="text" placeholder="Pesquisar menus..." (input)="filterRoutes(searchInput.value)" #searchInput>
+        <span class="material-icons search-icon">search</span>
+      </div>
+    </div>
   
     <ul class="nav-list">
-      @for (route of menuItems(); track route.path) {
+      @for (route of filteredMenuItems(); track route.path) {
         @if (route.children && route.children.length > 0) {
           <li class="nav-item" routerLinkActive="active" >
             <a (click)="toggleSubmenu(route)">
