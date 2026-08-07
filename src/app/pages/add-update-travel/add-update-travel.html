@@ -25,17 +25,63 @@
             <mat-icon matSuffix color="primary">badge</mat-icon>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Veículo</mat-label>
-            <input matInput formControlName="vehicle" placeholder="Placa / modelo do veículo">
-            <mat-icon matSuffix color="primary">directions_car</mat-icon>
-          </mat-form-field>
+          <app-async-select
+            [options$]="vehicles$()"
+            [label]="'Veículo'"
+            [placeholder]="'Selecione um veículo'"
+            [valueKey]="'id'"
+            [displayKey]="'vehiclePlate'"
+            (click)="getVehicles()"
+            formControlName="vehicleId"
+          >
+          </app-async-select>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Motorista</mat-label>
-            <input matInput formControlName="driver" placeholder="Nome do motorista">
-            <mat-icon matSuffix color="primary">person</mat-icon>
-          </mat-form-field>
+          <app-async-select
+            [disabled]="!form.value.vehicleId"
+            [options$]="drivers$()"
+            [label]="'Motorista'"
+            [placeholder]="'Selecione um motorista'"
+            [valueKey]="'id'"
+            [displayKey]="'driverName'"
+            (click)="getDrivers(form.value.vehicleId)"
+            formControlName="driverId"
+          >
+          </app-async-select>
+        </div>
+
+        <div class="grid-3col">
+          <app-async-select
+            [options$]="prefeituras$()"
+            [label]="'Prefeitura'"
+            [placeholder]="'Selecione uma prefeitura'"
+            [valueKey]="'id'"
+            [displayKey]="'nomeFantasia'"
+            (click)="getPrefeituras()"
+            formControlName="prefeituraId"
+          >
+          </app-async-select>
+
+          <app-async-select
+            [options$]="orgaos$()"
+            [label]="'Órgão'"
+            [placeholder]="'Selecione um órgão'"
+            [valueKey]="'id'"
+            [displayKey]="'nome'"
+            (click)="getOrgaos()"
+            formControlName="orgaoId"
+          >
+          </app-async-select>
+
+          <app-async-select
+            [options$]="secretarias$()"
+            [label]="'Secretaria'"
+            [placeholder]="'Selecione uma secretaria'"
+            [valueKey]="'id'"
+            [displayKey]="'nome'"
+            (click)="getSecretarias()"
+            formControlName="secretariaId"
+          >
+          </app-async-select>
         </div>
 
         <div class="grid-2col">
@@ -49,6 +95,20 @@
             <mat-label>Destino</mat-label>
             <input matInput formControlName="destination" placeholder="Local de destino">
             <mat-icon matSuffix>place</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="grid-2col">
+          <mat-form-field appearance="outline">
+            <mat-label>Odômetro saída</mat-label>
+            <input matInput type="number" formControlName="odometerDeparture" placeholder="Km na saída">
+            <mat-icon matSuffix>speed</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Odômetro entrada</mat-label>
+            <input matInput type="number" formControlName="odometerEntry" placeholder="Km na entrada">
+            <mat-icon matSuffix>speed</mat-icon>
           </mat-form-field>
         </div>
 
