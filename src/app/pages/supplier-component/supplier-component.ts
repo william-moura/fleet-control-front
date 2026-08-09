@@ -94,11 +94,15 @@ export class SupplierComponent {
   }
   async updateSupplier(supplier: Supplier) {
     this.supplierStateService.setSupplier(supplier);
-    this.router.navigate(['/supplier/edit']);
+    this.router.navigate(['/supplier/edit', supplier.id]);
   }
   onPageChange(event: PageEvent) {
     this.indicePagina = event.pageIndex;
     this.pageSize = event.pageSize;
     this.getSuppliers();
+  }
+  newSupplier() {
+    this.supplierStateService.setSupplier(null);
+    this.router.navigate(['/supplier/new']);
   }
 }

@@ -39,7 +39,7 @@ export const appConfig: ApplicationConfig = {
     provideEnvironmentNgxMask(),
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
     provideLuxonDateAdapter(),
-    { provide: MAT_DATE_FORMATS, useValue: MY_LUXON_FORMATS }
+    { provide: MAT_DATE_FORMATS, useValue: MY_LUXON_FORMATS },
   ]
 };
 

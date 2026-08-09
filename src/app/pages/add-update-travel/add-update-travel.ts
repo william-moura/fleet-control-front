@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -21,6 +21,7 @@ import { Travel } from '../../models/travel';
 import { Vehicle } from '../../models/vehicle';
 import { PrefeituraService } from '../../services/prefeitura-service';
 import { VehicleService } from '../../services/vehicle-service';
+import { GoogleMap, MapMarker, MapDirectionsRenderer } from '@angular/google-maps';
 
 @Component({
   selector: 'app-add-update-travel',
@@ -36,6 +37,9 @@ import { VehicleService } from '../../services/vehicle-service';
     MatNativeDateModule,
     MatProgressSpinnerModule,
     AsyncSelect,
+    GoogleMap,
+    MapMarker,
+    MapDirectionsRenderer,
   ],
   templateUrl: './add-update-travel.html',
   styleUrl: './add-update-travel.scss',
@@ -61,6 +65,29 @@ export class AddUpdateTravel {
   drivers$ = signal<Observable<Driver[]>>(of([]));
 
   statusOptions = ['Agendada', 'Em andamento', 'Concluída', 'Cancelada'];
+
+  // Queries baseadas em Signals do Angular moderno
+  private inputOrigemEl = viewChild<ElementRef<HTMLInputElement>>('inputOrigem');
+  private inputDestinoEl = viewChild<ElementRef<HTMLInputElement>>('inputDestino');
+  private CHAVE_DO_GOOGLE_MAPS = 'AIzaSyDgxIkKNYOom_ZzmE5BdhPmlqQCRpZVag4';
+
+
+  // Informações de exibição da viagem
+  center = signal<google.maps.LatLngLiteral>({ lat: -23.5505, lng: -46.6333 });
+  zoom = signal<number>(12);
+
+  // Estados dos inputs
+  origem = signal<string>('');
+  destino = signal<string>('');
+
+  // Dados da rota
+  distancia = signal<string>('');
+  duracao = signal<string>('');
+  directionsResults = signal<google.maps.DirectionsResult | undefined>(undefined);
+
+  // Observable que alimenta o renderizador de rotas
+  directionsResults$: Observable<google.maps.DirectionsResult | undefined> | undefined;
+  apiCarregada = signal<boolean>(false);
 
   constructor() {
     this.form = this.fb.group({
@@ -225,5 +252,111 @@ export class AddUpdateTravel {
       this.snackBar.open('Viagem criada com sucesso', 'Fechar', { duration: 3000 });
     }
     this.router.navigate(['/travels']);
+ 
+  }  
+
+  ngAfterViewInit() {
+    this.carregarScriptGoogleMaps()
+    .then(() => {
+      this.apiCarregada.set(true);
+      // Garante que o DOM já conhece os inputs antes de ligar o Autocomplete
+      setTimeout(() => this.inicializarAutocomplete(), 100);
+    })
+    .catch(err => console.error('Erro ao carregar mapa:', err));
   }
+
+  inicializarAutocomplete() {
+    const origemNative = this.inputOrigemEl()?.nativeElement;
+    const destinoNative = this.inputDestinoEl()?.nativeElement;
+
+    if (!origemNative || !destinoNative) return;
+
+    // Autocomplete Origem
+    const autocompleteOrigem = new google.maps.places.Autocomplete(origemNative, {
+      fields: ['formatted_address'],
+      types: ['geocode']
+    });
+    autocompleteOrigem.addListener('place_changed', () => {
+      const place = autocompleteOrigem.getPlace();
+      this.origem.set(place.formatted_address || '');
+    });
+
+    // Autocomplete Destino
+    const autocompleteDestino = new google.maps.places.Autocomplete(destinoNative, {
+      fields: ['formatted_address'],
+      types: ['geocode']
+    });
+    autocompleteDestino.addListener('place_changed', () => {
+      const place = autocompleteDestino.getPlace();
+      this.destino.set(place.formatted_address || '');
+    });
+  }
+
+  calcularRota() {
+    if (!this.origem() || !this.destino()) return;
+
+    const directionsService = new google.maps.DirectionsService();
+
+    const request: google.maps.DirectionsRequest = {
+      origin: this.origem(),
+      destination: this.destino(),
+      travelMode: google.maps.TravelMode.DRIVING
+    };
+
+    directionsService.route(request, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK && result) {
+        this.directionsResults.set(result);
+        
+        // Certificando-se de que a perna da rota existe antes de ler as propriedades
+        const rota = result.routes?.[0]?.legs?.[0];
+        if (rota) {
+          this.distancia.set(rota.distance?.text || '');
+          this.duracao.set(rota.duration?.text || '');
+        }
+      } else {
+        // Resetar os estados de forma limpa sem injetar propriedades na string de erro
+        this.directionsResults.set(undefined);
+        this.distancia.set('');
+        this.duracao.set('');
+        
+        // Tratando a string de status de forma amigável
+        this.exibirErroDeRota(status as google.maps.DirectionsStatus);
+      }
+    });
+  }
+
+  private exibirErroDeRota(status: google.maps.DirectionsStatus) {
+    const mensagens: Record<string, string> = {
+      'NOT_FOUND': 'Pelo menos um dos endereços informados não foi encontrado.',
+      'ZERO_RESULTS': 'Não foi possível encontrar uma rota terrestre entre a origem e o destino.',
+      'MAX_WAYPOINTS_EXCEEDED': 'Muitos pontos de parada foram informados.',
+      'INVALID_REQUEST': 'A requisição enviada ao mapa é inválida.',
+      'OVER_QUERY_LIMIT': 'Limite de requisições excedido na chave da API.',
+      'REQUEST_DENIED': 'A ativação da API de rotas foi negada no console do Google Cloud.',
+      'UNKNOWN_ERROR': 'Erro desconhecido no servidor do Google Maps. Tente novamente.'
+    };
+  
+    const erroAmigavel = mensagens[status] || `Erro ao calcular rota: ${status}`;
+    alert(erroAmigavel);
+  }
+  private carregarScriptGoogleMaps(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      // Se a biblioteca já existir no escopo global, resolve imediatamente
+      if (typeof google !== 'undefined' && google.maps) {
+        resolve();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://googleapis.com?key=' + this.CHAVE_DO_GOOGLE_MAPS + '&libraries=places';
+      script.async = true;
+      script.defer = true;
+      
+      script.onload = () => resolve();
+      script.onerror = (error) => reject(error);
+
+      document.head.appendChild(script);
+    });
+  }
+  
 }

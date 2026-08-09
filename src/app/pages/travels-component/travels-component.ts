@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, viewChild } from '@angular/core';
+import { Component, inject, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -7,6 +7,7 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { NewWindow } from '../../directives/new-window';
 import { Travel } from '../../models/travel';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-travels-component',
@@ -38,9 +39,13 @@ export class TravelsComponent {
   totalRegistros = 0;
   pageSize = 5;
   indicePagina = 0;
-
+  router = inject(Router);
   onPageChange(event: PageEvent) {
     this.indicePagina = event.pageIndex;
     this.pageSize = event.pageSize;
+  }
+
+  newTravel() {
+    this.router.navigate(['/travel/new']);
   }
 }

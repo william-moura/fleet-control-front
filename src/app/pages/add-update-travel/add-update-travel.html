@@ -137,6 +137,45 @@
             <mat-icon matSuffix>flag</mat-icon>
           </mat-form-field>
         </div>
+
+        <div class="container-viagem">
+          <div class="painel-busca">
+            <!-- Input de Origem -->
+            <input #inputOrigem 
+                   [value]="origem()" 
+                   (input)="origem.set($any($event.target).value)" 
+                   placeholder="Cidade ou endereço de origem" />
+          
+            <!-- Input de Destino -->
+            <input #inputDestino 
+                   [value]="destino()" 
+                   (input)="destino.set($any($event.target).value)" 
+                   placeholder="Cidade ou endereço de destino" />
+          
+            <button (click)="calcularRota()">Traçar Rota</button>
+          </div>
+          
+        
+          <!-- Controle de fluxo nativo do Angular moderno (@if) -->
+          @if (distancia()) {
+            <div class="painel-info">
+              <p><strong>Distância total:</strong> {{ distancia() }}</p>
+              <p><strong>Tempo estimado:</strong> {{ duracao() }}</p>
+            </div>
+          }
+        
+          <!-- Componente do Mapa consumindo dados reativos limpos -->
+            <!-- Renderização condicional segura baseada no Signal do carregamento da API -->
+          @if (apiCarregada()) {
+            <google-map height="500px" width="100%" [center]="center()" [zoom]="zoom()">
+              @if (directionsResults(); as resultados) {
+                <map-directions-renderer [directions]="resultados"></map-directions-renderer>
+              }
+            </google-map>
+          } @else {
+            <div class="carregando-mapa">Carregando mapa...</div>
+          }
+        </div>
       </div>
 
       <footer class="acoes-footer">
