@@ -178,7 +178,7 @@ export class AddUpdateSupplier {
       },
       error: (error) => {
         console.error('Erro ao cadastrar fornecedor:', error);
-        this.snackBar.open('Erro ao cadastrar fornecedor ' + error.message, 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar fornecedor ' + error.error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
