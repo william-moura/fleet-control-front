@@ -313,7 +313,7 @@ export class AddUpdateVehicle {
       error: (error) => {
         console.error('Erro ao cadastrar veículo:', error);
         this.isLoading.set(false);
-        this.snackBar.open('Erro ao cadastrar veículo ' + error.message, 'Fechar', { duration: 3000 });
+        this.snackBar.open('Erro ao cadastrar veículo ' + error.error.message, 'Fechar', { duration: 3000 });
       }
     });
   }
@@ -378,24 +378,74 @@ export class AddUpdateVehicle {
   }  
   private validatePurchaseDate() {
     return (control: AbstractControl) => {
-      const purchaseDate = control.value;
-      const purchaseDateDate = new Date(purchaseDate);
-      const today = new Date();
-      if (purchaseDateDate.getFullYear() > today.getFullYear() || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() > today.getMonth()) || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() === today.getMonth() && purchaseDateDate.getDate() > today.getDate() )) {
-        return { invalidPurchaseDate: true };
+      const date = control.value;
+      const regexData = /^\d{2}\/\d{2}\/\d{4}$/;
+      if (!date) {
+        return null;
+      }
+      if (!regexData.test(date)) {
+        return { invalidDate: true };
+      }
+      const matches = date.split('/');
+      if (!matches) {
+        return { invalidDate: true };
+      }      
+      const day = parseInt(matches[0], 10);
+      const month = parseInt(matches[1], 10);
+      const year = parseInt(matches[2], 10);      
+      if (isNaN(day) || isNaN(month) || isNaN(year)) {
+        return { invalidDate: true };
+      }
+      if (month < 1 || month > 12 || day < 1 || day > 31) {
+        return { invalidDate: true };
+      }
+      if (year < 1900 || year > 2100) {
+        return { invalidDate: true };
       }
       return null;
-    };
+    }
   }
 
-  validatePurchaseDateInput(purchaseDate: string) {
-    const purchaseDateDate = new Date(purchaseDate);
-    const today = new Date();
-    if (purchaseDateDate.getFullYear() > today.getFullYear() || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() > today.getMonth()) || (purchaseDateDate.getFullYear() === today.getFullYear() && purchaseDateDate.getMonth() === today.getMonth() && purchaseDateDate.getDate() > today.getDate() )) {
-      this.snackBar.open('Data de aquisição deve ser menor que a data atual', 'Fechar', { duration: 3000 });
+  validatePurchaseDateInput(purchaseDate: string) {    
+    const value = purchaseDate;
+    const regexData = /^\d{2}\/\d{2}\/\d{4}$/;    
+    if (!value) {
+      return null;
+    }
+    if (!regexData.test(value)) {
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
       return false;
     }
-    return true;
+    const matches = value.split('/');    
+    if (!matches) {
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    
+    // 2. Extrai os números
+    const day = parseInt(matches[0], 10);
+    const month = parseInt(matches[1], 10);
+    const year = parseInt(matches[2], 10);
+    
+    if (isNaN(day) || isNaN(month) || isNaN(year)) {
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
+      return false;
+    }
+
+    // 3. Validações básicas de intervalo
+    if (month < 1 || month > 12 || day < 1 || day > 31) {
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    
+    // Limita o ano se você não quiser aceitar o ano 5432 do seu exemplo
+    if (year < 1900 || year > 2100) {
+      this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
+      return false;
+    }
+
+    
+    return null;
   }
   async getBrands() {
     this.brands$.set(this.vehicleService.getBrands().pipe(map((brands) => brands as Brand[])));
