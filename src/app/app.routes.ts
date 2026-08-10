@@ -30,6 +30,8 @@ import { AddUpdatePrefeitura } from './pages/add-update-prefeitura/add-update-pr
 import { AddUpdateOrgao } from './pages/add-update-orgao/add-update-orgao';
 import { AddUpdateSecretaria } from './pages/add-update-secretaria/add-update-secretaria';
 import { Configurations } from './pages/configurations/configurations';
+import { TravelsComponent } from './pages/travels-component/travels-component';
+import { AddUpdateTravel } from './pages/add-update-travel/add-update-travel';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard], pathMatch: 'full' },
@@ -60,6 +62,7 @@ export const routes: Routes = [
             { path: 'kilometers', component: KmComponent, data: { icon: 'speed', name: 'Kilometragem', display: true }, canActivate: [authGuard] },
             { path: 'maintenance', component: MaintenanceComponent, data: { icon: 'build', name: 'Manutenção' , permission: 'listar_manutencoes', display: true}, canActivate: [authGuard, roleGuard] },
             { path: 'fuel', component: FuelComponent, data: { icon: 'local_gas_station', name: 'Combustível' , permission: 'listar_abastecimento', display: true}, canActivate: [authGuard, roleGuard] },
+            { path: 'travels', component: TravelsComponent, data: { icon: 'local_shipping', name: 'Viagens' , permission: 'listar_abastecimento', display: true}, canActivate: [authGuard, roleGuard] },
         ],
         data: { icon: 'local_shipping', name: 'Movimentação', permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard]
     },    
@@ -92,5 +95,7 @@ export const routes: Routes = [
     { path: 'orgao/new', component: AddUpdateOrgao, data: { icon: 'home', name: 'Órgão', display: false} },
     { path: 'secretaria/edit/:id', component: AddUpdateSecretaria, data: { icon: 'home', name: 'Secretaria', display: false} },
     { path: 'secretaria/new', component: AddUpdateSecretaria, data: { icon: 'home', name: 'Secretaria', display: false} },
-    { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
+    { path: 'travel/edit/:id', component: AddUpdateTravel, data: { icon: 'local_shipping', name: 'Viagem', display: false} },
+    { path: 'travel/new', component: AddUpdateTravel, data: { icon: 'local_shipping', name: 'Viagem', display: false} },
+    { path: '**', redirectTo: 'welcome', pathMatch: 'full' }    
 ];

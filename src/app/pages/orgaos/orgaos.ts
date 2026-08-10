@@ -92,7 +92,7 @@ export class Orgaos {
   }
   async updateOrgao(orgao: Orgao) {
     this.vehicleStateService.setOrgao(orgao);
-    this.router.navigate(['/orgao/edit']);
+    this.router.navigate(['/orgao/edit', orgao.id]);
   }
   openAddOrgaoDialog() {
     this.vehicleStateService.setOrgao(null);

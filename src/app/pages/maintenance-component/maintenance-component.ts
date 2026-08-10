@@ -86,7 +86,7 @@ export class MaintenanceComponent {
   }
   async updateMaintenance(maintenance: Maintenance) {
     this.vehicleStateService.setMaintenance(maintenance);
-    this.router.navigate(['/maintenance/edit']);
+    this.router.navigate(['/maintenance/edit', maintenance.id]);
   }
   async openAddMaintenanceServiceDialog() {
     const dialogRef = this.dialog.open(FormAddMaintenanceService, {

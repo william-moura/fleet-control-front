@@ -173,8 +173,7 @@ export class AddUpdateSupplier {
     this.supplierService.createSupplier(dataForm as Supplier).subscribe({
       next: (supplier) => {
         this.supplier.set(supplier);
-        this.snackBar.open('Fornecedor cadastrado com sucesso', 'Fechar', { duration: 3000 });
-        this.clearForm();
+        this.snackBar.open('Fornecedor cadastrado com sucesso', 'Fechar', { duration: 3000 });        
         this.router.navigate(['/supplier']);
       },
       error: (error) => {
@@ -195,8 +194,7 @@ export class AddUpdateSupplier {
     this.supplierService.updateSupplier(id, dataForm as Supplier).subscribe({
       next: (supplier) => {
       this.supplier.set(supplier);
-      this.snackBar.open('Fornecedor atualizado com sucesso', 'Fechar', { duration: 3000 });
-      this.clearForm();
+      this.snackBar.open('Fornecedor atualizado com sucesso', 'Fechar', { duration: 3000 });      
       this.router.navigate(['/supplier']);
     },
     error: (error) => {
