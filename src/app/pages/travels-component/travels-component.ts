@@ -8,6 +8,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { NewWindow } from '../../directives/new-window';
 import { Travel } from '../../models/travel';
 import { Router } from '@angular/router';
+import { TravelService } from '../../sevices/travel-service';
+import { Pagination } from '../../models/pagination';
 
 @Component({
   selector: 'app-travels-component',
@@ -40,6 +42,7 @@ export class TravelsComponent {
   pageSize = 5;
   indicePagina = 0;
   router = inject(Router);
+  travelService = inject(TravelService);
   onPageChange(event: PageEvent) {
     this.indicePagina = event.pageIndex;
     this.pageSize = event.pageSize;
@@ -47,5 +50,23 @@ export class TravelsComponent {
 
   newTravel() {
     this.router.navigate(['/travel/new']);
+  }
+  editTravel(travel: Travel) {
+    this.router.navigate(['/travel/edit', travel.id]);
+  }
+  deleteTravel(travel: Travel) {
+    this.router.navigate(['/travel/delete', travel.id]);
+  }
+  viewTravel(travel: Travel) {
+    this.router.navigate(['/travel/view', travel.id]);
+  }
+  getTravels() {
+    this.travelService.getTravels(this.indicePagina, this.pageSize).subscribe((travels: Pagination<Travel>) => {
+      this.dataSource.data = travels.data;
+      this.totalRegistros = travels.total;
+    });
+  }
+  ngOnInit() {
+    this.getTravels();
   }
 }

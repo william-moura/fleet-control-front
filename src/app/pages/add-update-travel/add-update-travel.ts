@@ -22,6 +22,7 @@ import { Vehicle } from '../../models/vehicle';
 import { PrefeituraService } from '../../services/prefeitura-service';
 import { VehicleService } from '../../services/vehicle-service';
 import { GoogleMap, MapMarker, MapDirectionsRenderer } from '@angular/google-maps';
+import { TravelService } from '../../sevices/travel-service';
 
 @Component({
   selector: 'app-add-update-travel',
@@ -52,6 +53,7 @@ export class AddUpdateTravel {
   private prefeituraService = inject(PrefeituraService);
   private vehicleService = inject(VehicleService);
   private cdr = inject(ChangeDetectorRef);
+  private travelService = inject(TravelService);
 
   form: FormGroup;
   update = signal(false);
@@ -141,6 +143,17 @@ export class AddUpdateTravel {
     if (id) {
       this.update.set(true);
       this.form.patchValue({ id });
+      this.travelService.getTravel(Number(id)).subscribe((travel) => {
+        this.travel.set(travel);
+        this.form.patchValue({
+          vehicleId: travel.vehicleId,
+          driverId: travel.driverId,
+          origin: travel.origin,
+          destination: travel.destination,
+          departureDate: travel.departureDate,
+          returnDate: travel.returnDate,
+        });
+      });
       // Integração com API de viagens pendente
     }
   }
@@ -247,14 +260,43 @@ export class AddUpdateTravel {
     }
 
     if (this.update()) {
-      this.snackBar.open('Viagem atualizada com sucesso', 'Fechar', { duration: 3000 });
+      
+      this.updateTravel();
     } else {
-      this.snackBar.open('Viagem criada com sucesso', 'Fechar', { duration: 3000 });
-    }
-    this.router.navigate(['/travels']);
+      this.createTravel();
+      
+    }    
  
   }  
 
+  private createTravel() {
+    const dataForm = { ...this.form.value };
+    this.travelService.createTravel(dataForm as Travel).subscribe({
+      next: (travel) => {
+        this.snackBar.open('Viagem criada com sucesso', 'Fechar', { duration: 3000 });
+        this.travel.set(travel);
+        this.router.navigate(['/travels']);
+      },
+      error: (error) => {
+        console.error('Erro ao criar viagem:', error);
+        this.snackBar.open('Erro ao criar viagem ' + error.message, 'Fechar', { duration: 3000 });
+      }
+    });
+  }
+  private updateTravel() {
+    const dataForm = { ...this.form.value, id: this.travel()?.id };
+    this.travelService.updateTravel(dataForm as Travel).subscribe({
+      next: (travel) => {
+        this.snackBar.open('Viagem atualizada com sucesso', 'Fechar', { duration: 3000 });
+        this.travel.set(travel);
+        this.router.navigate(['/travels']);
+      },
+      error: (error) => {
+        console.error('Erro ao atualizar viagem:', error);
+        this.snackBar.open('Erro ao atualizar viagem ' + error.message, 'Fechar', { duration: 3000 });
+      }
+    });
+  }
   ngAfterViewInit() {
     this.carregarScriptGoogleMaps()
     .then(() => {
