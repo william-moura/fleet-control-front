@@ -10,6 +10,7 @@ import { Travel } from '../../models/travel';
 import { Router } from '@angular/router';
 import { TravelService } from '../../sevices/travel-service';
 import { Pagination } from '../../models/pagination';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-travels-component',
@@ -42,6 +43,7 @@ export class TravelsComponent {
   indicePagina = 0;
   router = inject(Router);
   travelService = inject(TravelService);
+  private snackBar = inject(MatSnackBar);
   onPageChange(event: PageEvent) {
     this.indicePagina = event.pageIndex;
     this.pageSize = event.pageSize;
@@ -54,7 +56,15 @@ export class TravelsComponent {
     this.router.navigate(['/travel/edit', travel.id]);
   }
   deleteTravel(travel: Travel) {
-    this.router.navigate(['/travel/delete', travel.id]);
+    this.travelService.deleteTravel(travel.id).subscribe({
+      next: () => {
+        this.getTravels();
+        this.snackBar.open('Viagem excluída com sucesso', 'Fechar', { duration: 3000 });
+      },
+      error: () => {
+        this.snackBar.open('Erro ao excluir viagem', 'Fechar', { duration: 3000 });
+      },
+    });
   }
   viewTravel(travel: Travel) {
     this.router.navigate(['/travel/view', travel.id]);
