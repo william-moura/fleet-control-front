@@ -23,6 +23,7 @@ import { PrefeituraService } from '../../services/prefeitura-service';
 import { VehicleService } from '../../services/vehicle-service';
 import { GoogleMap, MapMarker, MapDirectionsRenderer } from '@angular/google-maps';
 import { TravelService } from '../../sevices/travel-service';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-add-update-travel',
@@ -41,6 +42,7 @@ import { TravelService } from '../../sevices/travel-service';
     GoogleMap,
     MapMarker,
     MapDirectionsRenderer,
+    NgxMaskDirective,
   ],
   templateUrl: './add-update-travel.html',
   styleUrl: './add-update-travel.scss',
@@ -143,6 +145,7 @@ export class AddUpdateTravel {
     if (id) {
       this.update.set(true);
       this.form.patchValue({ id });
+
       this.travelService.getTravel(Number(id)).subscribe((travel) => {
         this.travel.set(travel);
         this.form.patchValue({
@@ -152,6 +155,11 @@ export class AddUpdateTravel {
           destination: travel.destination,
           departureDate: travel.departureDate,
           returnDate: travel.returnDate,
+          odometerDeparture: travel.odometerDeparture,
+          odometerEntry: travel.odometerEntry,
+          prefeituraId: travel.prefeituraId,
+          orgaoId: travel.orgaoId,
+          secretariaId: travel.secretariaId,          
         });
       });
       // Integração com API de viagens pendente

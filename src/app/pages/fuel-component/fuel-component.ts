@@ -54,6 +54,7 @@ export class FuelComponent implements OnInit{
     this.getFuelSupplies();
   }
   abrirModalCadastro() {
+    this.fuelSupplyStateService.setFuelSupply(null);
     this.router.navigate(['/fuel/new']);
   }
   deleteFuelSupply(id: number) {
@@ -81,7 +82,7 @@ export class FuelComponent implements OnInit{
   }
   updateFuelSupply(fuelSupply: FuelSupply) {
     this.fuelSupplyStateService.setFuelSupply(fuelSupply);
-    this.router.navigate(['/fuel/edit']);
+    this.router.navigate(['/fuel/edit', fuelSupply.id]);
   }
   aplicarFiltro(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

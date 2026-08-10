@@ -105,7 +105,7 @@ export class DriversComponent implements AfterViewInit {
   }
   async updateDriver(driver: Driver) {
     this.driverStateService.setDriver(driver);
-    this.router.navigate(['/driver/edit']);
+    this.router.navigate(['/driver/edit', driver.id]);
   }
   onPageChange(event: PageEvent) {
     this.indicePagina = event.pageIndex;

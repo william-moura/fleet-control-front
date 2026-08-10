@@ -45,7 +45,7 @@ export class VehicleFines implements OnInit {
   }
   updateFine(fine: VehicleFine) {
     this.vehicleFineStateService.setVehicleFine(fine);
-    this.router.navigate(['/vehicle-fine/edit']);
+    this.router.navigate(['/vehicle-fine/edit', fine.id]);
   }
 
   deleteFine(fine: VehicleFine) {

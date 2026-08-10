@@ -32,8 +32,7 @@ export class TravelsComponent {
     'origin',
     'destination',
     'departureDate',
-    'returnDate',
-    'status',
+    'returnDate',    
     'acoes',
   ];
   dataSource = new MatTableDataSource<Travel>([]);

@@ -65,7 +65,7 @@ export class Users {
   }
   updateUser(user: User) {
     this.userStateService.setUser(user);
-    this.router.navigate(['/users/edit']);
+    this.router.navigate(['/users/edit', user.id]);
   }
   deleteUser(user: User) {
     const dialogRef = this.dialog.open(ConfirmDialog, {

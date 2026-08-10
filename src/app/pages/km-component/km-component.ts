@@ -102,7 +102,7 @@ export class KmComponent {
   }
   async updateKilometer(kilometer: Kilometer) {
     this.vehicleStateService.setKilometer(kilometer);
-    this.router.navigate(['/kilometer/edit']);
+    this.router.navigate(['/kilometer/edit', kilometer.id]);
   }
   openAddKmDialog() {
     this.vehicleStateService.setKilometer(null);

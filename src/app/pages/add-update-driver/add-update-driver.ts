@@ -464,16 +464,16 @@ export class AddUpdateDriver {
       this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
       return false;
     }
-    const matches = value.split(regexData);
+    const matches = value.split('/');    
     if (!matches) {
       this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });
       return false;
     }
     
     // 2. Extrai os números
-    const day = parseInt(matches[1], 10);
-    const month = parseInt(matches[2], 10);
-    const year = parseInt(matches[3], 10);
+    const day = parseInt(matches[0], 10);
+    const month = parseInt(matches[1], 10);
+    const year = parseInt(matches[2], 10);
     
     if (isNaN(day) || isNaN(month) || isNaN(year)) {
       this.snackBar.open('Data inválida', 'Fechar', { duration: 3000 });

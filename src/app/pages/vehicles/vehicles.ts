@@ -215,4 +215,12 @@ export class Vehicles {
       }
     }
   }
+  addVehicle() {
+    this.vehicleStateService.setVehicle(null);
+    this.router.navigate(['/vehicle/new']);
+  }
+  editVehicle(vehicle: Vehicle) {
+    this.vehicleStateService.setVehicle(vehicle);
+    this.router.navigate(['/vehicle/edit', vehicle.id]);
+  }
 }

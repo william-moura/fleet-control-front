@@ -94,9 +94,9 @@ export class Prefeituras {
 
   async updatePrefeitura(prefeitura: Prefeitura) {
     this.vehicleStateService.setPrefeitura(prefeitura);
-    this.router.navigate(['/prefeitura/edit']);
+    this.router.navigate(['/prefeitura/edit', prefeitura.id]);
   }
-  openAddKmDialog() {
+  openAddPrefeituraDialog() {
     this.vehicleStateService.setPrefeitura(null);
     this.router.navigate(['/prefeitura/new']);
   }

@@ -93,7 +93,7 @@ export class Secretarias {
   }
   async updateSecretaria(secretaria: Secretaria) {
     this.vehicleStateService.setSecretaria(secretaria);
-    this.router.navigate(['/secretaria/edit']);
+    this.router.navigate(['/secretaria/edit', secretaria.id]);
   }
   openAddSecretariaDialog() {
     this.vehicleStateService.setSecretaria(null);
