@@ -213,18 +213,30 @@ export class AddUpdatePrefeitura {
   }
 
   private create() {
-    this.prefeituraService.createPrefeitura(this.form.value).subscribe((prefeitura) => {
+    this.prefeituraService.createPrefeitura(this.form.value).subscribe({
+      next: (prefeitura) => {
       this.snackBar.open('Prefeitura criada com sucesso', 'Fechar', { duration: 3000 });
-      this.router.navigate(['/prefeituras']);
+        this.router.navigate(['/prefeituras']);
+      },
+      error: (error) => {
+        console.error('Erro ao criar prefeitura:', error);
+        this.snackBar.open('Erro ao criar prefeitura ' + error.message, 'Fechar', { duration: 3000 });
+      }
     });
   }
 
   private updatePrefeitura() {
     const id = this.prefeitura()?.id;
     if (id) {
-      this.prefeituraService.updatePrefeitura(this.form.value, Number(id)).subscribe((prefeitura) => {
-        this.snackBar.open('Prefeitura atualizada com sucesso', 'Fechar', { duration: 3000 });
-        this.router.navigate(['/prefeituras']);
+      this.prefeituraService.updatePrefeitura(this.form.value, Number(id)).subscribe({
+        next: (prefeitura) => {
+          this.snackBar.open('Prefeitura atualizada com sucesso', 'Fechar', { duration: 3000 });
+          this.router.navigate(['/prefeituras']);
+        },
+        error: (error) => {
+          console.error('Erro ao atualizar prefeitura:', error);
+          this.snackBar.open('Erro ao atualizar prefeitura ' + error.message, 'Fechar', { duration: 3000 });
+        }
       });
     }
   }
