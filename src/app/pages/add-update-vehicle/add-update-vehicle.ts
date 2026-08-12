@@ -165,7 +165,7 @@ export class AddUpdateVehicle {
       vehicleColor: ['', Validators.required],
       vehicleModelYear: ['', [Validators.required, Validators.max(currentYear)]],
       vehicleRenavamNumber: ['', Validators.required],
-      vehicleChassisNumber: ['', Validators.required],
+      vehicleChassisNumber: ['', [Validators.required, Validators.maxLength(20), Validators.minLength(20)]],
       prefeituraId: ['', Validators.required],
       orgaoId: ['', Validators.required],
       secretariaId: ['', Validators.required],
@@ -228,6 +228,11 @@ export class AddUpdateVehicle {
     }
     if (this.veiculoForm.get('vehicleChassisNumber')?.errors?.['required']) {
       this.snackBar.open('Número do chassi do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    
+    if (this.veiculoForm.get('vehicleChassisNumber')?.errors?.['minlength']) {
+      this.snackBar.open('Número do chassi do veículo deve ter 20 caracteres', 'Fechar', { duration: 3000 });
       return;
     }
 
