@@ -128,7 +128,7 @@ export class AddUpdateOrgao {
         },
         error: (error) => {
           console.error('Erro ao atualizar órgão:', error);
-          this.snackBar.open('Erro ao atualizar órgão ' + error.message, 'Fechar', { duration: 3000 });
+          this.snackBar.open('Erro ao atualizar órgão ' + error.error?.message, 'Fechar', { duration: 3000 });
         }
       });
     }
