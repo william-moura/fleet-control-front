@@ -61,12 +61,18 @@ export class AddUpdateOrgao {
   salvar() {
     if (this.form.get('nome')?.getError('required')) {
       this.form.get('nome')?.setErrors({required: true});
+      this.snackBar.open('O campo Nome é obrigatório', 'Fechar', { duration: 3000 });
+      return;
     }
     if (this.form.get('sigla')?.getError('required')) {
       this.form.get('sigla')?.setErrors({required: true});
+      this.snackBar.open('O campo Sigla é obrigatório', 'Fechar', { duration: 3000 });
+      return;
     }
     if (this.form.get('prefeituraId')?.getError('required')) {
       this.form.get('prefeituraId')?.setErrors({required: true});
+      this.snackBar.open('O campo Prefeitura é obrigatório', 'Fechar', { duration: 3000 });
+      return;
     }
     if (this.form.valid) {
       if (this.update()) {
@@ -128,7 +134,7 @@ export class AddUpdateOrgao {
         },
         error: (error) => {
           console.error('Erro ao atualizar órgão:', error);
-          this.snackBar.open('Erro ao atualizar órgão ' + error.message, 'Fechar', { duration: 3000 });
+          this.snackBar.open('Erro ao atualizar órgão ' + error.error?.message, 'Fechar', { duration: 3000 });
         }
       });
     }
