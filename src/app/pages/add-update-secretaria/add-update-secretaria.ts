@@ -64,18 +64,28 @@ export class AddUpdateSecretaria {
   salvar() {
     if (this.form.get('nome')?.getError('required')) {
       this.form.get('nome')?.setErrors({required: true});
+      this.snackBar.open('O nome da secretaria é obrigatório', 'Fechar', { duration: 3000 });
+      return;
     }
     if (this.form.get('responsavel')?.getError('required')) {
       this.form.get('responsavel')?.setErrors({required: true});
+      this.snackBar.open('O responsável é obrigatório', 'Fechar', { duration: 3000 });
+      return;
     }
     if (this.form.get('email')?.getError('required')) {
       this.form.get('email')?.setErrors({required: true});
+      this.snackBar.open('O email é obrigatório', 'Fechar', { duration: 3000 });
+      return;
     }
     if (this.form.get('prefeituraId')?.getError('required')) {
       this.form.get('prefeituraId')?.setErrors({required: true});
+      this.snackBar.open('A prefeitura é obrigatória', 'Fechar', { duration: 3000 });
+      return;
     }
     if (this.form.get('orgaoId')?.getError('required')) {
       this.form.get('orgaoId')?.setErrors({required: true});
+      this.snackBar.open('O órgão é obrigatório', 'Fechar', { duration: 3000 });
+      return;
     }
     if (this.form.valid) {
       if (this.update()) {
@@ -102,10 +112,10 @@ export class AddUpdateSecretaria {
     if (id) {
       this.update.set(true);
       this.getPrefeituras();
-      this.getOrgaos();
       this.prefeituraService.getSecretariaById(id).subscribe((secretaria) => {
         this.secretaria.set(secretaria);
         this.form.patchValue(secretaria);
+        this.getOrgaos();
       });
     } else {
       this.update.set(false);
