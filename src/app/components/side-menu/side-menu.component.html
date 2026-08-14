@@ -69,8 +69,8 @@
       <div class="user-profile">
         <span class="material-icons">account_circle</span>
         <div class="user-info" *ngIf="!isCollapsed">
-          <span class="user-name">Admin Frota</span>
-          <span class="user-role">Gestor</span>
+          <span class="user-name">{{ userName() }}</span>
+          <span class="user-role">{{ userRole() }}</span>
         </div>
       </div>
     </div>
