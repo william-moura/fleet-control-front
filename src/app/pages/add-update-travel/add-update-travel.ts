@@ -275,9 +275,9 @@ export class AddUpdateTravel {
 
         // Atualiza formulário
         this.form.patchValue({
-          distanciaKm: `${km} km`,
-          distanciaMetros: Math.round(metros),
-          duracaoTexto: `${minutos} min`
+          distanceKm: `${km} km`,
+          distanceMeters: Math.round(metros),
+          travelTime: `${minutos} min`
         });
 
         // 3. Desenhar a linha no Mapa
