@@ -7,6 +7,7 @@ import { NewWindow } from '../../directives/new-window';
 import { MenuItem } from '../../models/menu-item';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { User } from '../../models/user';
 
 @Component({
   selector: 'app-side-menu',
@@ -23,6 +24,8 @@ export class SideMenuComponent {
   isOpen = signal<boolean>(false);
   menuItems = signal<MenuItem[]>([]);
   searchTerm = signal<string>('');
+  userName = signal<string | null>(null);
+  userRole = signal<string | null>(null);
 
   filteredMenuItems = computed<MenuItem[]>(() => {
     const term = this.searchTerm().toLowerCase();
@@ -92,5 +95,9 @@ export class SideMenuComponent {
   }
   filterRoutes(search: string) {
     this.searchTerm.set(search);
+  }
+  ngOnInit() {
+    this.userName.set(localStorage.getItem('userName') as string);
+    this.userRole.set(localStorage.getItem('roles')?.replace(/[\[\]()"'`]/g, "") as string);
   }
 }

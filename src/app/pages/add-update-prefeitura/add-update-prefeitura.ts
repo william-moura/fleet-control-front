@@ -191,25 +191,35 @@ export class AddUpdatePrefeitura {
 
   ngOnInit() {
     this.update.set(false);
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.update.set(true);
-      this.prefeituraService.getPrefeituraById(Number(id)).subscribe((prefeitura) => {
+    this.prefeituraService.getOnePrefeitura().subscribe({
+      next: (prefeitura) => {
+        this.update.set(true);
         this.form.patchValue(prefeitura);
-        const photo = prefeitura.photos?.[0];
-        if (photo) {
-          this.form.patchValue({
-            foto: photo.path,
-            fotoId: [photo.id],
-          });
-        }
         this.cdr.detectChanges();
         this.prefeitura.set(prefeitura);
-      });
-    } else {
+    }, error: (error) => {
+      console.error('Erro ao buscar prefeitura:', error);
       this.prefeitura.set(null);
       this.getNextRegistrationNumber();
-    }
+    }});
+    // if (id) {
+    //   this.update.set(true);
+    //   this.prefeituraService.getPrefeituraById(Number(id)).subscribe((prefeitura) => {
+    //     this.form.patchValue(prefeitura);
+    //     const photo = prefeitura.photos?.[0];
+    //     if (photo) {
+    //       this.form.patchValue({
+    //         foto: photo.path,
+    //         fotoId: [photo.id],
+    //       });
+    //     }
+    //     this.cdr.detectChanges();
+    //     this.prefeitura.set(prefeitura);
+    //   });
+    // } else {
+    //   this.prefeitura.set(null);
+    //   this.getNextRegistrationNumber();
+    // }
   }
 
   private create() {
