@@ -121,9 +121,9 @@ export class AddUpdateTravel {
       secretariaId: ['', Validators.required],
       odometerDeparture: ['', Validators.required],
       odometerEntry: [null],
-      distanciaKm: [null, null],
-      distanciaMetros: [null, null],
-      duracaoTexto: [null, null],
+      distanceKm: [{value: '', disabled: true}],
+      distanceMeters: [{value: '', disabled: true}],
+      travelTime: [{value: '', disabled: true}],
     });
   }
 
@@ -176,9 +176,9 @@ export class AddUpdateTravel {
           prefeituraId: travel.prefeituraId,
           orgaoId: travel.orgaoId,
           secretariaId: travel.secretariaId,          
-          distanciaKm: travel.distanciaKm,
-          distanciaMetros: travel.distanciaMetros,
-          duracaoTexto: travel.duracaoTexto,
+          distanceKm: travel.distanceKm,
+          distanceMeters: travel.distanceMeters,
+          travelTime: travel.travelTime,
         });
       });
       // Integração com API de viagens pendente
