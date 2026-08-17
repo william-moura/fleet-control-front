@@ -234,7 +234,7 @@ export class AddUpdateTravel {
 
     // Atualiza o campo apenas com a string do endereço
     const enderecoTexto = local.display_name;
-    this.form.patchValue({ destino: enderecoTexto }, { emitEvent: false });
+    this.form.patchValue({ destination: enderecoTexto }, { emitEvent: false });
     this.calcularViagem();
   }
 
