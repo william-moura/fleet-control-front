@@ -17,4 +17,7 @@ export interface Travel {
   secretariaId: number;
   odometerDeparture: number;
   odometerEntry: number | null;
+  distanceKm: string;
+  distanceMeters: number;
+  travelTime: string;
 }

@@ -24,6 +24,10 @@ import { VehicleService } from '../../services/vehicle-service';
 import { GoogleMap, MapMarker, MapDirectionsRenderer } from '@angular/google-maps';
 import { TravelService } from '../../sevices/travel-service';
 import { NgxMaskDirective } from 'ngx-mask';
+import * as L from 'leaflet';
+import { HttpClient } from '@angular/common/http';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-add-update-travel',
@@ -43,6 +47,7 @@ import { NgxMaskDirective } from 'ngx-mask';
     MapMarker,
     MapDirectionsRenderer,
     NgxMaskDirective,
+    MatAutocompleteModule
   ],
   templateUrl: './add-update-travel.html',
   styleUrl: './add-update-travel.scss',
@@ -93,6 +98,14 @@ export class AddUpdateTravel {
   directionsResults$: Observable<google.maps.DirectionsResult | undefined> | undefined;
   apiCarregada = signal<boolean>(false);
 
+  private map!: L.Map;
+  private routeLayer?: L.GeoJSON;
+  private http = inject(HttpClient);
+  sugestoesOrigem: any[] = [];
+  sugestoesDestino: any[] = [];
+  coordsOrigem?: { lat: number; lng: number };
+  coordsDestino?: { lat: number; lng: number };
+
   constructor() {
     this.form = this.fb.group({
       id: [{ value: '', disabled: true }],
@@ -108,6 +121,9 @@ export class AddUpdateTravel {
       secretariaId: ['', Validators.required],
       odometerDeparture: ['', Validators.required],
       odometerEntry: [null],
+      distanceKm: [{value: '', disabled: true}],
+      distanceMeters: [{value: '', disabled: true}],
+      travelTime: [{value: '', disabled: true}],
     });
   }
 
@@ -160,10 +176,144 @@ export class AddUpdateTravel {
           prefeituraId: travel.prefeituraId,
           orgaoId: travel.orgaoId,
           secretariaId: travel.secretariaId,          
+          distanceKm: travel.distanceKm,
+          distanceMeters: travel.distanceMeters,
+          travelTime: travel.travelTime,
         });
       });
       // Integração com API de viagens pendente
     }
+    this.initMap();
+    this.configurarAutocomplete();
+  }
+
+  private configurarAutocomplete(): void {
+    // Escuta a digitação no campo Origem
+    this.form.get('origin')?.valueChanges.pipe(
+      debounceTime(400), // Aguarda 400ms para não poluir a API enquanto digita rápido
+      distinctUntilChanged(),
+      filter(val => typeof val === 'string' && val.length >= 3), // Só busca a partir de 3 letras
+      switchMap(texto => this.buscarSugestoes(texto))
+    ).subscribe(res => this.sugestoesOrigem = res);
+
+    // Escuta a digitação no campo Destino
+    this.form.get('destination')?.valueChanges.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      filter(val => typeof val === 'string' && val.length >= 3),
+      switchMap(texto => this.buscarSugestoes(texto))
+    ).subscribe(res => this.sugestoesDestino = res);
+  }
+
+  // Busca sugestões com foco no Brasil (countrycodes=br)
+  private buscarSugestoes(texto: string) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(texto)}&addressdetails=1&limit=5&countrycodes=br`;
+    return this.http.get<any[]>(url);
+  }
+
+  // Como o Angular Material deve exibir o objeto selecionado no campo de texto
+  displayFn(local: any): string {
+    return local && local.display_name ? local.display_name : (local || '');
+  }
+
+  // Ao clicar em uma opção de Origem na lista
+  onSelecionarOrigem(event: any): void {
+    const local = event.option.value;
+    this.coordsOrigem = { lat: parseFloat(local.lat), lng: parseFloat(local.lon) };
+    this.calcularViagem();
+  }
+
+  // Ao clicar em uma opção de Destino na lista
+  onSelecionarDestino(event: any): void {
+    const local = event.option.value;
+    this.coordsDestino = { lat: parseFloat(local.lat), lng: parseFloat(local.lon) };
+    this.calcularViagem();
+  }
+
+  private initMap(): void {
+    // Inicializa o mapa centralizado no Brasil
+    this.map = L.map('mapa-osm').setView([-23.55052, -46.633308], 10);
+
+    // Carrega as imagens (tiles) gratuitas do OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
+  }
+
+  async calcularViagem(): Promise<void> {
+    // const origemTexto = this.form.get('origin')?.value as string;
+    // const destinoTexto = this.form.get('destination')?.value as string;
+
+    // if (!origemTexto || !destinoTexto) return;
+
+    // // 1. Converter endereços em coordenadas (Geocoding via Nominatim)
+    // const coordsOrigem = await this.geocodificar(origemTexto);
+    // const coordsDestino = await this.geocodificar(destinoTexto);
+    if (!this.coordsOrigem || !this.coordsDestino) return;
+
+    const coordsOrigem = this.coordsOrigem;
+    const coordsDestino = this.coordsDestino;
+
+    if (!coordsOrigem || !coordsDestino) {
+      alert('Endereço de origem ou destino não encontrado.');
+      return;
+    }
+
+    // 2. Traçar a Rota e Calcular Distância via OSRM (Open Source Routing)
+    const urlOsrm = `https://router.project-osrm.org/route/v1/driving/${coordsOrigem.lng},${coordsOrigem.lat};${coordsDestino.lng},${coordsDestino.lat}?overview=full&geometries=geojson`;
+
+    this.http.get<any>(urlOsrm).subscribe(response => {
+      if (response.routes && response.routes.length > 0) {
+        const rota = response.routes[0];
+        
+        // Dados recebidos
+        const metros = rota.distance; // Distância em metros
+        const segundos = rota.duration; // Tempo em segundos
+        const km = (metros / 1000).toFixed(1);
+        const minutos = Math.round(segundos / 60);
+
+        // Atualiza formulário
+        this.form.patchValue({
+          distanciaKm: `${km} km`,
+          distanciaMetros: Math.round(metros),
+          duracaoTexto: `${minutos} min`
+        });
+
+        // 3. Desenhar a linha no Mapa
+        this.desenharRotaNoMapa(rota.geometry, coordsOrigem, coordsDestino);
+      }
+    });
+  }
+
+  // Busca coordenadas (Lat/Lng) a partir do texto do endereço
+  private geocodificar(endereco: string): Promise<{ lat: number; lng: number } | null> {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(endereco)}&limit=1`;
+    return this.http.get<any[]>(url).toPromise().then(res => {
+      if (res && res.length > 0) {
+        return { lat: parseFloat(res[0].lat), lng: parseFloat(res[0].lon) };
+      }
+      return null;
+    });
+  }
+
+  private desenharRotaNoMapa(geometry: any, origem: { lat: number; lng: number }, destino: { lat: number; lng: number }): void {
+    // Limpa rota anterior se existir
+    if (this.routeLayer) {
+      this.map.removeLayer(this.routeLayer);
+    }
+
+    // Adiciona a linha da rota
+    this.routeLayer = L.geoJSON(geometry, {
+      style: { color: '#1a237e', weight: 5, opacity: 0.8 }
+    }).addTo(this.map);
+
+    // Ajusta o zoom do mapa para mostrar a rota inteira
+    const bounds = L.latLngBounds([
+      [origem.lat, origem.lng],
+      [destino.lat, destino.lng]
+    ]);
+    this.map.fitBounds(bounds, { padding: [50, 50] });
   }
 
   getPrefeituras() {
