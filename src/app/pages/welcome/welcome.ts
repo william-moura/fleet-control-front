@@ -9,10 +9,11 @@ import { NotificationService } from '../../services/notification-service';
 import { LaravelNotification } from '../../models/laravel-notification';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationsDialogComponent } from '../../components/notifications-dialog-component/notifications-dialog-component';
+import { NewWindow } from "../../directives/new-window";
 
 @Component({
   selector: 'app-welcome',
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, RouterModule, NewWindow],
   templateUrl: './welcome.html',
   styleUrl: './welcome.scss',
 })

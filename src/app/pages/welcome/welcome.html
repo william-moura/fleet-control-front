@@ -17,31 +17,31 @@
           <h3>O que você deseja fazer hoje?</h3>
           <div class="action-buttons">
             @if (authService.hasPermission('listar_veiculos')) {
-            <button mat-stroked-button color="primary" routerLink="/vehicles">
+            <button mat-stroked-button color="primary"  appNewWindow="/vehicles">
               <mat-icon>directions_bus</mat-icon>
               Gerenciar Veículos
             </button>
             }
             @if (authService.hasPermission('listar_abastecimento')) {
-            <button mat-stroked-button color="accent" routerLink="/fuel">
+            <button mat-stroked-button color="accent" appNewWindow="/fuel">
               <mat-icon>local_gas_station</mat-icon>
               Lançar Abastecimento
             </button>
             }
             @if (authService.hasPermission('listar_manutencoes')) {
-            <button mat-stroked-button routerLink="/maintenance">
+            <button mat-stroked-button appNewWindow="/maintenance">
               <mat-icon>build</mat-icon>
               Ver Manutenções
             </button>
             }
             @if (authService.hasPermission('acessar_relatorios')) {
-            <button mat-stroked-button routerLink="/reports">
+            <button mat-stroked-button appNewWindow="/reports">
               <mat-icon>report</mat-icon>
               Ver Relatórios
             </button>
             }
             @if (authService.hasPermission('acessar_dashboards')) {
-            <button mat-stroked-button routerLink="/dashboard">
+            <button mat-stroked-button appNewWindow="/dashboard">
               <mat-icon>dashboard</mat-icon>
               Ver Dashboard
             </button>
