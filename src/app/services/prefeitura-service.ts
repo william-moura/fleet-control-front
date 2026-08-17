@@ -80,4 +80,7 @@ export class PrefeituraService {
   getSecretariaByOrgaoId(orgaoId: number): Observable<Secretaria[]> {
     return this.http.get<Secretaria[]>(`${environment.apiUrl}/secretarias/orgao/${orgaoId}`);
   }
+  getOnePrefeitura(): Observable<Prefeitura> {
+    return this.http.get<Prefeitura>(`${environment.apiUrl}/prefeituras/one`);
+  }
 }

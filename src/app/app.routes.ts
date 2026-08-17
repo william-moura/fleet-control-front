@@ -50,7 +50,7 @@ export const routes: Routes = [
     { 
         path: '',
         children: [
-            { path: 'prefeituras', component: Prefeituras, data: { icon: 'home', name: 'Prefeituras' }},
+            { path: 'prefeituras', component: AddUpdatePrefeitura, data: { icon: 'home', name: 'Prefeitura' }},
             { path: 'orgaos', component: Orgaos, data: { icon: 'home', name: 'Órgãos' }},
             { path: 'secretarias', component: Secretarias, data: { icon: 'home', name: 'Secretarias' }},
         ],
