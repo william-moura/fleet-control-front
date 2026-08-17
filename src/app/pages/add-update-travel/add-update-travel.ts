@@ -424,8 +424,10 @@ export class AddUpdateTravel {
       this.form.markAllAsTouched();
       return;
     }
-    this.form.value.origin = this.form.get('origin')?.value.display_name;
-    this.form.value.destination = this.form.get('destination')?.value.display_name;
+    const enderecoTexto = this.form.get('origin')?.value.display_name;
+    const enderecoTextoDestino = this.form.get('destination')?.value.display_name;
+    this.form.patchValue({ origin: enderecoTexto }, { emitEvent: false });
+    this.form.patchValue({ destination: enderecoTextoDestino }, { emitEvent: false });
 
     if (this.update()) {
       
