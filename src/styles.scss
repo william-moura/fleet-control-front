@@ -10,6 +10,13 @@
   margin-top: 0px !important;
 }
 
+@import 'leaflet/dist/leaflet.css';
+
+/* Ajuste de ícones do Leaflet que às vezes somem no build */
+.leaflet-default-icon-path {
+  background-image: url('https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png');
+}
+
 .center-cell {
   text-align: center;
   justify-content: center;

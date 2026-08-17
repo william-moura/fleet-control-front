@@ -87,14 +87,38 @@
         <div class="grid-2col">
           <mat-form-field appearance="outline">
             <mat-label>Origem</mat-label>
-            <input matInput formControlName="origin" placeholder="Local de origem">
+            <input matInput formControlName="origin" placeholder="Local de origem"  [matAutocomplete]="autoOrigem">
             <mat-icon matSuffix>trip_origin</mat-icon>
+            <mat-autocomplete #autoOrigem="matAutocomplete" 
+                            [displayWith]="displayFn" 
+                            (optionSelected)="onSelecionarOrigem($event)">
+            @for (local of sugestoesOrigem; track local.place_id) {
+              <mat-option [value]="local">
+                <div class="item-autocomplete">
+                  <span class="titulo-local">{{ local.address.road || local.name }}</span>
+                  <small class="subtitulo-local">{{ local.display_name }}</small>
+                </div>
+              </mat-option>
+            }
+          </mat-autocomplete>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Destino</mat-label>
-            <input matInput formControlName="destination" placeholder="Local de destino">
+            <input matInput formControlName="destination" placeholder="Local de destino" [matAutocomplete]="autoDestino">
             <mat-icon matSuffix>place</mat-icon>
+            <mat-autocomplete #autoDestino="matAutocomplete" 
+                            [displayWith]="displayFn" 
+                            (optionSelected)="onSelecionarDestino($event)">
+            @for (local of sugestoesDestino; track local.place_id) {
+              <mat-option [value]="local">
+                <div class="item-autocomplete">
+                  <span class="titulo-local">{{ local.address.road || local.name }}</span>
+                  <small class="subtitulo-local">{{ local.display_name }}</small>
+                </div>
+              </mat-option>
+            }
+          </mat-autocomplete>
           </mat-form-field>
         </div>
 
@@ -131,6 +155,20 @@
               [leadZeroDateTime]="true"
             >
           </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Distância total</mat-label>
+            <input matInput formControlName="distanciaKm" placeholder="Distância total">
+            <mat-icon matSuffix>speed</mat-icon>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Tempo estimado</mat-label>
+            <input matInput formControlName="duracaoTexto" placeholder="Tempo estimado">
+            <mat-icon matSuffix>timer</mat-icon>
+          </mat-form-field>
+          <!-- <div class="painel-info">
+            <p><strong>Distância total:</strong> {{ form.get('distanciaKm') }}</p>
+            <p><strong>Tempo estimado:</strong> {{ form.get('duracaoTexto') }}</p>
+          </div> -->
 
           <!-- <mat-form-field appearance="outline">
             <mat-label>Status</mat-label>
@@ -143,43 +181,11 @@
           </mat-form-field> -->
         </div>
 
-        <div class="container-viagem">
-          <div class="painel-busca">
-            <!-- Input de Origem -->
-            <input #inputOrigem 
-                   [value]="origem()" 
-                   (input)="origem.set($any($event.target).value)" 
-                   placeholder="Cidade ou endereço de origem" />
-          
-            <!-- Input de Destino -->
-            <input #inputDestino 
-                   [value]="destino()" 
-                   (input)="destino.set($any($event.target).value)" 
-                   placeholder="Cidade ou endereço de destino" />
-          
-            <button (click)="calcularRota()">Traçar Rota</button>
+        <div class="container-viagem">          
+                  
+          <div class="mapa-container">
+            <div id="mapa-osm" style="height: 450px; width: 100%;"></div>
           </div>
-          
-        
-          <!-- Controle de fluxo nativo do Angular moderno (@if) -->
-          @if (distancia()) {
-            <div class="painel-info">
-              <p><strong>Distância total:</strong> {{ distancia() }}</p>
-              <p><strong>Tempo estimado:</strong> {{ duracao() }}</p>
-            </div>
-          }
-        
-          <!-- Componente do Mapa consumindo dados reativos limpos -->
-            <!-- Renderização condicional segura baseada no Signal do carregamento da API -->
-          @if (apiCarregada()) {
-            <google-map height="500px" width="100%" [center]="center()" [zoom]="zoom()">
-              @if (directionsResults(); as resultados) {
-                <map-directions-renderer [directions]="resultados"></map-directions-renderer>
-              }
-            </google-map>
-          } @else {
-            <div class="carregando-mapa">Carregando mapa...</div>
-          }
         </div>
       </div>
 
