@@ -220,6 +220,10 @@ export class AddUpdateTravel {
   onSelecionarOrigem(event: any): void {
     const local = event.option.value;
     this.coordsOrigem = { lat: parseFloat(local.lat), lng: parseFloat(local.lon) };
+
+    // Atualiza o campo apenas com a string do endereço
+    const enderecoTexto = local.display_name;
+    this.form.patchValue({ origin: enderecoTexto }, { emitEvent: false });
     this.calcularViagem();
   }
 
@@ -227,6 +231,10 @@ export class AddUpdateTravel {
   onSelecionarDestino(event: any): void {
     const local = event.option.value;
     this.coordsDestino = { lat: parseFloat(local.lat), lng: parseFloat(local.lon) };
+
+    // Atualiza o campo apenas com a string do endereço
+    const enderecoTexto = local.display_name;
+    this.form.patchValue({ destino: enderecoTexto }, { emitEvent: false });
     this.calcularViagem();
   }
 
