@@ -9,6 +9,7 @@ import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatDateFormats, provideNativeDateAda
 import { provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
 import { registerLocaleData } from '@angular/common';
 import { provideLuxonDateAdapter } from '@angular/material-luxon-adapter';
+import { tenantInterceptorInterceptor } from './interceptors/tenant-interceptor-interceptor';
 
 
 export const MY_LUXON_FORMATS = {
@@ -40,6 +41,7 @@ export const appConfig: ApplicationConfig = {
     { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
     provideLuxonDateAdapter(),
     { provide: MAT_DATE_FORMATS, useValue: MY_LUXON_FORMATS },
+    provideHttpClient(withInterceptors([tenantInterceptorInterceptor]))
   ]
 };
 
