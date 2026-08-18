@@ -24,41 +24,40 @@
       <div class="layout-topo-foto">
         <div class="inputs-principais">
           
-          <div class="grid-3col-modificado">
-            <mat-form-field appearance="outline">
-              <mat-label>Código</mat-label>
-              <input matInput formControlName="id" placeholder="Código da Prefeitura">
-              <mat-icon matSuffix color="primary">badge</mat-icon>
-            </mat-form-field>
-
+          <div class="grid-1col">
             <mat-form-field appearance="outline">
               <mat-label>Razão Social</mat-label>
               <input matInput formControlName="razaoSocial" placeholder="Razão Social da Prefeitura">
               <mat-icon matSuffix color="primary">person</mat-icon>
             </mat-form-field>
-            
           </div>
-
-          <div class="grid-4col">
+          <div class="grid-1col">
             <mat-form-field appearance="outline">
               <mat-label>Nome Fantasia</mat-label>
               <input matInput formControlName="nomeFantasia" placeholder="Nome Fantasia da Prefeitura">
               <mat-icon matSuffix color="primary">person</mat-icon>
             </mat-form-field>
+          </div>
+          <div class="grid-1col">
             <mat-form-field appearance="outline">
               <mat-label>CNPJ</mat-label>
               <input matInput formControlName="cnpj" placeholder="CNPJ da Prefeitura" mask="99.999.999/9999-99">
               <mat-icon matSuffix>badge</mat-icon>
               <mat-error *ngIf="form.get('cnpj')">CNPJ inválido</mat-error>
             </mat-form-field>
+          </div>
+
+          <!-- <div class="grid-4col">
+                        
+            
             <mat-form-field appearance="outline">
               <mat-label>Telefone</mat-label>
               <input matInput formControlName="telefone" placeholder="Telefone" mask="(00) 0000-0000||(00) 00000-0000">
               <mat-icon matSuffix>phone</mat-icon>
             </mat-form-field>
                         
-          </div>
-          <div class="grid-2col-compacto">
+          </div> -->
+          <div class="grid-4col">
             <mat-form-field appearance="outline">
               <mat-label>CEP</mat-label>
               <input matInput formControlName="cep" placeholder="CEP" mask="99999-999" (change)="getCep(form.value.cep)">
@@ -69,8 +68,18 @@
               <input matInput formControlName="endereco" placeholder="Endereço">
               <mat-icon matSuffix>map</mat-icon>
             </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="numero" placeholder="Número">
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Complemento</mat-label>
+              <input matInput formControlName="complemento" placeholder="Complemento">
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
           </div>
-          <div class="grid-3col-ajustado">
+          <div class="grid-4col">
             <mat-form-field appearance="outline">
               <mat-label>Bairro</mat-label>
               <input matInput formControlName="bairro" placeholder="Bairro">
@@ -87,15 +96,12 @@
               <mat-icon matSuffix>location_on</mat-icon>
             </mat-form-field>
             <mat-form-field appearance="outline">
-              <mat-label>Número</mat-label>
-              <input matInput formControlName="numero" placeholder="Número">
-              <mat-icon matSuffix>location_on</mat-icon>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Complemento</mat-label>
-              <input matInput formControlName="complemento" placeholder="Complemento">
-              <mat-icon matSuffix>location_on</mat-icon>
-            </mat-form-field>
+              <mat-label>Telefone</mat-label>
+              <input matInput formControlName="telefone" placeholder="Telefone" mask="(00) 0000-0000||(00) 00000-0000">
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>            
+          </div>
+          <div class="grid-2col-compacto">
             <mat-form-field appearance="outline">
               <mat-label>E-mail</mat-label>
               <input matInput formControlName="email" placeholder="E-mail" type="email">
@@ -107,7 +113,6 @@
               <mat-icon matSuffix>web</mat-icon>
             </mat-form-field>
           </div>
-
         </div>
 
         <div class="sidebar-foto-pessoa">
