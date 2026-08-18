@@ -121,9 +121,9 @@ export class AddUpdateTravel {
       secretariaId: ['', Validators.required],
       odometerDeparture: ['', Validators.required],
       odometerEntry: [null],
-      distanceKm: [{value: '', disabled: true}],
-      distanceMeters: [{value: '', disabled: true}],
-      travelTime: [{value: '', disabled: true}],
+      distanceKm: [''],
+      distanceMeters: [''],
+      travelTime: [''],
     });
   }
 
@@ -158,10 +158,11 @@ export class AddUpdateTravel {
     });
 
     const id = this.route.snapshot.paramMap.get('id');
+    this.initMap();
+    this.configurarAutocomplete();
     if (id) {
       this.update.set(true);
       this.form.patchValue({ id });
-
       this.travelService.getTravel(Number(id)).subscribe((travel) => {
         this.travel.set(travel);
         this.form.patchValue({
@@ -180,11 +181,12 @@ export class AddUpdateTravel {
           distanceMeters: travel.distanceMeters,
           travelTime: travel.travelTime,
         });
+        this.configurarAutocomplete();
+        this.calcularViagem();
       });
       // Integração com API de viagens pendente
     }
-    this.initMap();
-    this.configurarAutocomplete();
+    
   }
 
   private configurarAutocomplete(): void {
@@ -426,8 +428,9 @@ export class AddUpdateTravel {
     }
     const enderecoTexto = this.form.get('origin')?.value.display_name;
     const enderecoTextoDestino = this.form.get('destination')?.value.display_name;
-    this.form.patchValue({ origin: enderecoTexto }, { emitEvent: false });
-    this.form.patchValue({ destination: enderecoTextoDestino }, { emitEvent: false });
+    console.log(enderecoTexto, enderecoTextoDestino, 'enderecoTexto, enderecoTextoDestino');
+    // this.form.patchValue({ origin: enderecoTexto }, { emitEvent: false });
+    // this.form.patchValue({ destination: enderecoTextoDestino }, { emitEvent: false });
 
     if (this.update()) {
       
@@ -441,6 +444,8 @@ export class AddUpdateTravel {
 
   private createTravel() {
     const dataForm = { ...this.form.value };
+    console.log(dataForm, 'dataForm');
+    // return;
     this.travelService.createTravel(dataForm as Travel).subscribe({
       next: (travel) => {
         this.snackBar.open('Viagem criada com sucesso', 'Fechar', { duration: 3000 });
