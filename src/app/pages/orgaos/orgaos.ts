@@ -75,7 +75,7 @@ export class Orgaos {
         },
         error: (error: any) => {
           console.error('Erro ao excluir órgão:', error);
-          this.snackBar.open('Erro ao excluir órgão', 'Fechar', { duration: 3000 });
+          this.snackBar.open('Erro ao excluir órgão:' + error.error.message, 'Fechar', { duration: 3000 });
         }
       });
     }

@@ -77,7 +77,7 @@ export class Secretarias {
         },
         error: (error: any) => {
           console.error('Erro ao excluir secretaria:', error);
-          this.snackBar.open('Erro ao excluir secretaria', 'Fechar', { duration: 3000 });
+          this.snackBar.open('Erro ao excluir secretaria:' + error.error.message, 'Fechar', { duration: 3000 });
         }
       });
     }
