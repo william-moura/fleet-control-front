@@ -76,7 +76,7 @@ export class Prefeituras {
         },
         error: (error: any) => {
           console.error('Erro ao excluir prefeitura:', error);
-          this.snackBar.open('Erro ao excluir prefeitura', 'Fechar', { duration: 3000 });
+          this.snackBar.open('Erro ao excluir prefeitura:' + error.error.message, 'Fechar', { duration: 3000 });
         }
       });
     }
