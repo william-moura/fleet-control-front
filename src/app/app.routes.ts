@@ -35,27 +35,21 @@ import { AddUpdateTravel } from './pages/add-update-travel/add-update-travel';
 
 export const routes: Routes = [
     { path: 'welcome', component: Welcome, data: { icon: 'waving_hand', name: 'Bem-vindo', display: true}, canActivate: [authGuard], pathMatch: 'full' },
-    { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard',  permission: 'acessar_dashboards', display: true}, canActivate: [authGuard, roleGuard] },    
-    { 
-        path: '',
-        children: [
-            { path: 'drivers', component: DriversComponent, data: { icon: 'groups', name: 'Motoristas', permission: 'listar_motoristas'}, canActivate: [authGuard, roleGuard] },
-            { path: 'vehicles', component: Vehicles, data: { icon: 'local_shipping', name: 'Veículos', permission: 'listar_veiculos'}, canActivate: [authGuard, roleGuard] },
-            { path: 'vehicle-fines', component: VehicleFines, data: { icon: 'payment', name: 'Multas', permission: 'listar_multas_veiculos'}, canActivate: [authGuard, roleGuard] },
-            { path: 'supplier', component: SupplierComponent, data: { icon: 'local_shipping', name: 'Fornecedores' , permission: 'listar_fornecedores', display: true}, canActivate: [authGuard, roleGuard] },
-            { path: 'users', component: Users, data: { icon: 'groups', name: 'Usuários' , permission: 'listar_usuarios', display: true}, canActivate: [authGuard, roleGuard] },
-        ],
-        data: { icon: 'dashboard', name: 'Cadastros', permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard]
-    },
     { 
         path: '',
         children: [
             { path: 'prefeituras', component: AddUpdatePrefeitura, data: { icon: 'home', name: 'Prefeitura' }},
             { path: 'orgaos', component: Orgaos, data: { icon: 'home', name: 'Órgãos' }},
             { path: 'secretarias', component: Secretarias, data: { icon: 'home', name: 'Secretarias' }},
+            { path: 'drivers', component: DriversComponent, data: { icon: 'groups', name: 'Motoristas', permission: 'listar_motoristas'}, canActivate: [authGuard, roleGuard] },
+            { path: 'vehicles', component: Vehicles, data: { icon: 'local_shipping', name: 'Veículos', permission: 'listar_veiculos'}, canActivate: [authGuard, roleGuard] },
+            { path: 'vehicle-fines', component: VehicleFines, data: { icon: 'payment', name: 'Multas', permission: 'listar_multas_veiculos'}, canActivate: [authGuard, roleGuard] },
+            { path: 'supplier', component: SupplierComponent, data: { icon: 'local_shipping', name: 'Fornecedores' , permission: 'listar_fornecedores', display: true}, canActivate: [authGuard, roleGuard] },
+            { path: 'users', component: Users, data: { icon: 'groups', name: 'Usuários' , permission: 'listar_usuarios', display: true}, canActivate: [authGuard, roleGuard] },
         ],
-        data: { icon: 'home', name: 'Empresas', permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard]
+        data: { icon: 'home', name: 'Cadastros', permission: 'acessar_dashboards'}, canActivate: [authGuard, roleGuard]
     },
+    { path: 'dashboard', component: DashboardComponent, data: { icon: 'dashboard', name: 'Dashboard',  permission: 'acessar_dashboards', display: true}, canActivate: [authGuard, roleGuard] },    
     { 
         path: '',
         children: [
