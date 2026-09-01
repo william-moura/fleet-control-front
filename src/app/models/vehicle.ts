@@ -31,4 +31,5 @@ export interface Vehicle {
   prefeituraId: number;
   orgaoId: number;
   secretariaId: number;
+  vehiclePlateAndModel?: string;
 }
