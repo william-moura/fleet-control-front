@@ -69,26 +69,26 @@
                     placeholder="DD/MM/AAAA">
                   </mat-form-field>
                   <mat-form-field appearance="outline"> 
-                    <mat-label>Valor do Abastecimento</mat-label>
-                    <input matInput formControlName="fuelSupplierTotal" mask="separator.2" 
+                    <mat-label>Valor por Litro</mat-label>
+                    <input matInput formControlName="fuelSupplierPrice" mask="separator.2" 
                     placeholder="Ex: 1.000,00" 
-                    thousandSeparator="." decimalMarker="," decimalSeparator="," maxlength="8" />
+                    thousandSeparator="." decimalMarker="," decimalSeparator="," maxlength="8" (change)="totalAbastecimento()" />
                   </mat-form-field>
                 </div>
                 <div class="grid-3col">
                   <mat-form-field appearance="outline"> 
-                    <mat-label>Valor por Litro</mat-label>
-                    <input matInput formControlName="fuelSupplierPrice" mask="separator.2" 
-                    placeholder="Ex: 1.000,00" 
-                    thousandSeparator="." decimalMarker="," decimalSeparator="," maxlength="8" />
-                  </mat-form-field>
-                  <mat-form-field appearance="outline"> 
                     <mat-label>Quantidade de Litros</mat-label>
                     <input matInput formControlName="fuelSupplierQuantity" mask="separator.2" 
                     placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator=","
-                    maxlength="4"
+                    maxlength="4" (change)="totalAbastecimento()"
                     />
                   </mat-form-field>
+                  <mat-form-field appearance="outline"> 
+                    <mat-label>Valor do Abastecimento</mat-label>
+                    <input matInput formControlName="fuelSupplierTotal" mask="separator.2" 
+                    placeholder="Ex: 1.000,00" 
+                    thousandSeparator="." decimalMarker="," decimalSeparator="," maxlength="8" />
+                  </mat-form-field>                  
                   <mat-form-field appearance="outline"> 
                     <mat-label>Kilometragem</mat-label>
                     <input matInput formControlName="fuelSupplierKilometers" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator=","

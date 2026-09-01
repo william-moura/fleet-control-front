@@ -254,5 +254,11 @@ export class AddUpdateFuel {
       return;
     }
   }
+  totalAbastecimento() {
+    const price = this.form.value.fuelSupplierPrice;
+    const quantity = this.form.value.fuelSupplierQuantity;
+    const total = price * quantity;
+    this.form.controls['fuelSupplierTotal'].setValue(total);
+  }
   
 }
