@@ -166,9 +166,6 @@ export class AddUpdateVehicle {
       vehicleModelYear: ['', [Validators.required, Validators.max(currentYear)]],
       vehicleRenavamNumber: ['', Validators.required],
       vehicleChassisNumber: ['', [Validators.required, Validators.maxLength(17), Validators.minLength(17)]],
-      prefeituraId: ['', Validators.required],
-      orgaoId: ['', Validators.required],
-      secretariaId: ['', Validators.required],
     });
     this.driverForm = this.fb.group({
       driverId: ['', Validators.required],
