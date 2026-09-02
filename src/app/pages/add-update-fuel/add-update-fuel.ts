@@ -28,6 +28,8 @@ import { maxDateValidator } from '../../rules/min-date-validator';
 import { map, of } from 'rxjs';
 import { Observable } from 'rxjs';
 import { AsyncSelect } from '../../components/async-select/async-select';
+import { Secretaria } from '../../models/secretaria';
+import { PrefeituraService } from '../../services/prefeitura-service';
 
 @Component({
   selector: 'app-add-update-fuel',
@@ -67,6 +69,8 @@ export class AddUpdateFuel {
   vehicles$ = signal<Observable<Vehicle[]>>(of([]));
   suppliers$ = signal<Observable<Supplier[]>>(of([]));
   drivers$ = signal<Observable<Driver[]>>(of([]));
+  secretarias$ = signal<Observable<Secretaria[]>>(of([]));
+  private prefeituraService = inject(PrefeituraService);
   constructor() {
     this.form = this.fb.group({
       fuelSupplierDate: ['', [Validators.required, maxDateValidator()]],
@@ -80,6 +84,7 @@ export class AddUpdateFuel {
       fuelSupplierPrice: ['', [Validators.required, Validators.min(0)]],
       fuelSupplierInvoiceNumber: ['', Validators.required],
       fuelSupplierNotes: [''],
+      secretariaId: ['', Validators.required],
     });
   }
   ngOnInit() {
@@ -88,7 +93,7 @@ export class AddUpdateFuel {
     this.getFuelTypes();
     if (id) {
       this.getSuppliers();
-      this.getVehicles();      
+      this.getSecretarias();
       this.fuelSupplyService.getFuelSupplyById(Number(id)).subscribe((fuelSupply) => {
         this.fuel.set(fuelSupply);
         this.update.set(true);
@@ -97,6 +102,7 @@ export class AddUpdateFuel {
           fuelSupply.fuelSupplierDate = date.split('-').reverse().join('/');
         }
         this.form.patchValue(fuelSupply);
+        this.getVehicles();
         this.getDrivers();
       });
     }
@@ -173,7 +179,10 @@ export class AddUpdateFuel {
     this.suppliers$.set(this.supplierService.getAllSuppliers(SupplierType.GAS_STATION, 0, 10000).pipe(map((suppliers) => suppliers.data as Supplier[])));
   }
   async getVehicles() {
-    this.vehicles$.set(this.vehicleService.getAllVehicles(0, 10000).pipe(map((vehicles) => vehicles.data as Vehicle[])));
+    if (this.form.value.secretariaId) {
+      this.vehicles$.set(this.vehicleService.getVehiclesBySecretariaId(this.form.value.secretariaId).pipe(map((vehicles) => vehicles as Vehicle[])));
+    }
+    // this.vehicles$.set(this.vehicleService.getAllVehicles(0, 10000).pipe(map((vehicles) => vehicles.data as Vehicle[])));
   }
   async getDrivers() {
     if (this.form.value.vehicleId) {
@@ -260,5 +269,7 @@ export class AddUpdateFuel {
     const total = price * quantity;
     this.form.controls['fuelSupplierTotal'].setValue(total);
   }
-  
+  async getSecretarias() {
+    this.secretarias$.set(this.prefeituraService.getAllSecretarias().pipe(map((secretarias) => secretarias as Secretaria[])));
+  }
 }

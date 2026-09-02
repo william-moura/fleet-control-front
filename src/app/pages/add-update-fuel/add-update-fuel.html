@@ -24,43 +24,53 @@
               <section class="secao-form">
                 <h3><mat-icon>car</mat-icon> Dados do Abastecimento</h3>
                 <div class="grid-3col">
+                    <app-async-select 
+                    [options$]="suppliers$()" 
+                    [label]="'Fornecedor'" 
+                    [valueKey]="'id'" 
+                    [displayKey]="'supplierFantasyName'" 
+                    (click)="getSuppliers()"
+                    formControlName="supplierId"
+                    >
+                  </app-async-select>
+                  <mat-form-field appearance="outline">
+                      <mat-label>Tipo de Combustível</mat-label>
+                      <mat-select formControlName="fuelTypeId">
+                        <mat-option [value]="null">Selecione um tipo de combustível</mat-option>
+                        @for (fuelType of fuelTypes(); track fuelType.id) {
+                          <mat-option [value]="fuelType.id">{{fuelType.name}}</mat-option>
+                        }
+                      </mat-select>
+                  </mat-form-field>
                   <app-async-select 
-                  [options$]="suppliers$()" 
-                  [label]="'Fornecedor'" 
-                  [valueKey]="'id'" 
-                  [displayKey]="'supplierFantasyName'" 
-                  (click)="getSuppliers()"
-                  formControlName="supplierId"
-                >
-                </app-async-select>
-                <mat-form-field appearance="outline">
-                    <mat-label>Tipo de Combustível</mat-label>
-                    <mat-select formControlName="fuelTypeId">
-                      <mat-option [value]="null">Selecione um tipo de combustível</mat-option>
-                      @for (fuelType of fuelTypes(); track fuelType.id) {
-                        <mat-option [value]="fuelType.id">{{fuelType.name}}</mat-option>
-                      }
-                    </mat-select>
-                </mat-form-field>
-                <app-async-select 
-                  [options$]="vehicles$()" 
-                  [label]="'Veículo'" 
-                  [valueKey]="'id'" 
-                  [displayKey]="'vehicleModel'" 
-                  (click)="getVehicles()"
-                  formControlName="vehicleId"
-                >
-                </app-async-select>
+                    [options$]="secretarias$()" 
+                    [label]="'Secretaria'" 
+                    [valueKey]="'id'" 
+                    [displayKey]="'nome'" 
+                    (click)="getSecretarias()"
+                    formControlName="secretariaId"
+                  >
+                  </app-async-select>
+                  
                 </div>
                 <div class="grid-3col">
                   <app-async-select 
-                  [options$]="drivers$()" 
-                  [label]="'Motorista'" 
-                  [valueKey]="'id'" 
-                  [displayKey]="'driverName'" 
-                  (click)="getDrivers()" 
-                  formControlName="driverId">
-                </app-async-select>
+                    [options$]="vehicles$()" 
+                    [label]="'Veículo'" 
+                    [valueKey]="'id'" 
+                    [displayKey]="'vehicleModel'" 
+                    (click)="getVehicles()"
+                    formControlName="vehicleId"
+                  >
+                  </app-async-select>
+                  <app-async-select 
+                    [options$]="drivers$()" 
+                    [label]="'Motorista'" 
+                    [valueKey]="'id'" 
+                    [displayKey]="'driverName'" 
+                    (click)="getDrivers()" 
+                    formControlName="driverId">
+                  </app-async-select>
                   <mat-form-field appearance="outline" class="col-span-2">
                     <mat-label>Data do Abastecimento</mat-label>
                     <input matInput formControlName="fuelSupplierDate" 
@@ -68,14 +78,15 @@
                     [dropSpecialCharacters]="false" 
                     placeholder="DD/MM/AAAA">
                   </mat-form-field>
+                </div>
+                <div class="grid-3col">                  
+                  
                   <mat-form-field appearance="outline"> 
                     <mat-label>Valor por Litro</mat-label>
                     <input matInput formControlName="fuelSupplierPrice" mask="separator.2" 
                     placeholder="Ex: 1.000,00" 
                     thousandSeparator="." decimalMarker="," decimalSeparator="," maxlength="8" (change)="totalAbastecimento()" />
                   </mat-form-field>
-                </div>
-                <div class="grid-3col">
                   <mat-form-field appearance="outline"> 
                     <mat-label>Quantidade de Litros</mat-label>
                     <input matInput formControlName="fuelSupplierQuantity" mask="separator.2" 
@@ -88,15 +99,16 @@
                     <input matInput formControlName="fuelSupplierTotal" mask="separator.2" 
                     placeholder="Ex: 1.000,00" 
                     thousandSeparator="." decimalMarker="," decimalSeparator="," maxlength="8" />
-                  </mat-form-field>                  
+                  </mat-form-field>
+                </div>
+                <div class="grid-3col">
+                                                 
                   <mat-form-field appearance="outline"> 
                     <mat-label>Kilometragem</mat-label>
                     <input matInput formControlName="fuelSupplierKilometers" mask="separator.2" placeholder="Ex: 1.000,00" thousandSeparator="." decimalMarker="," decimalSeparator=","
                     maxlength="7" mask="999999,9"
                     />
                   </mat-form-field>
-                </div>
-                <div class="grid-2col">
                   <mat-form-field appearance="outline"> 
                     <mat-label>Número do Comprovante</mat-label>
                     <input matInput formControlName="fuelSupplierInvoiceNumber" maxlength="10" />
@@ -105,8 +117,12 @@
                     <mat-label>Observações</mat-label>
                     <input matInput formControlName="fuelSupplierNotes">
                   </mat-form-field>
-                  
                 </div>
+                <!-- <div class="grid-2col">
+                  
+                  
+                  
+                </div> -->
               </section>
             </form>
           </mat-tab>

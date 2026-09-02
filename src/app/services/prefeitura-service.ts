@@ -30,6 +30,9 @@ export class PrefeituraService {
     return this.http.delete<void>(`${environment.apiUrl}/orgaos/${id}`);
   }
   getSecretarias(indicePagina: number, pageSize: number): Observable<Pagination<Secretaria>> {
+    const params = new HttpParams()
+    .set('page', (indicePagina + 1).toString()) // MatPaginator começa em 0, Laravel em 1
+    .set('per_page', pageSize.toString());
     return this.http.get<Pagination<Secretaria>>(`${environment.apiUrl}/secretarias?page=${indicePagina}&per_page=${pageSize}`);
   }
   deleteSecretaria(id: number): Observable<void> {
@@ -82,5 +85,8 @@ export class PrefeituraService {
   }
   getOnePrefeitura(): Observable<Prefeitura> {
     return this.http.get<Prefeitura>(`${environment.apiUrl}/prefeituras/one`);
+  }
+  getAllSecretarias(): Observable<Secretaria[]> {
+    return this.http.get<Secretaria[]>(`${environment.apiUrl}/secretarias/all`);
   }
 }
