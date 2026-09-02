@@ -46,6 +46,7 @@ import { Prefeitura } from '../../models/prefeitura';
 import { PrefeituraService } from '../../services/prefeitura-service';
 import { Orgao } from '../../models/orgao';
 import { Secretaria } from '../../models/secretaria';
+import { SyncSecretarias } from '../../components/sync-secretarias/sync-secretarias';
 
 @Component({
   selector: 'app-add-update-vehicle',
@@ -70,7 +71,8 @@ import { Secretaria } from '../../models/secretaria';
     NgxMaskDirective,
     DragDropDirective,
     AsyncSelect,
-    SyncDriver
+    SyncDriver,
+    SyncSecretarias
   ],
   providers:[
   ],
@@ -106,10 +108,12 @@ export class AddUpdateVehicle {
   drivers$ = signal<Observable<Driver[]>>(of([]));
   private driverService = inject(DriverService);
   driverForm: FormGroup;
+  secretaryForm: FormGroup;
   //driverId = input<number | null>(null);
   isAba2Active = true;
   prefeituras$ = signal<Observable<Prefeitura[]>>(of([]));
   orgaoes$ = signal<Observable<Orgao[]>>(of([]));
+  secretarias = signal<Secretaria[]>([]);
   secretarias$ = signal<Observable<Secretaria[]>>(of([]));
   private prefeituraService = inject(PrefeituraService);
   ngOnInit() {
@@ -169,6 +173,9 @@ export class AddUpdateVehicle {
     });
     this.driverForm = this.fb.group({
       driverId: ['', Validators.required],
+    });
+    this.secretaryForm = this.fb.group({
+      secretaryId: ['', Validators.required],
     });
   }
 
@@ -540,6 +547,7 @@ export class AddUpdateVehicle {
         }
       });
       this.drivers.set(vehicle.drivers || []);
+      this.secretarias.set(vehicle.secretarias || []);
       this.prefeituraService.getOrgaosByPrefeituraId(vehicle.prefeituraId).subscribe((orgaoes) => {
         this.orgaoes$.set(of(orgaoes));
         if (vehicle.orgaoId) {
@@ -569,8 +577,46 @@ export class AddUpdateVehicle {
     });
   }
   getSecretarias() {
-    this.prefeituraService.getSecretariaByOrgaoId(this.veiculoForm.value.orgaoId).subscribe((secretarias) => {
+    this.prefeituraService.getAllSecretarias().subscribe((secretarias) => {
+      // this.secretarias.set(secretarias);
       this.secretarias$.set(of(secretarias));
+    });
+  }
+  async associateSecretarias() {
+    const secretaryId = this.secretaryForm.value.secretaryId;
+    if (!secretaryId) {
+      this.snackBar.open('Secretaria é obrigatória', 'Fechar', { duration: 3000 });
+      return;
+    }
+    const vehicleId = this.veiculoDados?.id;
+    if (!vehicleId) {
+      return;
+    }
+    try {
+      this.isLoading.set(true);
+      await firstValueFrom(this.vehicleService.addSyncSecretary(Number(vehicleId), secretaryId));
+      this.snackBar.open('Motorista associado com sucesso', 'Fechar', { duration: 3000 });
+      this.getVehicleById(vehicleId);
+      this.veiculoForm.patchValue({ driverId: null });
+    } catch (error) {
+      console.error('Erro ao associar motorista:', error);
+      this.snackBar.open('Erro ao associar motorista', 'Fechar', { duration: 3000 });
+    }
+    finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  async deleteSecretaria(secretaria: Secretaria) {
+    this.vehicleService.removeSyncSecretary(Number(this.veiculoDados?.id), Number(secretaria.id)).subscribe({
+      next: () => {
+        this.snackBar.open('Secretaria removida com sucesso', 'Fechar', { duration: 3000 });
+        this.getVehicleById(Number(this.veiculoDados?.id));
+      },
+      error: (error) => {
+        console.error('Erro ao remover secretaria:', error);
+        this.snackBar.open('Erro ao remover secretaria', 'Fechar', { duration: 3000 });
+      }
     });
   }
 }

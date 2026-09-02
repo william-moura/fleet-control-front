@@ -2,6 +2,7 @@ import { Driver } from "./driver";
 import { FuelSupply } from "./fuel-supply";
 import { Maintenance } from "./maintenance";
 import { Photo } from "./photo";
+import { Secretaria } from "./secretaria";
 import { VehicleFine } from "./vehicle-fine";
 
 export interface Vehicle {
@@ -32,4 +33,5 @@ export interface Vehicle {
   orgaoId: number;
   secretariaId: number;
   vehiclePlateAndModel?: string;
+  secretarias: Secretaria[] | null;
 }

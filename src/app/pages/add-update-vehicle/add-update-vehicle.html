@@ -220,14 +220,14 @@
             </mat-tab>
             <mat-tab label="Secretarias">
               <div class="p-4">                
-                <app-sync-secretary [secretaries]="secretaries" (deleteSecretaryEmit)="deleteSecretary($event)"></app-sync-secretary>
+                <app-sync-secretarias [secretarias]="secretarias" (deleteSecretariaEmit)="deleteSecretaria($event)"></app-sync-secretarias>
               </div>
               <div class="grid-form-2col p-4 mt-4 pb-4">
                 <form [formGroup]="secretaryForm">
-                <app-async-select [options$]="secretaries$()" [label]="'Secretaria'" [valueKey]="'id'" [displayKey]="'secretaryName'" (click)="getSecretaries()"
-                formControlName="driverId"
-                ></app-async-select>
-                <button mat-raised-button color="primary" (click)="associateSecretaries()">Associar Secretarias</button>
+                  <app-async-select [options$]="secretarias$()" [label]="'Secretaria'" [valueKey]="'id'" [displayKey]="'nome'" (click)="getSecretarias()"
+                  formControlName="secretaryId"
+                  ></app-async-select>
+                  <button mat-raised-button color="primary" (click)="associateSecretarias()">Associar Secretarias</button>
                 </form>
               </div>
             </mat-tab>

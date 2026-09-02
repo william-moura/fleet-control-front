@@ -81,4 +81,10 @@ export class VehicleService {
   removeSyncDriver(vehicleId: number, driverId: number): Observable<void> {
     return this.http.delete<void>(`${this.API_URL}/${vehicleId}/remove-sync-driver/${driverId}`);
   }
+  addSyncSecretary(vehicleId: number, secretaryId: number): Observable<void> {
+    return this.http.post<void>(`${this.API_URL}/${vehicleId}/add-sync-secretaria`, { secretaria_id: Number(secretaryId) });
+  }
+  removeSyncSecretary(vehicleId: number, secretaryId: number): Observable<void> {
+    return this.http.delete<void>(`${this.API_URL}/${vehicleId}/remove-sync-secretaria/${secretaryId}`);
+  }
 }
