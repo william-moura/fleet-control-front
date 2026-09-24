@@ -3,7 +3,7 @@ export interface ReportCard {
     title: string;
     description: string;
     icon: string;
-    category: 'Combustível' | 'Frota' | 'Financeiro';
+    category: 'Combustível' | 'Frota' | 'Financeiro' | 'Motorista';
     route: string;
     filter?: boolean;
 }
@@ -38,8 +38,8 @@ export const reportCards: ReportCard[] = [
     },
     {
         id: 'active_vehicles',
-        title: 'Veículos Ativos',
-        description: 'Veículos ativos no sistema.',
+        title: 'Relatório geral de Veículos',
+        description: 'Relatório geral de Veículos.',
         icon: 'directions_car',
         category: 'Frota',
         route: '/reports/active-vehicles',
@@ -71,5 +71,41 @@ export const reportCards: ReportCard[] = [
         category: 'Financeiro',
         route: '/reports/driver-with-fine-vehicles',
         filter: true,
-    }
+    },
+    {
+        id: 'vehicles_travels',
+        title: 'Relatório de utilização',
+        description: 'Relatório de utilização de veículos.',
+        icon: 'directions_car',
+        category: 'Frota',
+        route: '/reports/usage-report',
+        filter: false,
+    },
+    {
+        id: 'vehicle_maintenance_report',
+        title: 'Relatório de manutenção',
+        description: 'Relatório de manutenção de veículos.',
+        icon: 'directions_car',
+        category: 'Frota',
+        route: '/reports/maintenance-report',
+        filter: false,
+    },
+    {
+        id: 'consumption_general_report',
+        title: 'Relatório geral de consumo',
+        description: 'Relatório geral de consumo de veículos.',
+        icon: 'directions_car',
+        category: 'Combustível',
+        route: '/reports/consumption-general-report',
+        filter: false,
+    },
+    {
+        id: 'driver_general_report',
+        title: 'Relatório geral de motoristas',
+        description: 'Relatório geral de motoristas.',
+        icon: 'directions_car',
+        category: 'Motorista',
+        route: '/reports/driver-general-report',
+        filter: false,
+    },
 ];
