@@ -1,7 +1,7 @@
 <div class="container">
     <h1 class="mat-h1">Central de Relatórios</h1>
   
-    @for (cat of ['Combustível', 'Frota', 'Financeiro']; track cat) {
+    @for (cat of ['Combustível', 'Frota', 'Financeiro', 'Motorista']; track cat) {
       <h2 class="category-title">{{ cat }}</h2>
       <div class="report-grid">
         @for (rel of filtrarPorCategoria(cat); track rel.id) {
