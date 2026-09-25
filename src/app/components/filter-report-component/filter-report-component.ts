@@ -55,6 +55,7 @@ export class FilterReportComponent implements OnInit {
     this.driverService.getAllDrivers(0, 10000).subscribe((drivers) => {
       this.drivers.set(drivers.data);
     });
+    console.log(this.data, 'data')
   }
 
   gerar() {
