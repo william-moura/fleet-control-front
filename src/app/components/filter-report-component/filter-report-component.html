@@ -43,16 +43,18 @@
         </mat-select>
       </mat-form-field>
       }
-      @if (data.id === 'active_vehicles') {
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Selecione a Marca</mat-label>
-          <mat-select formControlName="brandId">
-            @for (b of brands(); track b.id) {
-              <mat-option [value]="b.id">{{ b.name }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      }
+    </div>
+  }
+  @if (data.id === 'active_vehicles') {
+    <div class="filter-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Selecione a Marca</mat-label>
+        <mat-select formControlName="brandId">
+          @for (b of brands(); track b.id) {
+            <mat-option [value]="b.id">{{ b.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
     </div>
   }
 </mat-dialog-content>
