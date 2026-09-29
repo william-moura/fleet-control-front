@@ -43,8 +43,8 @@ export class FilterReportComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: ReportCard
   ) {
     this.form = this.fb.group({
-      startDate: ['', this.data.filter ? Validators.required : null],
-      endDate: ['', this.data.filter ? Validators.required : null],
+      startDate: [''],
+      endDate: [''],
       vehicleId: [''],
       driverId: [''],
       brandId: [''],
