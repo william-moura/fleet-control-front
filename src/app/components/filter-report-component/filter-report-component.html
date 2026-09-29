@@ -4,25 +4,27 @@
   <p class="desc">{{ data.description }}</p>
   @if (data.filter) {
   <div class="filter-row">
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Período</mat-label>
-      <mat-date-range-input >
-        <input matStartDate formControlName="startDate" placeholder="Início" 
+    @if (data.filterDate) {
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Período</mat-label>
+        <mat-date-range-input >
+          <input matStartDate formControlName="startDate" placeholder="Início" 
+            placeholder="DD/MM/YYYY"
+            mask="00/00/0000" 
+            [dropSpecialCharacters]="false"
+            [leadZeroDateTime]="true">
+          <input matEndDate formControlName="endDate" placeholder="Fim"
           placeholder="DD/MM/YYYY"
           mask="00/00/0000" 
           [dropSpecialCharacters]="false"
           [leadZeroDateTime]="true">
-        <input matEndDate formControlName="endDate" placeholder="Fim"
-        placeholder="DD/MM/YYYY"
-        mask="00/00/0000" 
-        [dropSpecialCharacters]="false"
-        [leadZeroDateTime]="true">
-      </mat-date-range-input>
-      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-date-range-picker #picker></mat-date-range-picker>
-    </mat-form-field>
+        </mat-date-range-input>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    }
 
-    @if (data.id === 'consumption_by_vehicle' || data.id === 'fuel_consumption_by_vehicle') {
+    @if (data.filterVehicle) {
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Selecione o Veículo</mat-label>
         <mat-select formControlName="vehicleId">
@@ -33,7 +35,7 @@
       </mat-form-field>
     }
 
-    @if (data.id === 'driver_consumption') {
+    @if (data.filterDriver) {
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Selecione o Motorista</mat-label>
         <mat-select formControlName="driverId">
@@ -42,11 +44,8 @@
           }
         </mat-select>
       </mat-form-field>
-      }
-    </div>
-  }
-  @if (data.id === 'active_vehicles') {
-    <div class="filter-row">
+    }
+    @if (data.filterBrand) {
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Selecione a Marca</mat-label>
         <mat-select formControlName="brandId">
@@ -55,6 +54,7 @@
           }
         </mat-select>
       </mat-form-field>
+    }
     </div>
   }
 </mat-dialog-content>

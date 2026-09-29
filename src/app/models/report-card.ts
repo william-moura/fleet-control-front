@@ -6,6 +6,10 @@ export interface ReportCard {
     category: 'Combustível' | 'Frota' | 'Financeiro' | 'Motorista';
     route: string;
     filter?: boolean;
+    filterDate?: boolean;
+    filterVehicle?: boolean;
+    filterDriver?: boolean;
+    filterBrand?: boolean;
 }
 
 export const reportCards: ReportCard[] = [
@@ -17,6 +21,10 @@ export const reportCards: ReportCard[] = [
         category: 'Combustível',
         route: '/reports/consumption-by-vehicle',
         filter: true,
+        filterDate: true,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
     { 
         id: 'total_cost', 
@@ -26,6 +34,10 @@ export const reportCards: ReportCard[] = [
         category: 'Financeiro', 
         route: '/reports/total-cost',
         filter: true,
+        filterDate: true,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
     {
         id: 'consumption_by_driver',
@@ -35,6 +47,10 @@ export const reportCards: ReportCard[] = [
         category: 'Combustível',
         route: '/reports/consumption-by-driver',
         filter: true,
+        filterDate: true,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
     {
         id: 'active_vehicles',
@@ -44,6 +60,10 @@ export const reportCards: ReportCard[] = [
         category: 'Frota',
         route: '/reports/active-vehicles',
         filter: false,
+        filterDate: false,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
     {
         id: 'vehicle_higher_cost',
@@ -53,6 +73,9 @@ export const reportCards: ReportCard[] = [
         category: 'Frota',
         route: '/reports/vehicle-highest-cost',
         filter: true,
+        filterDate: true,
+        filterVehicle: false,
+        filterDriver: false,
     },
     {
         id: 'monthly_fuel_cost',
@@ -62,6 +85,10 @@ export const reportCards: ReportCard[] = [
         category: 'Combustível',
         route: '/reports/monthly-fuel-cost',
         filter: true,
+        filterDate: true,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
     {
         id: 'driver_with_fine_vehicles',
@@ -71,6 +98,10 @@ export const reportCards: ReportCard[] = [
         category: 'Financeiro',
         route: '/reports/driver-with-fine-vehicles',
         filter: true,
+        filterDate: true,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
     {
         id: 'vehicles_travels',
@@ -80,6 +111,10 @@ export const reportCards: ReportCard[] = [
         category: 'Frota',
         route: '/reports/usage-report',
         filter: false,
+        filterDate: false,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
     {
         id: 'vehicle_maintenance_report',
@@ -89,6 +124,10 @@ export const reportCards: ReportCard[] = [
         category: 'Frota',
         route: '/reports/maintenance-report',
         filter: false,
+        filterDate: false,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
     {
         id: 'consumption_general_report',
@@ -98,6 +137,10 @@ export const reportCards: ReportCard[] = [
         category: 'Combustível',
         route: '/reports/consumption-general-report',
         filter: false,
+        filterDate: false,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
     {
         id: 'driver_general_report',
@@ -107,5 +150,9 @@ export const reportCards: ReportCard[] = [
         category: 'Motorista',
         route: '/reports/driver-general-report',
         filter: false,
+        filterDate: false,
+        filterVehicle: false,
+        filterDriver: false,
+        filterBrand: false,
     },
 ];
