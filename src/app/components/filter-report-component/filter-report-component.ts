@@ -17,6 +17,7 @@ import { Driver } from '../../models/driver';
 import { DriverService } from '../../services/driver-service';
 import { MY_DATE_FORMATS } from '../../app.config';
 import { NgxMaskDirective } from 'ngx-mask';
+import { Brand } from '../../models/brand';
 
 @Component({
   selector: 'app-filter-report-component',
@@ -35,6 +36,7 @@ export class FilterReportComponent implements OnInit {
   private driverService = inject(DriverService);
   vehicles = signal<Vehicle[]>([]);
   drivers = signal<Driver[]>([]);
+  brands = signal<Brand[]>([]);
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<FilterReportComponent>,
@@ -45,6 +47,7 @@ export class FilterReportComponent implements OnInit {
       endDate: ['', this.data.filter ? Validators.required : null],
       vehicleId: [''],
       driverId: [''],
+      brandId: [''],
     });
   }
   // data = inject(MAT_DIALOG_DATA);
@@ -54,6 +57,9 @@ export class FilterReportComponent implements OnInit {
     });
     this.driverService.getAllDrivers(0, 10000).subscribe((drivers) => {
       this.drivers.set(drivers.data);
+    });
+    this.vehicleService.getBrands().subscribe((brands) => {
+      this.brands.set(brands);
     });
     console.log(this.data, 'data')
   }
