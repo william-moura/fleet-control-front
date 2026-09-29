@@ -43,7 +43,9 @@
         </mat-select>
       </mat-form-field>
       }
-      @if (data.id === 'active_vehicles') {
+    </div>
+    @if (data.id === 'active_vehicles') {
+      <div class="filter-row">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Selecione a Marca</mat-label>
           <mat-select formControlName="brandId">
@@ -52,8 +54,8 @@
             }
           </mat-select>
         </mat-form-field>
-      }
-    </div>
+      </div>
+    }
   }
 </mat-dialog-content>
 
