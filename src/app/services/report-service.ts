@@ -15,11 +15,12 @@ export class ReportService {
       filtros.vehicleId.forEach((vehicle: number) => {
         params = params.append('vehicleId[]', vehicle.toString());
       });
-      if (filtros.startDate) params = params.set('startDate', filtros.startDate);
-      if (filtros.endDate) params = params.set('endDate', filtros.endDate);
-      if (filtros.driverId) params = params.set('driverId', filtros.driverId.toString());
-      if (filtros.brandId) params = params.set('brandId', filtros.brandId.toString());
     }
+    if (filtros.startDate) params = params.set('startDate', filtros.startDate);
+    if (filtros.endDate) params = params.set('endDate', filtros.endDate);
+    if (filtros.driverId) params = params.set('driverId', filtros.driverId.toString());
+    if (filtros.brandId) params = params.set('brandId', filtros.brandId.toString());
+    console.log(params, 'params')
     return this.http.get<any>(`${this.API_URL}/${id}`, { params });
   }
 }
