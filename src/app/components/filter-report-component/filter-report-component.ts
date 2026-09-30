@@ -73,6 +73,9 @@ export class FilterReportComponent implements OnInit {
       if (dadosForm.endDate) {
         dadosForm.endDate = dadosForm.endDate.split('/').reverse().join('-');
       }
+      if (dadosForm.vehicleId) {
+        dadosForm.vehicleId = dadosForm.vehicleId.map((vehicle: number) => vehicle.id);
+      }
       console.log(dadosForm, 'dados form')
       this.dialogRef.close(dadosForm); 
     } catch (error) {
