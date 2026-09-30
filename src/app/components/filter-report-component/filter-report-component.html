@@ -27,7 +27,7 @@
     @if (data.filterVehicle) {
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Selecione o Veículo</mat-label>
-        <mat-select formControlName="vehicleId">
+        <mat-select formControlName="vehicleId" multiple>
           @for (v of vehicles(); track v.id) {
             <mat-option [value]="v.id">{{ v.vehiclePlate }} - {{ v.vehicleModel }}</mat-option>
           }
