@@ -63,8 +63,21 @@ export class ReportPreviewComponent implements OnInit {
   }
   exportarPDF() {
     console.log('PDF');
-    const queryParams = new URLSearchParams(this.filtros).toString();
+    const params = new URLSearchParams();
+    Object.entries(this.filtros).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        if (Array.isArray(value)) {
+          // Para cada item do array, adiciona key[] ex: vehicleId[]=1
+          value.forEach(item => params.append(`${key}[]`, item));
+        } else {
+          params.append(key, value.toString());
+        }
+      }
+    });
+    const queryParams = params.toString();
+    console.log(queryParams, 'queryParams');
     const url = `${environment.apiUrl}/reports/${this.idRelatorio}/pdf?${queryParams}`;
+    console.log(url, 'urlpdf');
     window.open(url, '_blank');    
   }
   exportarExcel() {    
