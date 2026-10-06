@@ -73,7 +73,7 @@ export class AddUpdateDriver {
       driverBloodType: ['', Validators.required],
       driverRg: ['', [Validators.required, Validators.maxLength(9)]],
       driverCpf: ['', [Validators.required, this.validateCpf]],
-      driverLicenseNumber: ['', Validators.required],
+      driverLicenseNumber: ['', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]],
       driverLicenseExpirationDate: ['', [Validators.required, this.validateLicenseExpirationDate(), this.validateDate()]],
       driverLicenseCategory: ['', Validators.required],
       driverBirthDate: ['', [Validators.required, this.validateBirthDate(), this.validateDate()]],
@@ -173,6 +173,14 @@ export class AddUpdateDriver {
 
     if (this.form.get('driverLicenseNumber')?.errors?.['required']) {
       this.snackBar.open('Número da CNH do motorista é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverLicenseNumber')?.errors?.['maxlength']) {
+      this.snackBar.open('Número da CNH do motorista deve ter 11 caracteres', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.form.get('driverLicenseNumber')?.errors?.['minlength']) {
+      this.snackBar.open('Número da CNH do motorista deve ter 11 caracteres', 'Fechar', { duration: 3000 });
       return;
     }
     if (this.form.get('driverLicenseCategory')?.errors?.['required']) {
