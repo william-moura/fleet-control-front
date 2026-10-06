@@ -168,7 +168,7 @@ export class AddUpdateVehicle {
       vehicleTransmissionType: ['', Validators.required],
       vehicleColor: ['', Validators.required],
       vehicleModelYear: ['', [Validators.required, Validators.max(currentYear)]],
-      vehicleRenavamNumber: ['', Validators.required],
+      vehicleRenavamNumber: ['', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]],
       vehicleChassisNumber: ['', [Validators.required, Validators.maxLength(17), Validators.minLength(17)]],
     });
     this.driverForm = this.fb.group({
@@ -228,6 +228,14 @@ export class AddUpdateVehicle {
 
     if (this.veiculoForm.get('vehicleRenavamNumber')?.errors?.['required']) {
       this.snackBar.open('Número do Renavam do veículo é obrigatório', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleRenavamNumber')?.errors?.['maxlength']) {
+      this.snackBar.open('Número do Renavam do veículo deve ter 11 caracteres', 'Fechar', { duration: 3000 });
+      return;
+    }
+    if (this.veiculoForm.get('vehicleRenavamNumber')?.errors?.['minlength']) {
+      this.snackBar.open('Número do Renavam do veículo deve ter 11 caracteres', 'Fechar', { duration: 3000 });
       return;
     }
     if (this.veiculoForm.get('vehicleChassisNumber')?.errors?.['required']) {
