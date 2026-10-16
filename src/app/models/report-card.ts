@@ -112,7 +112,7 @@ export const reportCards: ReportCard[] = [
         route: '/reports/usage-report',
         filter: true,
         filterDate: false,
-        filterVehicle: true,
+        filterVehicle: false,
         filterDriver: true,
         filterBrand: false,
     },
