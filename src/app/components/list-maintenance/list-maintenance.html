@@ -16,7 +16,7 @@
     <ng-container matColumnDef="maintenanceCost">
       <th mat-header-cell *matHeaderCellDef class="center-cell"> Total </th>
       <td mat-cell *matCellDef="let a" class="center-cell"> 
-        R$ {{ a.maintenanceCost || 0 }} 
+        {{ a.maintenanceCost | currency:'BRL' }} 
       </td>
     </ng-container>
   

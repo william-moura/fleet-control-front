@@ -6,7 +6,7 @@ export interface Maintenance {
   vehicleId: number;  
   description: string;
   maintenanceDate: string;
-  maintenanceCost: string;
+  maintenanceCost: number;
   maintenanceStatus: string;
   services: MaintenanceServiceModel[];
   vehicle: Vehicle;
