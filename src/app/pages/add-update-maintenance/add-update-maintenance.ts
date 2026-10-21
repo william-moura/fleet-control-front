@@ -71,13 +71,13 @@ export class AddUpdateMaintenance {
       maintenanceDate: ['', Validators.required],
       services: ['', Validators.required],
       maintenanceCost: ['', Validators.required],
-      maintenanceNextDate: ['', [Validators.required, this.validateMaintenanceNextDate()]],
+      maintenanceNextDate: ['', [this.validateMaintenanceNextDate()]],
       maintenanceKilometers: ['', Validators.required],
-      maintenancePreviousDateFinished: ['', [Validators.required, this.validateMaintenanceNextDate()]],
+      maintenancePreviousDateFinished: ['', [this.validateMaintenanceNextDate()]],
       maintenanceNotes: [''],
       vehicleId: ['', Validators.required],
       supplierId: ['', Validators.required],
-      maintenanceNextKilometers: ['', [Validators.required, Validators.min(0)]],
+      maintenanceNextKilometers: ['', [Validators.min(0)]],
     });
     this.vehicleService.getAllVehicles(0, 1000).subscribe((vehicles) => {
       this.vehicles.set(vehicles.data);
