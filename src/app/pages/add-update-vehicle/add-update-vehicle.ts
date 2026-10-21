@@ -121,12 +121,11 @@ export class AddUpdateVehicle {
     this.getPrefeituras();
     this.title.setTitle('Adicionar Veículo');
     const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      
-      this.title.setTitle('Editar Veículo');
+    if (id) {      
+      this.title.setTitle('Editar Veículos');
       this.getVehicleById(Number(id));
     }
-    const veiculoDadoss = this.veiculoDados;
+    const veiculoDadoss = this.veiculoDados;    
     this.vehicleService.getBrands().subscribe((brands) => {
       this.brands.set(brands);
     });
@@ -138,7 +137,7 @@ export class AddUpdateVehicle {
       if (veiculoDadoss.vehiclePurchaseDate) {
         const purchaseDate = veiculoDadoss.vehiclePurchaseDate as string;
         veiculoDadoss.vehiclePurchaseDate = purchaseDate.split('-').reverse().join('/');
-      }
+      }      
       this.previews = veiculoDadoss.photos.map((photo: Photo) => photo);
       this.photosIds = veiculoDadoss.photos.map((photo: Photo) => photo.id);
       this.selectedPhoto = veiculoDadoss.photos[0];
@@ -538,7 +537,7 @@ export class AddUpdateVehicle {
       }
       this.previews = vehicle.photos.map((photo: Photo) => photo);
       this.photosIds = vehicle.photos.map((photo: Photo) => photo.id);
-      this.selectedPhoto = vehicle.photos[0];
+      this.selectedPhoto = vehicle.photos[0];      
       this.veiculoForm.patchValue(vehicle);
       this.fuelSupplies.set(vehicle.fuelSuppliers || []);
       this.maintenances.set(vehicle.maintenances || []);
@@ -556,14 +555,14 @@ export class AddUpdateVehicle {
       });
       this.drivers.set(vehicle.drivers || []);
       this.secretarias.set(vehicle.secretarias || []);
-      this.prefeituraService.getOrgaosByPrefeituraId(vehicle.prefeituraId).subscribe((orgaoes) => {
-        this.orgaoes$.set(of(orgaoes));
-        if (vehicle.orgaoId) {
-          this.prefeituraService.getSecretariaByOrgaoId(vehicle.orgaoId).subscribe((secretarias) => {
-            this.secretarias$.set(of(secretarias));
-          });
-        }
-      });
+      // this.prefeituraService.getOrgaosByPrefeituraId(vehicle.prefeituraId).subscribe((orgaoes) => {
+      //   this.orgaoes$.set(of(orgaoes));
+      //   if (vehicle.orgaoId) {
+      //     this.prefeituraService.getSecretariaByOrgaoId(vehicle.orgaoId).subscribe((secretarias) => {
+      //       this.secretarias$.set(of(secretarias));
+      //     });
+      //   }
+      // });
     });
   }
 
