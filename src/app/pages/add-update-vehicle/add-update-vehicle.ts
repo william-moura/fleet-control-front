@@ -304,7 +304,7 @@ export class AddUpdateVehicle {
     }
     this.isLoading.set(true);
     if (this.veiculoForm.value.vehicleCurrentMileage) {
-      this.veiculoForm.value.vehicleCurrentMileage = this.veiculoForm.value.vehicleCurrentMileage.replace(',', '.');
+      this.veiculoForm.value.vehicleCurrentMileage = Number(this.veiculoForm.value.vehicleCurrentMileage.replace(',', '.'));
     }
     this.vehicleService.updateVehicle(id, this.veiculoForm.value).subscribe({
       next: () => {
