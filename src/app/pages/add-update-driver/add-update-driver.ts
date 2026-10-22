@@ -521,6 +521,13 @@ export class AddUpdateDriver {
       return false;
     }
 
+    const today = new Date();
+    const licenseExpirationDateDate = new Date(year, month - 1, day);
+    if (licenseExpirationDateDate < today) {
+      this.snackBar.open('Data de expiração da CNH deve ser maior que a data atual', 'Fechar', { duration: 3000 });
+      return false;
+    }
+    return null;
     
     return null;
   }
