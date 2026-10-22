@@ -189,6 +189,14 @@ $azul-primario: #0f172a; // Cor escura base do design moderno ou use a primária
     }
   }
 }
+.btn-float {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  width: 100%;
+  text-align: center;
+}
 
 // Container do Formulário e Abas
 .formulario-wrapper {

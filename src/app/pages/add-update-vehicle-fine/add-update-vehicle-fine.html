@@ -33,7 +33,13 @@
                 (click)="getVehicles()" 
                 formControlName="vehicleId"
                 >
-                </app-async-select>                
+                </app-async-select>
+                
+                  <button mat-icon-button color="warn" title="Adicionar Motorista" appNewWindow="vehicle/edit/{{form.value.vehicleId}}" class="btn-float" 
+                  [disabled]="!vehicleId()">
+                    Adicionar Motorista
+                  </button>
+                
                 <app-async-select 
                   [options$]="drivers$()" 
                   [label]="'Motorista'" 
