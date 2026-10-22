@@ -232,7 +232,9 @@ export class AddUpdatePrefeitura {
   private create() {
     this.prefeituraService.createPrefeitura(this.form.value).subscribe({
       next: (prefeitura) => {
-      this.snackBar.open('Prefeitura criada com sucesso', 'Fechar', { duration: 3000 });
+        this.prefeitura.set(prefeitura);
+        this.update.set(true);
+        this.snackBar.open('Prefeitura criada com sucesso', 'Fechar', { duration: 3000 });
         this.router.navigate(['/prefeituras']);
       },
       error: (error) => {
