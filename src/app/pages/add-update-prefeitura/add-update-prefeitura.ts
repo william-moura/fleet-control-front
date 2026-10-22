@@ -195,6 +195,13 @@ export class AddUpdatePrefeitura {
       next: (prefeitura) => {
         this.update.set(true);
         this.form.patchValue(prefeitura);
+        const photo = prefeitura.photos?.[0];
+        if (photo) {
+          this.form.patchValue({
+            foto: photo.path,
+            fotoId: [photo.id],
+          })
+        };
         this.cdr.detectChanges();
         this.prefeitura.set(prefeitura);
     }, error: (error) => {
