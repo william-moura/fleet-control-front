@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, Injector, Signal, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -21,7 +21,9 @@ import { VehicleStateService } from '../../services/vehicle-state-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AsyncSelect } from '../../components/async-select/async-select';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, startWith } from 'rxjs';
+import { NewWindow } from '../../directives/new-window';
+import { toSignal } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-add-update-vehicle-fine',
   imports: [CommonModule,
@@ -35,7 +37,7 @@ import { map, Observable, of } from 'rxjs';
     MatCardModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    NgxMaskDirective,AsyncSelect],
+    NgxMaskDirective,AsyncSelect, NewWindow],
   templateUrl: './add-update-vehicle-fine.html',
   styleUrl: './add-update-vehicle-fine.scss',
 })
@@ -55,10 +57,12 @@ export class AddUpdateVehicleFine {
   private route = inject(ActivatedRoute);
   vehicles$ = signal<Observable<Vehicle[]>>(of([]));
   drivers$ = signal<Observable<Driver[]>>(of([]));
+  vehicleId!: Signal<string | null | undefined>;
+  private injector = inject(Injector);
   constructor() {
     this.form = this.fb.group({
       vehicleId: ['', Validators.required],
-      driverId: ['', Validators.required],
+      driverId: [null, Validators.required],
       fineDate: ['', Validators.required],
       fineAmount: ['', Validators.required],
       fineLevel: ['', Validators.required],
@@ -67,6 +71,15 @@ export class AddUpdateVehicleFine {
       fineStatus: ['', ],
       finePoints: ['', [Validators.required, Validators.min(1)]],
     });
+    this.vehicleId = toSignal(
+      this.form.get('vehicleId')!.valueChanges.pipe(
+        startWith(this.form.get('vehicleId')?.value)
+      ),
+      { 
+        initialValue: this.form.get('vehicleId')?.value,
+        injector: this.injector // 👈 Vincula o ciclo de vida do Signal aqui
+      }
+    );
     this.vehicleService.getAllVehicles(0, 1000).subscribe((vehicles) => {
       this.vehicles.set(vehicles.data);
     });
