@@ -457,6 +457,27 @@ export class AddUpdateDriver {
     if (!regexData.test(licenseExpirationDate)) {
       return { invalidDate: true };
     }
+    const matches = licenseExpirationDate.split('/');  
+    if (!matches) {
+      return { invalidDate: true };
+    }
+    const day = parseInt(matches[0], 10);
+    const month = parseInt(matches[1], 10);
+    const year = parseInt(matches[2], 10);
+    if (isNaN(day) || isNaN(month) || isNaN(year)) {
+      return { invalidDate: true };
+    }
+    if (month < 1 || month > 12 || day < 1 || day > 31) {
+      return { invalidDate: true };
+    }
+    if (year < 1900 || year > 2100) {
+      return { invalidDate: true };
+    }
+    const today = new Date();
+    const licenseExpirationDateDate = new Date(year, month - 1, day);
+    if (licenseExpirationDateDate < today) {
+      return { invalidDate: true };
+    }
     return null;
     }
   }
