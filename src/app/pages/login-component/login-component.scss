@@ -1,98 +1,437 @@
-$primary-color: #1a237e;
-$accent-color: #ff6f00;
-$text-muted: #64748b;
+// ============================================
+// VARIÁVEIS E PALETA DE CORES
+// ============================================
+$bg-dark-start: #0d382e;
+$bg-dark-mid: #03221b;
+$bg-dark-end: #021a14;
+$bg-outer: #03201a;
+
+$primary-green: #07553b;
+$primary-green-hover: #05402c;
+$brand-green: #55b338;
+$lime-highlight: #a3e635;
+$emerald-glow: rgba(16, 185, 129, 0.35);
+
+$text-dark: #0f172a;
+$text-muted: #94a3b8;
+$border-color: #cbd5e1;
+$card-bg: #ffffff;
+
+:host {
+  display: block;
+  font-family: 'Figtree', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: $text-dark;
+  box-sizing: border-box;
+
+  *, *::before, *::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+  }
+}
 
 .login-wrapper {
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  // Gradiente industrial
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  background-color: $bg-outer;
   position: fixed;
   top: 0;
   left: 0;
+  overflow-y: auto;
   z-index: 2000;
+
+  @media (max-width: 960px) {
+    flex-direction: column;
+    position: relative;
+    min-height: 100vh;
+  }
 }
 
-.login-card {
-  width: 100%;
-  max-width: 420px;
-  padding: 40px 30px;
-  border-radius: 12px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3) !important;
+// ============================================
+// LADO ESQUERDO: BANNER INSTITUCIONAL
+// ============================================
+.banner-section {
+  flex: 1.1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4.5rem 5.5rem 2.5rem 5.5rem;
+  background: radial-gradient(circle at 10% 10%, $bg-dark-start 0%, $bg-dark-mid 50%, $bg-dark-end 100%);
+  overflow: hidden;
 
-  .login-header {
-    text-align: center;
-    margin-bottom: 30px;
+  @media (max-width: 960px) {
+    padding: 3rem 2rem;
+    flex: auto;
+  }
 
-    .logo-circle {
-      background: $accent-color;
-      width: 60px;
-      height: 60px;
-      margin: 0 auto 15px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      
-      mat-icon {
-        color: white;
-        font-size: 32px;
-        width: 32px;
-        height: 32px;
+  .radial-glow {
+    position: absolute;
+    top: -80px;
+    left: -80px;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    background: radial-gradient(circle, $emerald-glow 0%, rgba(16, 185, 129, 0) 70%);
+    pointer-events: none;
+  }
+
+  .banner-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 1;
+  }
+
+  .banner-body {
+    margin: auto 0;
+    max-width: 520px;
+    z-index: 1;
+
+    @media (max-width: 960px) {
+      margin: 2rem 0;
+    }
+
+    .headline {
+      font-size: 2.45rem;
+      font-weight: 800;
+      line-height: 1.22;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+
+      .highlight-lime {
+        color: $lime-highlight;
       }
     }
 
-    h1 {
-      margin: 0;
-      font-size: 1.8rem;
+    .description {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: $text-muted;
+      font-weight: 400;
+    }
+  }
+
+  .banner-footer {
+    margin-top: 2rem;
+    color: #10b981;
+    opacity: 0.7;
+
+    .skyline-svg {
+      width: 100%;
+      max-width: 380px;
+      height: auto;
+    }
+  }
+}
+
+// ============================================
+// ELEMENTOS COMPARTILHADOS (BRAND & BADGE)
+// ============================================
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  .brand-box {
+    width: 44px;
+    height: 44px;
+    border: 2.5px solid #ffffff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .brand-letter {
+      color: #ffffff;
+      font-size: 1.6rem;
       font-weight: 800;
-      color: $primary-color;
-      letter-spacing: -1px;
+      line-height: 1;
     }
 
-    p {
-      color: $text-muted;
-      margin-top: 5px;
-      font-size: 0.9rem;
+    &--dark {
+      border-color: #0a4436;
+
+      .brand-letter {
+        color: #0a4436;
+      }
+    }
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+
+    .brand-title {
+      font-size: 1.85rem;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      color: #ffffff;
+      line-height: 1;
+
+      &--green {
+        color: $brand-green;
+      }
+    }
+
+    .brand-subtitle {
+      font-size: 0.68rem;
+      letter-spacing: 0.35em;
+      text-transform: lowercase;
+      color: #a7f3d0;
+      margin-top: 2px;
+      font-weight: 500;
+
+      &--dark {
+        color: #04251d;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+.system-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  padding: 0.45rem 1.15rem;
+  background-color: #083b30;
+  border: 1px solid rgba(52, 211, 153, 0.45);
+  border-radius: 9999px;
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #34d399;
+  }
+
+  &--dark {
+    background-color: #083b30;
+    border: 1px solid rgba(52, 211, 153, 0.3);
+    color: #ffffff;
+    margin-top: 0.75rem;
+  }
+}
+
+// ============================================
+// LADO DIREITO: CARD DE LOGIN
+// ============================================
+.card-section {
+  flex: 0.95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+  position: relative;
+  z-index: 2;
+
+  @media (max-width: 960px) {
+    padding: 2rem 1.5rem 3rem 1.5rem;
+  }
+}
+
+.login-card-container {
+  background-color: $card-bg;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 36px;
+  padding: 3rem 2.5rem 2.5rem 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 960px) {
+    border-radius: 24px;
+    padding: 2rem 1.5rem;
+  }
+
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+}
+
+.error-banner {
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  color: #b91c1c;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+  border-radius: 4px;
+}
+
+// FORMULÁRIO E CUSTOMIZAÇÃO DO ANGULAR MATERIAL
+.login-form {
+  display: flex;
+  flex-direction: column;
+
+  .custom-field-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.25rem;
+
+    .field-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.35rem;
     }
   }
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 10px;
 }
 
+// Ajustes específicos do mat-form-field outline para bater com o design
+::ng-deep .custom-mat-field {
+  .mat-mdc-text-field-wrapper {
+    background-color: #ffffff !important;
+    border-radius: 9px !important;
+    padding-left: 12px !important;
+    padding-right: 8px !important;
+  }
+
+  .mat-mdc-form-field-flex {
+    align-items: center !important;
+  }
+
+  .mat-mdc-form-field-icon-prefix {
+    padding: 0 8px 0 0 !important;
+    color: #475569 !important;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .mat-mdc-form-field-icon-suffix {
+    padding: 0 !important;
+    color: #475569 !important;
+  }
+
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: #cbd5e1 !important;
+  }
+
+  &.mat-focused {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #10b981 !important;
+      border-width: 2px !important;
+    }
+  }
+}
+
+// Checkbox e Esqueci a senha
 .login-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
-  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
 
   .forgot-link {
-    color: $primary-color;
+    color: #0f172a;
     text-decoration: none;
     font-weight: 600;
-    &:hover { text-decoration: underline; }
+    font-size: 0.82rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
-.login-btn {
-  width: 100%;
-  padding: 25px !important;
-  font-weight: 700 !important;
-  font-size: 1rem !important;
-  letter-spacing: 1px;
-  border-radius: 8px !important;
+::ng-deep .custom-checkbox {
+  .mdc-label {
+    font-size: 0.82rem !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+  }
+
+  --mdc-checkbox-selected-focus-icon-color: #07553b;
+  --mdc-checkbox-selected-hover-icon-color: #07553b;
+  --mdc-checkbox-selected-icon-color: #07553b;
+  --mdc-checkbox-selected-checkmark-color: #ffffff;
 }
 
-.login-footer {
-  text-align: center;
-  padding: 20px 0;
-  font-size: 0.75rem;
-  color: #cbd5e1;
+// Botão Entrar
+.login-btn {
+  width: 100%;
+  height: 48px !important;
+  background-color: $primary-green !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.05em !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
+  &:hover:not(:disabled) {
+    background-color: $primary-green-hover !important;
+  }
+
+  &:disabled {
+    opacity: 0.65;
+  }
+
+  .btn-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .spinner-inline {
+    margin: 0 auto;
+    ::ng-deep circle {
+      stroke: #ffffff !important;
+    }
+  }
+}
+
+// Rodapé e divisória
+.card-footer {
+  margin-top: 2rem;
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background-color: #64748b;
+      opacity: 0.5;
+    }
+
+    .divider-text {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: nowrap;
+    }
+  }
 }
