@@ -1,77 +1,103 @@
 <nav class="admin-sidebar" [class.collapsed]="isCollapsed">
-    <div class="sidebar-header">
-      <div class="logo-container">
-        <div class="logo-icon">F</div>
-        <span class="logo-text" *ngIf="!isCollapsed">FrotaSync</span>
-      </div>
-      <button class="toggle-btn" (click)="toggleSidebar()">
-        <span class="material-icons">{{ isCollapsed ? 'menu' : 'menu_open' }}</span>
-      </button>
-    </div>
-    <div class="search-container" *ngIf="!isCollapsed">
-      <div class="search-wrapper">
-        <input type="text" placeholder="Pesquisar menus..." (input)="filterRoutes(searchInput.value)" #searchInput>
-        <span class="material-icons search-icon">search</span>
-      </div>
-    </div>
   
-    <ul class="nav-list">
-      @for (route of filteredMenuItems(); track route.path) {
-        @if (route.children && route.children.length > 0) {
-          <li class="nav-item" routerLinkActive="active" >
-            <a (click)="toggleSubmenu(route)">
-              <span class="material-icons">{{ route.data?.['icon'] }}</span>
-              <span class="link-name">{{ route.data?.['name'] }}</span>
-              <mat-icon class="seta-expansao" [class.rotacionado]="route.expanded">
-                expand_more
-              </mat-icon>
-            </a>
-            @if (route.expanded) {
-              <ul>
-                @for (child of route.children; track child.path) {
-                  <li class="nav-item submenu-item" routerLinkActive="active">
-                    <a appNewWindow="{{ child.path }}">
-                      <span class="material-icons">{{ child.data?.['icon'] }}</span>
-                      <span class="link-name">{{ child.data?.['name'] }}</span>
-                    </a>
-                  </li>
-                }
-              </ul>
-            }
-          </li>
-        }
-        @else if (route.data?.['display']) {
-          
-          <li class="nav-item" routerLinkActive="active">
-            <a appNewWindow="{{ route.path }}">
-              <span class="material-icons">{{ route.data?.['icon'] }}</span>
-              <span class="link-name">{{ route.data?.['name'] }}</span>
-            </a>
-          </li>          
-        }
-       
+  <!-- Curva decorativa Neon no canto inferior esquerdo da Sidebar -->
+  <div class="sidebar-glow-decor" *ngIf="!isCollapsed">
+    <svg viewBox="0 0 300 300" fill="none">
+      <path d="M -40 280 C 40 260 140 180 160 -20" stroke="#a3e635" stroke-width="3.5" />
+    </svg>
+  </div>
+
+  <!-- TOPO: Logo REALIZA Informática + Botão Recolher -->
+  <div class="sidebar-header">
+    <div class="logo-container" *ngIf="!isCollapsed">
+      <img src="/images/log-final.jpeg" alt="Realiza Informática" class="brand-logo" />
+    </div>
+
+    <!-- Quando recolhido, exibe apenas a caixa com R -->
+    <div class="logo-icon-mini" *ngIf="isCollapsed">
+      <span>R</span>
+    </div>
+
+    <button class="toggle-btn" (click)="toggleSidebar()" type="button" aria-label="Alternar Menu">
+      <span class="material-icons">{{ isCollapsed ? 'menu' : 'menu_open' }}</span>
+    </button>
+  </div>
+
+  <!-- BUSCA DE MENUS -->
+  <div class="search-container" *ngIf="!isCollapsed">
+    <div class="search-wrapper">
+      <span class="material-icons search-icon">search</span>
+      <input 
+        type="text" 
+        placeholder="Pesquisar menus..." 
+        (input)="filterRoutes(searchInput.value)" 
+        #searchInput
+      />
+    </div>
+  </div>
+
+  <!-- LISTA DE NAVEGAÇÃO -->
+  <ul class="nav-list">
+    @for (route of filteredMenuItems(); track route.path) {
+      
+      <!-- ITEM COM SUBMENU (EX: Cadastros, Movimentação) -->
+      @if (route.children && route.children.length > 0) {
+        <li class="nav-group" [class.expanded]="route.expanded">
+          <a class="nav-item-link" (click)="toggleSubmenu(route)">
+            <span class="material-icons nav-icon">{{ route.data?.['icon'] }}</span>
+            <span class="link-name" *ngIf="!isCollapsed">{{ route.data?.['name'] }}</span>
+            <mat-icon class="seta-expansao" [class.rotacionado]="route.expanded" *ngIf="!isCollapsed">
+              expand_more
+            </mat-icon>
+          </a>
+
+          <!-- SUBITENS COM BULLETS (BOLINHAS) -->
+          @if (route.expanded && !isCollapsed) {
+            <ul class="submenu-list">
+              @for (child of route.children; track child.path) {
+                <li class="submenu-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}">
+                  <a appNewWindow="{{ child.path }}" class="submenu-link">
+                    <span class="bullet-dot"></span>
+                    <span class="link-name">{{ child.data?.['name'] }}</span>
+                  </a>
+                </li>
+              }
+            </ul>
+          }
+        </li>
       }
-      <li class="nav-item" routerLinkActive="active">
-        <a href="javascript:void(0)" (click)="onLogout()">
-          <span class="material-icons">logout</span>
-          <span class="link-name">Sair</span>
-        </a>
-      </li>
-      <!-- <li class="nav-item" routerLinkActive="active">
-        <a routerLink="/rotas">
-          <span class="material-icons">map</span>
-          <span class="link-name">Rastreamento</span>
-        </a>
-      </li> -->
-    </ul>
-  
-    <div class="sidebar-footer">
-      <div class="user-profile">
-        <span class="material-icons">account_circle</span>
-        <div class="user-info" *ngIf="!isCollapsed">
-          <span class="user-name">{{ userName() }}</span>
-          <span class="user-role">{{ userRole() }}</span>
-        </div>
+
+      <!-- ITEM SIMPLES (EX: Dashboard, Relatórios, etc.) -->
+      @else if (route.data?.['display']) {
+        <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <a appNewWindow="{{ route.path }}" class="nav-item-link">
+            <span class="material-icons nav-icon">{{ route.data?.['icon'] }}</span>
+            <span class="link-name" *ngIf="!isCollapsed">{{ route.data?.['name'] }}</span>
+          </a>
+        </li>          
+      }
+    }
+
+    <!-- BOTÃO SAIR -->
+    <li class="nav-item logout-item">
+      <a href="javascript:void(0)" (click)="onLogout()" class="nav-item-link">
+        <span class="material-icons nav-icon">logout</span>
+        <span class="link-name" *ngIf="!isCollapsed">Sair</span>
+      </a>
+    </li>
+  </ul>
+
+  <!-- RODAPÉ COM PERFIL DO USUÁRIO -->
+  <div class="sidebar-footer">
+    <div class="user-profile">
+      <!-- Avatar circular branco com iniciais pretas (KR) -->
+      <div class="avatar-circle">
+        <span>{{ (userName() | slice:0:2) || 'KR' }}</span>
+      </div>
+      <div class="user-info" *ngIf="!isCollapsed">
+        <span class="user-name">{{ userName() }}</span>
+        <span class="user-role">{{ userRole() }}</span>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>
