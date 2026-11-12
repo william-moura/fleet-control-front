@@ -9,7 +9,7 @@
           <h1>{{ update() ? 'Editar Manutenção' : 'Nova Manutenção' }}</h1>
         </div>
       </div>
-      <button mat-stroked-button color="primary" (click)="cancelar()">
+      <button matButton="outlined" class="button-outlined" color="primary" (click)="cancelar()">
         <mat-icon>list</mat-icon> Ver Lista
       </button>
     </header>
@@ -111,8 +111,8 @@
         </mat-tab-group>
   
         <footer class="acoes-footer">
-          <button mat-button (click)="cancelar()">Cancelar</button>
-          <button mat-flat-button color="primary" (click)="salvar()">
+          <button matButton="outlined" class="button-outlined" (click)="cancelar()">Cancelar</button>
+          <button matButton="filled" class="button-filled" (click)="salvar()">
             <mat-icon>save</mat-icon> Salvar Cadastro
           </button>
         </footer>

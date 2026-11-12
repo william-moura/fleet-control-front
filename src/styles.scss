@@ -157,3 +157,16 @@ table {
   justify-content: center;
 }
 
+.button-outlined {
+  color: #04750e !important;
+  border-color: #04750e;
+  background-color: transparent;
+  &:hover {
+    background-color: #04750e;
+    color: #ffffff !important;
+  }
+}
+.mat-icon {
+  color: green !important;
+}
+

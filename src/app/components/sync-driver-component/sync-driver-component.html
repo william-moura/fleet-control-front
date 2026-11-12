@@ -20,7 +20,7 @@
 
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close (click)="cancelSyncDriver()">Cancelar</button>
-  <button mat-flat-button color="primary" (click)="confirmSyncDriver()">
+  <button matButton="filled" class="button-filled" (click)="confirmSyncDriver()">
     Salvar Associações ({{ selectedDriverIds.length }})
   </button>
 </mat-dialog-actions>

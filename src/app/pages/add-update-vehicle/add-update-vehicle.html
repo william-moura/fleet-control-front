@@ -10,10 +10,10 @@
           <h1>{{ update() ? 'Editar Veículo' : 'Novo Veículo' }}</h1>
         </div>
       </div>
-      <button mat-stroked-button color="primary" (click)="addBrand()">
+      <button matButton="outlined" class="button-outlined" (click)="addBrand()">
         <mat-icon>add</mat-icon> Nova Marca
       </button>
-      <button mat-stroked-button color="primary" (click)="voltar()">
+      <button matButton="outlined" class="button-outlined" (click)="voltar()">
         <mat-icon>list</mat-icon> Ver Lista
       </button>
     </header>
@@ -236,8 +236,8 @@
   
         @if (isAba2Active) {
         <footer class="acoes-footer">
-          <button mat-button (click)="cancelar()">Cancelar</button>
-            <button mat-flat-button color="primary" (click)="salvar()">
+          <button matButton="outlined" class="button-outlined" (click)="cancelar()">Cancelar</button>
+            <button matButton="filled" class="button-filled" (click)="salvar()">
               <mat-icon>save</mat-icon> Salvar Alterações
             </button>
           </footer>
