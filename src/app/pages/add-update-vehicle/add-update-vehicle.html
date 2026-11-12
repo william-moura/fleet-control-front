@@ -214,7 +214,7 @@
                 <app-async-select [options$]="drivers$()" [label]="'Motorista'" [valueKey]="'id'" [displayKey]="'driverName'" (click)="getDrivers()"
                 formControlName="driverId"
                 ></app-async-select>
-                <button mat-raised-button color="primary" (click)="associateDrivers()">Associar Motoristas</button>
+                <button matButton="filled" class="button-filled" (click)="associateDrivers()">Associar Motoristas</button>
                 </form>
               </div>
             </mat-tab>
@@ -227,7 +227,7 @@
                   <app-async-select [options$]="secretarias$()" [label]="'Secretaria'" [valueKey]="'id'" [displayKey]="'nome'" (click)="getSecretarias()"
                   formControlName="secretaryId"
                   ></app-async-select>
-                  <button mat-raised-button color="primary" (click)="associateSecretarias()">Associar Secretarias</button>
+                  <button matButton="filled" class="button-filled" (click)="associateSecretarias()">Associar Secretarias</button>
                 </form>
               </div>
             </mat-tab>

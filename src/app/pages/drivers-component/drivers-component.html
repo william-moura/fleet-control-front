@@ -1,7 +1,7 @@
 <div class="container-pagina">
   <div class="header-acoes">
-    <h2>Gestão de Motoristas</h2>
-    <button mat-raised-button color="primary" (click)="openAddDriverDialog()">
+    <h2> <mat-icon>people</mat-icon> Gestão de Motoristas</h2>
+    <button matButton="filled" class="button-filled" (click)="openAddDriverDialog()">
       <mat-icon>add</mat-icon> Novo Motorista
     </button>
   </div>
@@ -17,7 +17,7 @@
 
       <ng-container matColumnDef="nome">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
-        <td mat-cell *matCellDef="let row"> {{row.driverName}} </td>
+        <td mat-cell *matCellDef="let row"> <mat-icon class="icon-table">person</mat-icon>{{row.driverName}} </td>
       </ng-container>
       <ng-container matColumnDef="driverRegisteredNumber">
         <th mat-header-cell *matHeaderCellDef class="center-cell"> Matrícula </th>

@@ -17,12 +17,11 @@ import { Pagination } from '../../models/pagination';
 import { ConfirmDialog } from '../../components/confirm-dialog/confirm-dialog';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { Router } from '@angular/router';
-import { NewWindow } from '../../directives/new-window';
 
 @Component({
   selector: 'app-vehicle-fines',
   imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule, MatFormFieldModule, MatButtonModule, 
-    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule, NewWindow],
+    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule],
   templateUrl: './vehicle-fines.html',
   styleUrl: './vehicle-fines.scss',
 })

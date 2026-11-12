@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 .main-content {
   width: 100% !important;
 }
@@ -58,8 +59,8 @@ table {
   
   // Estilos das células
   th.mat-mdc-header-cell {
-    background-color: #f8fafc;
-    color: #1a237e;
+    background-color: #e8f3ed;
+    color: #091e0a;
     font-weight: bold;
     white-space: nowrap; // Impede que o título da coluna quebre linha
   }
@@ -87,4 +88,11 @@ table {
 .center-cell {
   text-align: center;
   justify-content: center;
+}
+
+.button-filled {
+  @include mat.button-overrides((
+    filled-container-color: #04750e,      // Cor de fundo do botão filled (preenchido)
+    filled-label-text-color: #ffffff,     // Cor do texto
+  ));
 }

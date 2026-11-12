@@ -32,7 +32,7 @@ export interface Motorista {
   imports: [
     CommonModule, MatTableModule, MatPaginatorModule, 
     MatSortModule, MatInputModule, MatFormFieldModule, 
-    MatButtonModule, MatIconModule, MatChipsModule, NewWindow
+    MatButtonModule, MatIconModule, MatChipsModule
   ],
   standalone: true,
   templateUrl: './drivers-component.html',

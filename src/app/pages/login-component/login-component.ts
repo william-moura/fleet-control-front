@@ -48,6 +48,7 @@ export class LoginComponent {
           });
         },
         error: (err: Error) => {
+          this.isLoading.set(false);
           this.snackBar.open('Usuário ou senha inválidos.', 'Fechar', { duration: 3000 });          
           alert('Usuário ou senha inválidos.');
         }
