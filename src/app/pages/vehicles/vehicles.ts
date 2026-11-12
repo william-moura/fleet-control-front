@@ -24,12 +24,11 @@ import { FormAddBrand } from '../../forms/form-add-brand/form-add-brand';
 import { Router } from '@angular/router';
 import { VehicleStateService } from '../../services/vehicle-state-service';
 import { NewNotification } from '../../forms/new-notification/new-notification';
-import { NewWindow } from '../../directives/new-window';
 
 @Component({
   selector: 'app-vehicles',
   imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatInputModule, MatFormFieldModule, MatButtonModule, 
-    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule, NewWindow],
+    MatIconModule, MatChipsModule, MatPaginatorModule, CommonModule],
   templateUrl: './vehicles.html',
   styleUrl: './vehicles.scss',
 })

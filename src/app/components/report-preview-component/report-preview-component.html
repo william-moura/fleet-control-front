@@ -3,10 +3,10 @@
       <mat-card-header>
         <mat-card-title>{{ titleReport() }}</mat-card-title>
         <div class="acoes-exportacao">
-          <button mat-stroked-button (click)="exportarExcel()">
+          <button matButton="outlined" class="button-outlined" (click)="exportarExcel()">
             <mat-icon>table_view</mat-icon> Excel
           </button>
-          <button mat-flat-button color="warn" (click)="exportarPDF()">
+          <button matButton="filled" class="button-filled" (click)="exportarPDF()">
             <mat-icon>picture_as_pdf</mat-icon> PDF
           </button>
         </div>

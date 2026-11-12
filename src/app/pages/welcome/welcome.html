@@ -3,7 +3,7 @@
       <mat-card-content>
         <div class="header-content">
           <div class="text-group">
-            <h1>{{ saudacao() }}, <span>{{ userName() }}</span>!</h1>
+            <h1>{{ saudacao() }}, <span>{{ userName() }}!</span></h1>
             <p>Bem-vindo ao sistema de gestão de frotas <strong>FrotaSync</strong>.</p>
           </div>
           <div class="illustration">
@@ -17,31 +17,31 @@
           <h3>O que você deseja fazer hoje?</h3>
           <div class="action-buttons">
             @if (authService.hasPermission('listar_veiculos')) {
-            <button mat-stroked-button color="primary"  appNewWindow="/vehicles">
+            <button matButton="outlined" class="button-outlined" appNewWindow="/vehicles">
               <mat-icon>directions_bus</mat-icon>
               Gerenciar Veículos
             </button>
             }
             @if (authService.hasPermission('listar_abastecimento')) {
-            <button mat-stroked-button color="accent" appNewWindow="/fuel">
+            <button matButton="outlined" class="button-outlined" color="accent" appNewWindow="/fuel">
               <mat-icon>local_gas_station</mat-icon>
               Lançar Abastecimento
             </button>
             }
             @if (authService.hasPermission('listar_manutencoes')) {
-            <button mat-stroked-button appNewWindow="/maintenance">
+            <button matButton="outlined" class="button-outlined" appNewWindow="/maintenance">
               <mat-icon>build</mat-icon>
               Ver Manutenções
             </button>
             }
             @if (authService.hasPermission('acessar_relatorios')) {
-            <button mat-stroked-button appNewWindow="/reports">
+            <button matButton="outlined" class="button-outlined" appNewWindow="/reports">
               <mat-icon>report</mat-icon>
               Ver Relatórios
             </button>
             }
             @if (authService.hasPermission('acessar_dashboards')) {
-            <button mat-stroked-button appNewWindow="/dashboard">
+            <button matButton="outlined" class="button-outlined" appNewWindow="/dashboard">
               <mat-icon>dashboard</mat-icon>
               Ver Dashboard
             </button>

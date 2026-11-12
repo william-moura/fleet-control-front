@@ -4,9 +4,10 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { LayoutService } from './services/layout-service';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { AuthService } from './services/auth-service';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SideMenuComponent, AsyncPipe, CommonModule],
+  imports: [RouterOutlet, SideMenuComponent, AsyncPipe, CommonModule, MatIconModule],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

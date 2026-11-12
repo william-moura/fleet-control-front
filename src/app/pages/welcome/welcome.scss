@@ -12,6 +12,24 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       padding: 20px;
     }
+    .text-group {
+      h1 {
+        font-size: 2.5rem;
+        margin: 0;
+        color: #333;
+        span { color: #0d5f1e; font-weight: 800; }
+      }
+    }
+  }
+  
+  .button-outlined {
+    color: #04750e !important;
+    border-color: #04750e;
+    background-color: transparent;
+    &:hover {
+      background-color: #04750e;
+      color: #ffffff !important;
+    }
   }
   
   .header-content {
