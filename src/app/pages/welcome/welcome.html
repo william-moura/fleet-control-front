@@ -1,53 +1,117 @@
-<div class="welcome-container">
-    <mat-card class="welcome-card">
-      <mat-card-content>
-        <div class="header-content">
-          <div class="text-group">
-            <h1>{{ saudacao() }}, <span>{{ userName() }}!</span></h1>
-            <p>Bem-vindo ao sistema de gestão de frotas <strong>FrotaSync</strong>.</p>
-          </div>
-          <div class="illustration">
-            <mat-icon>local_shipping</mat-icon>
-          </div>
+<div class="welcome-page">
+  <div class="welcome-content">
+    
+    <!-- Banner Principal (Hero) -->
+    <section class="hero-banner">
+      <div class="hero-text">
+        <div class="badge-pill">
+          <mat-icon>grid_view</mat-icon>
+          <span>Painel de Controle</span>
         </div>
-  
-        <hr class="divider">
-  
-        <div class="quick-actions">
-          <h3>O que você deseja fazer hoje?</h3>
-          <div class="action-buttons">
-            @if (authService.hasPermission('listar_veiculos')) {
-            <button matButton="outlined" class="button-outlined" appNewWindow="/vehicles">
-              <mat-icon>directions_bus</mat-icon>
-              Gerenciar Veículos
-            </button>
-            }
-            @if (authService.hasPermission('listar_abastecimento')) {
-            <button matButton="outlined" class="button-outlined" color="accent" appNewWindow="/fuel">
-              <mat-icon>local_gas_station</mat-icon>
-              Lançar Abastecimento
-            </button>
-            }
-            @if (authService.hasPermission('listar_manutencoes')) {
-            <button matButton="outlined" class="button-outlined" appNewWindow="/maintenance">
-              <mat-icon>build</mat-icon>
-              Ver Manutenções
-            </button>
-            }
-            @if (authService.hasPermission('acessar_relatorios')) {
-            <button matButton="outlined" class="button-outlined" appNewWindow="/reports">
-              <mat-icon>report</mat-icon>
-              Ver Relatórios
-            </button>
-            }
-            @if (authService.hasPermission('acessar_dashboards')) {
-            <button matButton="outlined" class="button-outlined" appNewWindow="/dashboard">
-              <mat-icon>dashboard</mat-icon>
-              Ver Dashboard
-            </button>
-            }
-          </div>
+
+        <h1>
+          {{ saudacao() }},<br />
+          <span class="highlight-name">{{ userName() }}!</span>
+        </h1>
+
+        <p class="subtitle">
+          Bem-vindo ao sistema de gestão de frotas <strong>FrotaSync.</strong>
+        </p>
+
+        <div class="tagline">
+          <span class="vertical-bar"></span>
+          <p>
+            Mais controle, economia e eficiência<br />
+            na gestão da sua frota.
+          </p>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+
+      <!-- Área da imagem dos veículos à direita -->
+      <div class="hero-image">
+        <!-- <img src="/images/frota-banner.jpeg" alt="Banner frota"> -->
+      </div>
+    </section>
+
+    <!-- Seção de Ações Rápidas -->
+    <section class="quick-actions">
+      <div class="section-header">
+        <h2>O que você deseja fazer hoje?</h2>
+        <div class="title-underline"></div>
+      </div>
+
+      <div class="action-cards">
+        @if (authService.hasPermission('listar_veiculos')) {
+          <button type="button" class="action-card" appNewWindow="/vehicles">
+            <div class="card-body">
+              <div class="icon-box">
+                <mat-icon>directions_car</mat-icon>
+              </div>
+              <span class="card-title">Gerenciar<br />Veículos</span>
+            </div>
+            <div class="card-footer">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </button>
+        }
+
+        @if (authService.hasPermission('listar_abastecimento')) {
+          <button type="button" class="action-card" appNewWindow="/fuel">
+            <div class="card-body">
+              <div class="icon-box">
+                <mat-icon>local_gas_station</mat-icon>
+              </div>
+              <span class="card-title">Lançar<br />Abastecimento</span>
+            </div>
+            <div class="card-footer">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </button>
+        }
+
+        @if (authService.hasPermission('listar_manutencoes')) {
+          <button type="button" class="action-card" appNewWindow="/maintenance">
+            <div class="card-body">
+              <div class="icon-box">
+                <mat-icon>build</mat-icon>
+              </div>
+              <span class="card-title">Ver<br />Manutenções</span>
+            </div>
+            <div class="card-footer">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </button>
+        }
+
+        @if (authService.hasPermission('acessar_relatorios')) {
+          <button type="button" class="action-card" appNewWindow="/reports">
+            <div class="card-body">
+              <div class="icon-box">
+                <mat-icon>bar_chart</mat-icon>
+              </div>
+              <span class="card-title">Ver<br />Relatórios</span>
+            </div>
+            <div class="card-footer">
+              <mat-icon>arrow_forward</mat-icon>
+            </div>
+          </button>
+        }
+
+        @if (authService.hasPermission('acessar_dashboards')) {
+          <button type="button" class="action-card" appNewWindow="/dashboard">
+            <div class="card-body">
+              <div class="icon-box">
+                <mat-icon>grid_view</mat-icon>
+              </div>
+              <span class="card-title">Ver<br />Dashboard</span>
+            </div>
+            <div class="card-footer">
+              <mat-icon class="arrow-forward">arrow_forward</mat-icon>
+            </div>
+          </button>
+        }
+      </div>
+    </section>
+
   </div>
+</div>
